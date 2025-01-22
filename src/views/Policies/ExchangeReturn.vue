@@ -1,0 +1,150 @@
+<template>
+  <div class="exchange-return">
+    <h1 class="exchange-title">นโยบายการเปลี่ยน และคืนสินค้า</h1>
+    
+    <div class="exchange-content">
+      <p class="exchange-description">
+        ที่ Lapiz เราให้ความสำคัญกับความพึงพอใจของลูกค้าเป็นสำคัญ หากท่านพบว่าสิ่งผิดพลาดที่ท่านได้รับไม่ตรงตามที่คาดหวัง หรือต้องการทำการเปลี่ยน หรือคืนสินค้า ท่านสามารถดำเนินการตามเงื่อนไขดังต่อไปนี้:
+      </p>
+
+      <section class="exchange-section">
+        <h2>1. เงื่อนไขการคืนสินค้า</h2>
+        <p>
+          ท่านสามารถคืนสินค้าภายในระยะเวลา 30 วันนับจากวันที่ท่านได้รับสินค้า โดยสินค้าต้องอยู่ในสภาพที่ยังไม่ถูกใช้งาน ไม่เกิดความเสียหาย และอยู่ในบรรจุภัณฑ์เดิม พร้อมอุปกรณ์ทั้งหมด การคืนสินค้าจะไม่สามารถดำเนินการได้หากพบว่า:
+        </p>
+        <ul>
+          <li>สินค้าได้ถูกใช้งาน หรือมียี่ห้อสภาพไม่สมบูรณ์</li>
+          <li>ไม่มีใบเสร็จรับเงิน หรือเอกสารยืนยันการซื้อสินค้า</li>
+          <li>สินค้าอยู่ในหมวดหมู่ "ไม่สามารถคืนได้" (กรุณาตรวจสอบรายละเอียดเพิ่มเติมในหมวดหมู่สินค้า)</li>
+        </ul>
+      </section>
+
+      <section class="exchange-section">
+        <h2>2. ขั้นตอนการคืนสินค้า</h2>
+        <ol>
+          <li>ติดต่อกับบริการลูกค้าของเราเพื่อแจ้งความประสงค์ในการคืนสินค้า</li>
+          <li>ส่งสินค้ากลับมายังที่อยู่ที่กำหนดในบรรจุภัณฑ์ที่เหมาะสมซึ่งจะช่วยรักษาสถานะของสินค้าระหว่างการจัดส่งคืน</li>
+          <li>เมื่อสินค้าถึงที่คลังสินค้า และผ่านการตรวจสอบ เราจะดำเนินการคืนเงินภายใน 7-14 วันทำการ</li>
+        </ol>
+      </section>
+
+      <section class="exchange-section">
+        <h2>3. การเปลี่ยนสินค้า</h2>
+        <p>
+          หากท่านต้องการเปลี่ยนสินค้าด้วยเหตุผลต่างๆ ๆ เช่น ขนาดไม่ตรง หรือสีไม่ถูกต้อง ท่านสามารถทำการเปลี่ยนสินค้าได้ภายใน 30 วันนับจากวันที่ได้รับสินค้า โดยสินค้าต้องอยู่ในสภาพที่สมบูรณ์เหมือนเดิม สำหรับการเปลี่ยนสินค้า โปรดดำเนินการตามขั้นตอนดังต่อไปนี้:
+        </p>
+        <ul>
+          <li>ติดต่อกับบริการลูกค้าเพื่อแจ้งความประสงค์ในการเปลี่ยนสินค้า</li>
+          <li>ส่งสินค้าที่ต้องการเปลี่ยนกลับมายังคลังสินค้าของเรา หลังจากได้รับสินค้า และตรวจสอบแล้ว เทางเราจะส่งสินค้าชิ้นใหม่ให้ท่านโดยเร็วที่สุด</li>
+        </ul>
+      </section>
+
+      <section class="exchange-section">
+        <h2>4. การคืนเงิน</h2>
+        <p>
+          การคืนเงินจะดำเนินการผ่านช่องทางการชำระเงินเดิมที่ท่านใช้ในการสั่งซื้อสินค้า โดยจะใช้เวลาประมาณ 7-14 วันทำการ หลังจากที่ทางเราได้รับสินค้า และตรวจสอบแล้วเรียบร้อย ท่านจะได้รับการยืนยันผ่านอีเมลเกี่ยวกับสถานะการคืนเงิน
+        </p>
+      </section>
+
+      <section class="exchange-section">
+        <h2>5. ข้อยกเว้นการคืน และเปลี่ยนสินค้า</h2>
+        <p>
+          สำหรับสินค้าที่ระบุจำหน่ายในหมวด "สินค้าลดราคา" หรือ "สินค้าพิเศษ" อาจไม่สามารถทำการคืน หรือเปลี่ยนสินค้าได้ กรุณาตรวจสอบเงื่อนไขเพิ่มเติมก่อนทำการสั่งซื้อ
+        </p>
+      </section>
+
+      <section class="exchange-section contact">
+        <h3>ติดต่อเรา</h3>
+        <p>
+          หากท่านมีข้อสงสัยเพิ่มเติมเกี่ยวกับนโยบายการเปลี่ยน และคืนสินค้า กรุณาติดต่อบริการลูกค้าของเราผ่านทาง [ <a href="/contact-us">ติดต่อเรา</a> ] เราพร้อมให้บริการและคำแนะนำทุกขั้นตอน
+        </p>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script setup>
+// No reactive state or methods needed for this static content
+</script>
+
+<style scoped>
+  .exchange-return {
+    font-size: 16px; /* Base font size */
+    font-family: 'Roboto', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: rgb(0, 0, 0);
+  }
+
+  .exchange-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #222;
+  }
+
+  .exchange-content {
+    font-size: 1.25rem;
+  }
+
+  .exchange-section {
+    margin-bottom: 2rem;
+  }
+
+  .exchange-section h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #222;
+  }
+
+  .exchange-section h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #222;
+  }
+
+  .exchange-description {
+    margin-bottom: 2rem;
+  }
+
+  a {
+    color: rgb(47, 97, 224);
+  }
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  ul, ol {
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  .contact {
+    background-color: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .exchange-container {
+      padding: 1rem;
+    }
+    
+    .exchange-content {
+      font-size: 1.1rem;
+    }
+    
+    .exchange-title {
+      font-size: 1.75rem;
+    }
+  }
+</style>

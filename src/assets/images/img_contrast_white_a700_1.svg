@@ -1,0 +1,9 @@
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="15" cy="15" r="14.5" fill="white"/>
+<circle cx="15" cy="15" r="14.5" stroke="black"/>
+<circle cx="15" cy="15" r="14.5" stroke="#6B6B6B"/>
+<circle cx="15" cy="15" r="14.5" stroke="#9B9B9B"/>
+<circle cx="15" cy="15" r="12" fill="white"/>
+<circle cx="15" cy="15" r="12" fill="#000080"/>
+<circle cx="15" cy="15" r="12" fill="white"/>
+</svg>
