@@ -20,7 +20,7 @@ import Header from "./components/Header.vue";
 // import Footer from "./components/Footer.vue";
 </script>
 
-<style>
+<style scoped lang="scss">
 .search-test {
   position: relative;
   display: flex;
