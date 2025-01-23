@@ -20,7 +20,7 @@
 
 <style scoped lang="scss">
 .container {
-  background-color: var(--white-color);
+  background-color: var(--black-color);
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.226);
