@@ -24,7 +24,7 @@
           <tr v-for="(item, index) in orderItems" :key="index">
             <td class="product-cell">
               <div class="product-info">
-                <img :src="item.image" :alt="item.name" class="product-image">
+                <img :src="item.image" :alt="item.name" class="product-image" />
                 <div class="product-details">
                   <p class="product-name">{{ item.name }}</p>
                   <p class="product-variant">{{ item.variant }}</p>
@@ -39,20 +39,23 @@
 
       <!-- Order Summary -->
       <div class="order-summary">
-        <div class="summary-row">
-          <span>ยอดรวม ({{ orderItems.length }} รายการ)</span>
-          <span>{{ subtotal }} THB</span>
-        </div>
-        <div class="summary-row">
-          <span>การจัดส่ง</span>
-          <span>FREE</span>
-        </div>
-        <div class="total-section">
-          <div class="total-row">
-            <span class="total-label">ยอดรวม</span>
-            <span class="total-amount">{{ total }} THB</span>
+        <div class="flex-1"></div>
+        <div class="flex-1">
+          <div class="summary-row">
+            <span>ยอดรวม ({{ orderItems.length }} รายการ)</span>
+            <span>{{ subtotal }} THB</span>
           </div>
-          <p class="tax-info">Including {{ tax }} THB in taxes</p>
+          <div class="summary-row">
+            <span>การจัดส่ง</span>
+            <span>FREE</span>
+          </div>
+          <div class="total-section">
+            <div class="total-row">
+              <span class="total-label">ยอดรวม</span>
+              <span class="total-amount">{{ total }} THB</span>
+            </div>
+            <p class="tax-info">Including {{ tax }} THB in taxes</p>
+          </div>
         </div>
       </div>
 
@@ -70,12 +73,12 @@
               <p class="info-value">{{ paymentMethod }}</p>
             </div>
           </div>
-          
+
           <div class="info-column">
             <h3 class="info-label">ที่อยู่จัดส่ง</h3>
             <p class="info-value">
-              {{ shippingAddress.name }}<br>
-              {{ shippingAddress.address }}<br>
+              {{ shippingAddress.name }}<br />
+              {{ shippingAddress.address }}<br />
               {{ shippingAddress.phone }}
             </p>
           </div>
@@ -83,8 +86,8 @@
           <div class="info-column">
             <h3 class="info-label">ที่อยู่สำหรับเรียกเก็บเงิน</h3>
             <p class="info-value">
-              {{ billingAddress.name }}<br>
-              {{ billingAddress.address }}<br>
+              {{ billingAddress.name }}<br />
+              {{ billingAddress.address }}<br />
               {{ billingAddress.phone }}
             </p>
           </div>
@@ -100,55 +103,55 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import Shoes1 from '@/assets/images/img_pic1_90x102.png';
-import Shoes2 from '@/assets/images/img_pic2_90x102.png';
+import { ref } from "vue";
+import Shoes1 from "@/assets/images/img_pic1_90x102.png";
+import Shoes2 from "@/assets/images/img_pic2_90x102.png";
 
 const orderItems = ref([
   {
-    name: 'รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas',
-    variant: 'Navy / 9',
-    price: '2,250.00',
-    image: Shoes1
+    name: "รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas",
+    variant: "Navy / 9",
+    price: "2,250.00",
+    image: Shoes1,
   },
   {
-    name: 'รองเท้าผ้าใบ รุ่น Champion Organic Cotton',
-    variant: 'Light Pink / 9',
-    price: '2,050.00',
-    image: Shoes2
+    name: "รองเท้าผ้าใบ รุ่น Champion Organic Cotton",
+    variant: "Light Pink / 9",
+    price: "2,050.00",
+    image: Shoes2,
   },
   {
-    name: 'รองเท้าผ้าใบ รุ่น Champion Organic Cotton',
-    variant: 'Light Pink / 9',
-    price: '2,050.00',
-    image: Shoes2
+    name: "รองเท้าผ้าใบ รุ่น Champion Organic Cotton",
+    variant: "Light Pink / 9",
+    price: "2,050.00",
+    image: Shoes2,
   },
-])
+]);
 
-const subtotal = ref('4,300.00')
-const tax = ref('0.00')
-const total = ref('4,300.00')
-const contactEmail = ref('naithanathorn46@gmail.com')
-const paymentMethod = ref('Credit / Debit Card')
-const shippingMethod = ref('Free Shipping')
+const subtotal = ref("4,300.00");
+const tax = ref("0.00");
+const total = ref("4,300.00");
+const contactEmail = ref("naithanathorn46@gmail.com");
+const paymentMethod = ref("Credit / Debit Card");
+const shippingMethod = ref("Free Shipping");
 
 const shippingAddress = ref({
-  name: 'ธนาทร เกริกกวิน',
-  address: '15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400',
-  phone: '063-481-6644'
-})
+  name: "ธนาทร เกริกกวิน",
+  address: "15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400",
+  phone: "063-481-6644",
+});
 
 const billingAddress = ref({
-  name: 'ธนาทร เกริกกวิน',
-  address: '15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400',
-  phone: '063-481-6644'
-})
+  name: "ธนาทร เกริกกวิน",
+  address: "15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400",
+  phone: "063-481-6644",
+});
 </script>
 
 <style scoped>
 @font-face {
-  font-family: 'Mitr';
-  src: url('@/assets/fonts/Mitr-Regular.ttf') format('truetype');
+  font-family: "Mitr";
+  src: url("@/assets/fonts/Mitr-Regular.ttf") format("truetype");
   /* src: url('@/assets/fonts/Athiti-Bold.ttf') format('truetype'); */
   font-weight: normal;
   font-style: normal;
@@ -168,12 +171,12 @@ th.total-header {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  font-family: 'Mitr';
+  font-family: "Mitr";
 }
 
 .order-container {
   background: white;
-  padding:10px;
+  padding: 10px;
 }
 
 /* Header Styles */
@@ -250,8 +253,6 @@ th.total-header {
   padding-top: 10px; /* เพิ่ม padding-top เพื่อจัดตำแหน่งข้อความ */
 }
 
-
-
 .price-cell {
   text-align: right;
   font-weight: 500;
@@ -259,9 +260,14 @@ th.total-header {
 
 /* Summary Styles */
 .order-summary {
-  border-top: 1px solid #7D7D7D;
+  border-top: 1px solid #7d7d7d;
   padding-top: 25px;
   margin-bottom: 25px;
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
 }
 
 .summary-row {
@@ -278,8 +284,8 @@ th.total-header {
 
 .total-row {
   display: flex;
-  justify-content: flex-end;
-  
+  justify-content: space-between;
+
   gap: 40px;
   font-size: 20px;
   font-weight: 600;
@@ -293,7 +299,7 @@ th.total-header {
 
 /* Order Info Styles */
 .order-info-section {
-  border-top: 1px solid #7D7D7D;
+  border-top: 1px solid #7d7d7d;
   padding-top: 30px;
 }
 
@@ -335,7 +341,7 @@ th.total-header {
   .info-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .total-row {
     flex-direction: column;
     align-items: flex-end;
