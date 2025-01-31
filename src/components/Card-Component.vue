@@ -4,21 +4,42 @@
 
     <div class="card-title">
       <div class="product-name">
-        a
+        {{ ProductName }}
       </div>
       <div class="card-detail">
         <div class="card-content">
-          <div class="product-price">4000 THB</div>
+          <div class="product-price">{{ ProductPrice }} THB</div>
           <div>Compare</div>
         </div>
         <div class="card-content">
-          <div>Color</div>
+          <div>{{ ProductColor }}</div>
           <div>Heart</div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+const props = defineProps({
+  CardImage: {
+    type: String,
+    required: false,
+  },
+  ProductName: {
+    type: String,
+    required: true,
+  },
+  ProductPrice: {
+    type: Number,
+    required: true,
+  },
+  ProductColor: {
+    type: String,
+    required: true,
+  },
+});
+</script>
 
 <style scoped lang="scss">
 .container {
