@@ -13,7 +13,6 @@
         <div v-for="product in products" :key="product.pdId">
           <CardComponent :-product-name="product.pdName" :-product-price="product.pdPrice" :-product-color="product.pdColor"/>
         </div>
-        
       </div>
     </div>
   </div>

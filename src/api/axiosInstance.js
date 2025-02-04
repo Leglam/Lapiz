@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5184/api",
+  baseURL: "https://cc5c-184-22-163-234.ngrok-free.app/api",
   headers: {
     "Content-Type": "application/json",
     "ngrok-skip-browser-warning": "69420",
@@ -36,7 +36,7 @@ apiClient.interceptors.response.use(
       console.error("Request error:", error.message);
     }
 
-    return Promise.reject(error);
+    // return Promise.reject(error);
   }
 );
 
