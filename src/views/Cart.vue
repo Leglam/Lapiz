@@ -51,8 +51,8 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import Shoes1 from '@/assets/images/img_pic.png';
-import Shoes2 from '@/assets/images/img_pic2_90x124.png';
+import Shoes1 from '@/assets/shoes/shoe1.png';
+import Shoes2 from '@/assets/shoes/shoe1.png';
 
 const cartItems = ref([
   {
