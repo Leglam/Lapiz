@@ -1,10 +1,26 @@
 <template>
   <div class="top-header">
     <div class="top-header-container">
-      <router-link to="/login" class="login-link">เข้าสู่ระบบ | สมัครสมาชิก</router-link>
+      <div>
+        <span @click="pushPage('login')" class="login-link">เข้าสู่ระบบ</span>
+        <span class="text-white"> | </span>
+        <span @click="pushPage('register')" class="login-link"
+          >สมัครสมาชิก</span
+        >
+      </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const pushPage = (name) => {
+  router.push({ name: name });
+};
+</script>
 
 <style>
 * {
@@ -28,6 +44,13 @@
   text-decoration: none;
   font-size: 14px;
   transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.text-white {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
 }
 
 .login-link:hover {

@@ -1,7 +1,7 @@
 <template>
   <div class="cart-container">
     <h1 class="cart-title">ตะกร้าสินค้า</h1>
-    
+
     <div class="cart-header">
       <div class="cart-header-item product-col">สินค้า</div>
       <div class="cart-header-item quantity-col">จำนวน</div>
@@ -9,33 +9,44 @@
     </div>
 
     <div class="cart-items">
-    <transition-group name="fade" tag="div" class="cart-items">
-      <div v-for="item in cartItems" :key="item.id" class="cart-item">
-        <div class="product-info">
-          <div class="product-image">
-            <img :src="item.image" :alt="item.name">
+      <transition-group name="fade" tag="div" class="cart-items">
+        <div
+          v-for="(item, index) in cartItems"
+          :key="item.pdId"
+          class="cart-item"
+        >
+          <div class="product-info">
+            <div class="product-image">
+              <img :src="Shoes1" :alt="item.pdName" />
+            </div>
+            <div class="product-details">
+              <div class="product-name">{{ item.pdName }}</div>
+              <div class="product-variant">{{ item.pdColor }} / 9</div>
+              <div class="product-price">{{ item.pdPrice.toFixed(2) }} THB</div>
+            </div>
           </div>
-          <div class="product-details">
-            <div class="product-name">{{ item.name }}</div>
-            <div class="product-variant">{{ item.variant }}</div>
-            <div class="product-price">{{ item.price.toFixed(2) }} THB</div>
-          </div>
-        </div>
 
-        <div class="quantity-control">
-          <div class="quantity-wrapper">
-            <button @click="decreaseQuantity(item)" class="quantity-btn-left">−</button>
-            <span class="quantity-display">{{ item.quantity }}</span>
-            <button @click="increaseQuantity(item)" class="quantity-btn-right">+</button>
+          <div class="quantity-control">
+            <div class="quantity-wrapper">
+              <button @click="decreaseQuantity(item)" class="quantity-btn-left">
+                −
+              </button>
+              <span class="quantity-display">{{ item.quantity }}</span>
+              <button
+                @click="increaseQuantity(item)"
+                class="quantity-btn-right"
+              >
+                +
+              </button>
+            </div>
+            <div class="quantity-label" @click="removeItem(item)">ลบ</div>
           </div>
-          <div class="quantity-label" @click="removeItem(item)">ลบ</div>
-        </div>
 
-        <div class="item-total">
-          {{ (item.price * item.quantity).toFixed(2) }} THB
+          <div class="item-total">
+            {{ (item.pdPrice * item.quantity).toFixed(2) }} THB
+          </div>
         </div>
-      </div>
-    </transition-group>
+      </transition-group>
     </div>
 
     <div class="cart-summary">
@@ -43,97 +54,100 @@
         <div class="total-label">ยอดรวม:</div>
         <div class="total-amount">{{ totalPrice.toFixed(2) }} THB</div>
       </div>
-      <div class="shipping-note">Tax included and shipping calculated at checkout</div>
+      <div class="shipping-note">
+        Tax included and shipping calculated at checkout
+      </div>
       <button class="checkout-button">ชำระเงิน</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import Shoes1 from '@/assets/shoes/shoe1.png';
-import Shoes2 from '@/assets/shoes/shoe1.png';
+import { ref, computed, onMounted } from "vue";
+import Shoes1 from "@/assets/shoes/shoe1.png";
+import { getBasketProducts, updateBasketProducts } from "@/api/productService";
 
-const cartItems = ref([
-  {
-    id: 1,
-    name: 'รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas',
-    variant: 'Navy / 9',
-    price: 2250.00,
-    quantity: 1,
-    image: Shoes1
-  },
-  {
-    id: 2,
-    name: 'รองเท้าผ้าใบ รุ่น Champion Organic Cotton',
-    variant: 'Light Pink / 9',
-    price: 2050.00,
-    quantity: 1,
-    image: Shoes2
-  },
-]);
+const cartItems = ref([]);
+
+const fetchProductInBasket = async () => {
+  const response = await getBasketProducts();
+  cartItems.value = response;
+};
 
 const removeItem = (item) => {
-  cartItems.value = cartItems.value.filter(cartItem => cartItem.id !== item.id);
+  cartItems.value = cartItems.value.filter(
+    (cartItem) => cartItem.id !== item.id
+  );
 };
-
 
 const totalPrice = computed(() => {
-  return cartItems.value.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  return cartItems.value.reduce(
+    (sum, item) => sum + item.pdPrice * item.quantity,
+    0
+  );
 });
 
-const increaseQuantity = (item) => {
-  item.quantity++;
+const increaseQuantity = async (item) => {
+  const response = await updateBasketProducts(item.pdCode, 1);
+  console.log(response);
+  fetchProductInBasket();
 };
 
-const decreaseQuantity = (item) => {
+const decreaseQuantity = async (item) => {
   if (item.quantity > 1) {
-    item.quantity--;
-  }
-  else {
+    const response = await updateBasketProducts(item.pdCode, -1);
+    console.log(response);
+    fetchProductInBasket();
+  } else {
     removeItem(item);
   }
 };
+
+onMounted(() => {
+  fetchProductInBasket();
+});
 </script>
 
 <style scoped>
 @font-face {
-  font-family: 'Mitr';
-  src: url('@/assets/fonts/Mitr-Regular.ttf') format('truetype');
+  font-family: "Mitr";
+  src: url("@/assets/fonts/Mitr-Regular.ttf") format("truetype");
   /* src: url('@/assets/fonts/Athiti-Bold.ttf') format('truetype'); */
   font-weight: normal;
   font-style: normal;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s, transform 0.5s;
-}/*animate*/
+} /*animate*/
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
   transform: translateX(-80px);
-}/*animate*/
+} /*animate*/
 
-.cart-header-item.quantity-col{
-  margin: 0 40px
+.cart-header-item.quantity-col {
+  margin: 0 40px;
 }
 
-.cart-header-item.total-col{
+.cart-header-item.total-col {
   display: flex;
   justify-content: flex-end;
   text-align: right; /* เผื่อใช้เป็น fallback */
   margin: 0 15px;
 }
 
-.cart-header-item.product-col{
-  margin: 0 15px
+.cart-header-item.product-col {
+  margin: 0 15px;
 }
 
 .cart-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Mitr';
+  font-family: "Mitr";
   margin-bottom: 71px;
   opacity: 0;
   transform: translateY(-5%); /* เลื่อนออกจากซ้าย */
@@ -156,7 +170,7 @@ const decreaseQuantity = (item) => {
 }
 
 .cart-items {
-  margin-top: 0px;/*ระยะห่างหัวรายการสินค้าในตะกร้า*/
+  margin-top: 0px; /*ระยะห่างหัวรายการสินค้าในตะกร้า*/
 }
 
 .cart-item {
@@ -165,7 +179,7 @@ const decreaseQuantity = (item) => {
   padding: 38px 14px;
   border-bottom: 3px solid #000;
   align-items: center;
-  background-color: #F8F8F8
+  background-color: #f8f8f8;
 }
 
 .product-info {
@@ -284,7 +298,7 @@ const decreaseQuantity = (item) => {
 }
 
 .quantity-label:hover {
-  color: #B72121;
+  color: #b72121;
   cursor: pointer;
   text-decoration: underline;
 }
@@ -315,7 +329,7 @@ const decreaseQuantity = (item) => {
 }
 
 .checkout-button {
-  background-color: #375BFE;
+  background-color: #375bfe;
   color: white;
   border: 1px solid rgb(0, 0, 0);
   padding: 12px 60px;
@@ -324,8 +338,8 @@ const decreaseQuantity = (item) => {
   border-radius: 4px;
 }
 
-.checkout-button:hover{
-  background-color: #002FFF;
+.checkout-button:hover {
+  background-color: #002fff;
   color: white;
   border: 1px solid rgb(0, 0, 0);
   padding: 12px 60px;
@@ -341,7 +355,8 @@ const decreaseQuantity = (item) => {
     padding: 10px;
   }
 
-  .cart-header, .cart-item {
+  .cart-header,
+  .cart-item {
     grid-template-columns: 1fr 100px 100px;
   }
 
@@ -362,5 +377,4 @@ const decreaseQuantity = (item) => {
     transform: translateX(0); /* เลื่อนมาที่ตำแหน่งปกติ */
   }
 }
-
 </style>

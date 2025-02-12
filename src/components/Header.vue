@@ -2,8 +2,12 @@
   <header>
     <!-- Main header -->
     <div class="main-header">
-      <img src='@/assets/images/img_header_logo.png' alt="Logo Image" class="logo">
-      
+      <img
+        src="@/assets/images/img_header_logo.png"
+        alt="Logo Image"
+        class="logo"
+      />
+
       <div class="header-content">
         <!-- Navigation menu -->
         <ul class="nav-menu">
@@ -22,16 +26,24 @@
               type="text"
               placeholder="ค้นหา"
               class="search-input"
+            />
+            <button
+              v-if="searchBarValue"
+              @click="clearSearch"
+              class="clear-button"
             >
-            <button v-if="searchBarValue" @click="clearSearch" class="clear-button">
-              <img src='@/assets/images/searching_box.svg' alt="searching" class="searching-button">
+              <img
+                src="@/assets/images/searching_box.svg"
+                alt="searching"
+                class="searching-button"
+              />
             </button>
             <img
               v-else
-              src='@/assets/images/search_box.svg'
+              src="@/assets/images/search_box.svg"
               alt="search"
               class="search-icon"
-            >
+            />
           </div>
 
           <div class="right-utilities">
@@ -41,10 +53,18 @@
               <span class="inactive">EN</span>
             </div>
             <a href="#" class="utility-icon">
-              <img src='@/assets/images/icon-fav.svg' alt="Favorites Icon">
+              <img src="@/assets/images/icon-fav.svg" alt="Favorites Icon" />
             </a>
-            <a href="#" class="utility-icon">
-              <img src='@/assets/images/icon-cart.svg' alt="Cart Icon">
+            <a
+              href="#"
+              @click="
+                () => {
+                  router.push({ name: 'cart' });
+                }
+              "
+              class="utility-icon"
+            >
+              <img src="@/assets/images/icon-cart.svg" alt="Cart Icon" />
             </a>
           </div>
         </div>
@@ -54,19 +74,22 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const searchBarValue = ref('')
+const router = useRouter();
+
+const searchBarValue = ref("");
 
 const clearSearch = () => {
-  searchBarValue.value = ''
-}
+  searchBarValue.value = "";
+};
 </script>
 
 <style scoped>
 @font-face {
-  font-family: 'Mitr';
-  src: url('@/assets/fonts/Mitr-Regular.ttf') format('truetype');
+  font-family: "Mitr";
+  src: url("@/assets/fonts/Mitr-Regular.ttf") format("truetype");
   /* src: url('@/assets/fonts/Athiti-Bold.ttf') format('truetype'); */
   font-weight: normal;
   font-style: normal;
@@ -80,7 +103,7 @@ const clearSearch = () => {
   background-color: #ecefbb;
   padding: 0.375rem 2.875rem;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
-  font-family: 'Mitr', sans-serif;
+  font-family: "Mitr", sans-serif;
   margin: 0;
 }
 

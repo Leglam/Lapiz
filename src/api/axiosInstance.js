@@ -28,10 +28,6 @@ apiClient.interceptors.response.use(
       if (error.response.status === 401) {
         console.warn("Unauthorized! Redirecting to login...");
         localStorage.removeItem("token");
-
-        if (window.location.pathname === "/login") {
-          return Promise.reject(error);
-        } else window.location.replace("/login");
       }
     } else if (error.request) {
       console.error("No response received from the server.");

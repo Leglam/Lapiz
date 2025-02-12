@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img src="/src/assets/shoes/shoes.png" alt="" class="card-img" />
+    <img src="/src/assets/shoes/shoe1.png" alt="" class="card-img" />
 
     <div class="card-title">
       <div class="product-name">

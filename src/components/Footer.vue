@@ -1,66 +1,89 @@
 <template>
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <!-- สินค้า -->
-                <div class="footer-section">
-                <h3>สินค้า</h3>
-                    <ul class="footer-links">
-                    <li><a href="#">ผู้ชาย</a></li>
-                    <li><a href="#">ผู้หญิง</a></li>
-                    <li><a href="#">เด็ก</a></li>
-                    <li><a href="#">กีฬา</a></li>
-                    </ul>
-                </div>
-
-                <!-- บริการลูกค้า -->
-                <div class="footer-section">
-                <h3>บริการลูกค้า</h3>
-                    <ul class="footer-links">
-                    <li><a href="#">ตารางไซส์</a></li>
-                    <li><a href="#">คำถามที่พบบ่อย</a></li>
-                    <li><a href="#">ติดต่อเรา</a></li>
-                    </ul>
-                </div>
-
-                <!-- ติดตามเรา -->
-                <div class="footer-section">
-                <h3>ติดตามเรา</h3>
-                <div class="social-icons">
-                    <a href="#"><img src="../assets/images/img_facebook_30x30.png" alt="Facebook"></a>
-                    <a href="#"><img src="../assets/images/img_instagram.png" alt="Instagram"></a>
-                    <a href="#"><img src="../assets/images/img_tiktok.png" alt="TikTok"></a>
-                    <a href="#"><img src="../assets/images/img_twitterx.png" alt="Twitter"></a>
-                    <a href="#"><img src="../assets/images/img_youtube.png" alt="YouTube"></a>
-                    <a href="#"><img src="../assets/images/img_line.png" alt="Line"></a>
-                </div>
-                </div>
-
-                <!-- นโยบาย -->
-                <div class="footer-section">
-                <h3>นโยบาย</h3>
-                <ul class="footer-links">
-                    <li><a href="#">นโยบายการเปลี่ยน และคืนสินค้า</a></li>
-                    <li><a href="#">นโยบายข้อมูลส่วนบุคคล</a></li>
-                    <li><a href="#">ข้อตกลง และเงื่อนไข</a></li>
-                    <li><a href="#">นโยบายคุ้กกี้</a></li>
-                </ul>
-                </div>
-            </div>
-
-            <div class="copyright">
-                © 2024 Lapiz All Rights Reserved.
-            </div>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- สินค้า -->
+        <div class="footer-section">
+          <h3>สินค้า</h3>
+          <ul class="footer-links">
+            <li><a href="#">ผู้ชาย</a></li>
+            <li><a href="#">ผู้หญิง</a></li>
+            <li><a href="#">เด็ก</a></li>
+            <li><a href="#">กีฬา</a></li>
+          </ul>
         </div>
-    </footer>  
+
+        <!-- บริการลูกค้า -->
+        <div class="footer-section">
+          <h3>บริการลูกค้า</h3>
+          <ul class="footer-links">
+            <li><a @click="pushPage('size-chart')">ตารางไซส์</a></li>
+            <li><a @click="pushPage('faq')">คำถามที่พบบ่อย</a></li>
+            <li><a @click="pushPage('contact')">ติดต่อเรา</a></li>
+          </ul>
+        </div>
+
+        <!-- ติดตามเรา -->
+        <div class="footer-section">
+          <h3>ติดตามเรา</h3>
+          <div class="social-icons">
+            <a href="#"
+              ><img
+                src="../assets/images/img_facebook_30x30.png"
+                alt="Facebook"
+            /></a>
+            <a href="#"
+              ><img src="../assets/images/img_instagram.png" alt="Instagram"
+            /></a>
+            <a href="#"
+              ><img src="../assets/images/img_tiktok.png" alt="TikTok"
+            /></a>
+            <a href="#"
+              ><img src="../assets/images/img_twitterx.png" alt="Twitter"
+            /></a>
+            <a href="#"
+              ><img src="../assets/images/img_youtube.png" alt="YouTube"
+            /></a>
+            <a href="#"
+              ><img src="../assets/images/img_line.png" alt="Line"
+            /></a>
+          </div>
+        </div>
+
+        <!-- นโยบาย -->
+        <div class="footer-section">
+          <h3>นโยบาย</h3>
+          <ul class="footer-links">
+            <li>
+              <a @click="pushPage('exchange')">นโยบายการเปลี่ยน และคืนสินค้า</a>
+            </li>
+            <li>
+              <a @click="pushPage('data-personal')">นโยบายข้อมูลส่วนบุคคล</a>
+            </li>
+            <li>
+              <a @click="pushPage('terms')">ข้อตกลง และเงื่อนไข</a>
+            </li>
+            <li><a @click="pushPage('cookies')">นโยบายคุ้กกี้</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="copyright">© 2024 Lapiz All Rights Reserved.</div>
+    </div>
+  </footer>
 </template>
 
 <script setup>
-  import { ref } from 'vue'
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const pushPage = (name) => {
+  router.push({ name: name });
+};
 </script>
 
 <style scoped>
-
 .container {
   max-width: 1200px; /* กำหนดความกว้างสูงสุดของ container เป็น 1200 พิกเซล */
   margin: 0 auto; /* จัดกึ่งกลางในแนวนอน */
@@ -80,7 +103,10 @@
 /* กำหนดโครงสร้างพื้นฐานของ Footer */
 .footer-grid {
   display: grid; /* ใช้ grid layout สำหรับจัดเรียงคอนเทนต์ */
-  grid-template-columns: repeat(4, 1fr); /* แบ่งพื้นที่เป็น 4 คอลัมน์ที่มีขนาดเท่ากัน */
+  grid-template-columns: repeat(
+    4,
+    1fr
+  ); /* แบ่งพื้นที่เป็น 4 คอลัมน์ที่มีขนาดเท่ากัน */
   gap: 80px; /* ระยะห่างระหว่างคอลัมน์ 80 พิกเซล */
 }
 
@@ -96,7 +122,7 @@
 
 /* สร้างเส้นใต้หัวข้อ */
 .footer-section h3::after {
-  content: ''; /* ต้องมีการระบุ content แม้จะเป็นค่าว่าง */
+  content: ""; /* ต้องมีการระบุ content แม้จะเป็นค่าว่าง */
   position: absolute; /* ใช้ตำแหน่ง absolute เพื่อวางเส้นที่ต้องการ */
   bottom: 0; /* วางเส้นไว้ที่ด้านล่างของหัวข้อ */
   left: 0; /* วางเส้นไว้ที่ด้านซ้าย */
@@ -135,7 +161,10 @@
 /* กำหนดสไตล์สำหรับไอคอนโซเชียล */
 .social-icons {
   display: grid;
-  grid-template-columns: repeat(4, 24px); /* กำหนด 4 คอลัมน์ แต่ละคอลัมน์กว้าง 24px */
+  grid-template-columns: repeat(
+    4,
+    24px
+  ); /* กำหนด 4 คอลัมน์ แต่ละคอลัมน์กว้าง 24px */
   gap: 15px; /* ระยะห่างระหว่างไอคอน */
 }
 
@@ -158,7 +187,7 @@
 .copyright {
   text-align: center; /* จัดกลางข้อความ */
   margin-top: 32px; /* ระยะห่างด้านบน 32 พิกเซล */
-  padding-top:36px; /* ระยะห่างภายในด้านบน 16 พิกเซล */
+  padding-top: 36px; /* ระยะห่างภายในด้านบน 16 พิกเซล */
   border-top: 1px solid #333; /* เส้นขอบด้านบนที่มีสีเทาเข้ม */
   font-size: 14px; /* ขนาดตัวอักษร 14 พิกเซล */
 }
@@ -166,14 +195,17 @@
 /* สไตล์สำหรับการตอบสนองต่อหน้าจอเล็ก */
 @media (max-width: 768px) {
   .footer-grid {
-      grid-template-columns: repeat(2, 1fr); /* ปรับเป็น 2 คอลัมน์เมื่อหน้าจอเล็กลง */
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* ปรับเป็น 2 คอลัมน์เมื่อหน้าจอเล็กลง */
   }
 }
 
 /* สไตล์สำหรับการตอบสนองเมื่อหน้าจอเล็กที่สุด */
 @media (max-width: 480px) {
   .footer-grid {
-      grid-template-columns: 1fr; /* ปรับเป็น 1 คอลัมน์เมื่อหน้าจอเล็กที่สุด */
+    grid-template-columns: 1fr; /* ปรับเป็น 1 คอลัมน์เมื่อหน้าจอเล็กที่สุด */
   }
 }
 </style>
