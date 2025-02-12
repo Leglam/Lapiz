@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://cc5c-184-22-163-234.ngrok-free.app/api",
+  baseURL: "http://localhost:5184/api",
   headers: {
     "Content-Type": "application/json",
     "ngrok-skip-browser-warning": "69420",
@@ -28,7 +28,10 @@ apiClient.interceptors.response.use(
       if (error.response.status === 401) {
         console.warn("Unauthorized! Redirecting to login...");
         localStorage.removeItem("token");
-        window.location.href = "/login";
+
+        if (window.location.pathname === "/login") {
+          return Promise.reject(error);
+        } else window.location.replace("/login");
       }
     } else if (error.request) {
       console.error("No response received from the server.");
@@ -36,7 +39,7 @@ apiClient.interceptors.response.use(
       console.error("Request error:", error.message);
     }
 
-    // return Promise.reject(error);
+    return Promise.reject(error);
   }
 );
 

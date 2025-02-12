@@ -83,7 +83,7 @@
             v-model="confirmPassword"
             placeholder="กรุณายืนยันรหัสผ่าน"
             required
-            :class="{ error: confirmPasswordError }"
+            :class="{ 'error': confirmPasswordError }"
             @blur="validateConfirmPassword"
           />
           <p v-if="confirmPasswordError" class="error-message">
@@ -96,7 +96,18 @@
     </form>
 
     <div class="login-section">
-      <p>มีบัญชีอยู่แล้ว? <a href="#">เข้าสู่ระบบ</a></p>
+      <p>
+        มีบัญชีอยู่แล้ว?
+        <a
+          href="#"
+          @click="
+            () => {
+              router.push('/login');
+            }
+          "
+          >เข้าสู่ระบบ</a
+        >
+      </p>
 
       <div class="social-login">
         <button class="social-button facebook">
@@ -116,6 +127,7 @@
 <script setup>
 import { registerUser } from "@/api/userService";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const firstName = ref("");
 const lastName = ref("");
@@ -127,6 +139,8 @@ const usernameError = ref(false);
 const emailError = ref(false);
 const passwordError = ref(false);
 const confirmPasswordError = ref(false);
+
+const router = useRouter();
 
 const userData = ref({
   firstName: "",
@@ -187,7 +201,14 @@ const updateUserData = async () => {
 
 const registerUserAccount = async () => {
   const result = await registerUser(userData.value);
-  console.log("this is the result: ", result);
+  if (result.status === 200) {
+    console.log("login successful");
+
+    router.push("/login");
+  } else {
+    usernameError.value = true;
+    passwordError.value = true;
+  }
 };
 
 // ฟังก์ชันส่งข้อมูล
@@ -206,14 +227,14 @@ const handleSubmit = async () => {
     !confirmPasswordError.value
   ) {
     await updateUserData();
-    console.log(userData.value);
-
     registerUserAccount();
   }
 };
 </script>
 
 <style scoped>
+@import "@/styles/social-button.scss";
+
 .register-container {
   display: flex;
   flex-direction: column;
@@ -270,16 +291,6 @@ const handleSubmit = async () => {
 
 .form-group input::placeholder {
   color: #999999;
-}
-
-.form-group input.error {
-  border-color: #ff4444;
-}
-
-.error-message {
-  color: #ff4444;
-  font-size: 12px;
-  margin-top: 4px;
 }
 
 .register-button {

@@ -2,8 +2,6 @@ import apiClient from "./axiosInstance";
 
 export const registerUser = async (userData) => {
   try {
-    console.log(userData);
-    
     const response = await apiClient.post("/Auth/register", {
       firstName: userData.firstName,
       lastName: userData.lastName,
@@ -13,10 +11,24 @@ export const registerUser = async (userData) => {
       confirmPassword: userData.confirmPassword,
     });
 
+    return response;
+  } catch (error) {
+    console.error("Error Registration:", error);
+    return error;
+  }
+};
+
+export const loginUser = async (userAuth) => {
+  try {
+    const response = await apiClient.post("/Auth/login", {
+      username: userAuth.username,
+      password: userAuth.password,
+    });
+
     console.log(response);
-    return response.data;
-  } catch (e) {
-    console.error("Error fetching products:", e);
-    return e;
+    return response;
+  } catch (error) {
+    console.error("Error Authentication:", error);
+    return error;
   }
 };
