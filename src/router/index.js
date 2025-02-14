@@ -58,6 +58,11 @@ const router = createRouter({
       name: "size-chart",
       component: () => import("../views/Customer-Services/SizeChart.vue"),
     },
+    {
+      path: "/wishlist",
+      name: "wishlist",
+      component: () => import("../views/Wishlist.vue"),
+    },
   ],
   scrollBehavior() {
     return { top: 0 };
