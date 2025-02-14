@@ -4,8 +4,9 @@
       <h1 class="wishlist-title">รายการโปรด</h1>
       <div class="wishlist-separator"></div>
       <div class="wishlist-product-grid">
-        <WishlistCardComponent v-for="product in products"
-          :key="product.id"
+        <WishlistCardComponent
+          v-for="product in wishlistProducts"
+          :key="product.pdModel"
           :product="product"
           @select-color="selectColor"
           @remove-product="removeProduct"
@@ -16,65 +17,66 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import WishlistCardComponent from '@/components/Wishlist-Card-Component.vue'
-import Shoes1 from '@/assets/shoes/shoe1.png'
-import Shoes2 from '@/assets/shoes/shoe1.png'
+import { onMounted, ref } from "vue";
+import WishlistCardComponent from "@/components/Wishlist-Card-Component.vue";
+import { getWishlistProducts } from "@/api/productService";
 
-const products = ref([
-  {
-    id: 1,
-    name: 'รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas',
-    price: '2,250.00',
-    image: Shoes1,
-    colors: [
-      { id: 1, code: '#000080', selected: true }, // Navy
-      { id: 2, code: '#808080', selected: false }, // Gray
-      { id: 3, code: '#FFFFFF', selected: false } // White
-    ]
-  },
-  {
-    id: 2,
-    name: 'รองเท้าผ้าใบ CONS Fastbreak Pro Leather and Nubuck',
-    price: '2,880.00',
-    image: Shoes2,
-    colors: [
-      { id: 1, code: '#FF0000', selected: true } // Red
-    ]
-  },
-  {
-    id: 3,
-    name: 'รองเท้าผ้าใบยูนิเซ็กซ์ CA Pro Lights On Reflect ',
-    price: '2,590.00',
-    image: Shoes1,
-    colors: [
-      { id: 1, code: '#FFFFFF', selected: true } // White
-    ]
-  },
-  {
-    id: 4,
-    name: 'รองเท้าผ้าใบผู้ชายลาคอสท์ รุ่น T-Clip Set',
-    price: '3,999.00',
-    image: Shoes1,
-    colors: [
-      { id: 1, code: '#FFFFFF', selected: true } // White
-    ]
-  }
-])
+const fetchedWishlistProducts = ref([]);
+const wishlistProducts = ref([]);
 
-function selectColor(colorId) {
-  products.value = products.value.map(product => {
-    product.colors = product.colors.map(color => {
-      color.selected = color.id === colorId
-      return color
-    })
-    return product
-  })
-}
+const fetchWishlistProduct = async () => {
+  const response = await getWishlistProducts();
+  fetchedWishlistProducts.value = response;
+  console.log("Wishlist Product: ", fetchedWishlistProducts.value);
 
-function removeProduct(productId) {
-  products.value = products.value.filter(product => product.id !== productId)
-}
+  wishlistProducts.value = Object.values(
+    fetchedWishlistProducts.value.reduce((acc, product) => {
+      const { pdModel, pdId, pdCode, pdColor, pdStock, pdImg, ...rest } =
+        product;
+
+      if (!acc[pdModel]) {
+        acc[pdModel] = { ...rest, pdModel, pdColor: [] }; // Initialize grouped product
+      }
+
+      acc[pdModel].pdColor.push({
+        pdCode,
+        pdColor,
+        pdStock,
+        pdImg,
+        isSelected: false,
+      });
+
+      return acc;
+    }, {})
+  );
+
+  console.log("Wishlist Product: ", wishlistProducts.value);
+};
+
+const selectColor = (colorId) => {
+  wishlistProducts.value = wishlistProducts.value.map((product) => {
+    product.pdColor = product.pdColor.map((color) => {
+      color.isSelected = color.pdCode === colorId;
+      return color;
+    });
+    return product;
+  });
+};
+
+const removeProduct = (pdCode) => {
+  wishlistProducts.value = wishlistProducts.value.map((product) => {
+    product.pdColor = product.pdColor.filter(
+      (color) => color.pdCode !== pdCode
+    );
+    return product;
+  });
+
+  console.log(wishlistProducts.value);
+};
+
+onMounted(() => {
+  fetchWishlistProduct();
+});
 </script>
 
 <style>
@@ -116,7 +118,7 @@ function removeProduct(productId) {
   .wishlist-product-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .wishlist {
     padding: 16px;
   }

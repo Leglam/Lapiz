@@ -10,6 +10,18 @@ export const getAllProducts = async () => {
   }
 };
 
+export const getWishlistProducts = async () => {
+  try {
+    const response = await apiClient.get("/Wishlist/getWishlistProduct");
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products in wishlist:", error);
+    return null;
+  }
+};
+
 export const getBasketProducts = async () => {
   try {
     const response = await apiClient.get("/Basket/getBasket");

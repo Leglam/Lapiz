@@ -11,11 +11,11 @@
       <div class="header-content">
         <!-- Navigation menu -->
         <ul class="nav-menu">
-          <li><a href="#" class="nav-link">ผู้ชาย</a></li>
-          <li><a href="#" class="nav-link">ผู้หญิง</a></li>
-          <li><a href="#" class="nav-link">เด็ก</a></li>
-          <li><a href="#" class="nav-link">กีฬา</a></li>
-          <li><a href="#" class="nav-link">สินค้าขายดี</a></li>
+          <li><a class="nav-link">ผู้ชาย</a></li>
+          <li><a class="nav-link">ผู้หญิง</a></li>
+          <li><a class="nav-link">เด็ก</a></li>
+          <li><a class="nav-link">กีฬา</a></li>
+          <li><a class="nav-link">สินค้าขายดี</a></li>
         </ul>
 
         <!-- Search and utilities -->
@@ -52,18 +52,10 @@
               <span>|</span>
               <span class="inactive">EN</span>
             </div>
-            <a href="#" class="utility-icon">
+            <a @click="pushPage('wishlist')" class="utility-icon">
               <img src="@/assets/images/icon-fav.svg" alt="Favorites Icon" />
             </a>
-            <a
-              href="#"
-              @click="
-                () => {
-                  router.push({ name: 'cart' });
-                }
-              "
-              class="utility-icon"
-            >
+            <a @click="pushPage('cart')" class="utility-icon">
               <img src="@/assets/images/icon-cart.svg" alt="Cart Icon" />
             </a>
           </div>
@@ -83,6 +75,10 @@ const searchBarValue = ref("");
 
 const clearSearch = () => {
   searchBarValue.value = "";
+};
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
 };
 </script>
 

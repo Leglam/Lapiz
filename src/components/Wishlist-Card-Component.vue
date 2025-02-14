@@ -2,38 +2,38 @@
   <transition name="fade" @before-leave="beforeLeave" @leave="onLeave">
     <div v-if="isVisible" class="product-card">
       <div class="product-header">
-        <button 
-          class="remove-button" 
+        <button
+          class="remove-button"
           @click="removeFromWishlist"
-          :class="{'remove-button-animate': isRemoving}"
+          :class="{ 'remove-button-animate': isRemoving }"
         >
           ×
         </button>
       </div>
       <div class="product-image-container">
-        <img :src="product.image" :alt="product.name" class="product-image" />
+        <img :src="shoe1" :alt="product.name" class="product-image" />
       </div>
       <div class="product-info">
-        <h2 class="product-title">{{ product.name }}</h2>
+        <h2 class="product-title">{{ product.pdName }}</h2>
         <div class="product-details">
-          <span class="product-price">{{ product.price }} THB</span>
+          <span class="product-price">{{ product.pdPrice }} THB</span>
           <div class="product-colors">
-            <div 
-              v-for="color in product.colors" 
-              :key="color.id"
+            <div
+              v-for="color in product.pdColor"
+              :key="color.pdCode"
               class="color-option"
-              :class="{ 'color-selected': color.selected }"
-              @click="selectColor(color.id)"
+              :class="{ 'color-selected': color.isSelected }"
+              @click="selectColor(color.pdCode)"
             >
-              <div 
+              <div
                 class="color-inner"
-                :style="{ backgroundColor: color.code }"
+                :style="{ backgroundColor: `var(--${color.pdColor})` }"
               ></div>
             </div>
           </div>
         </div>
       </div>
-      <button class="add-to-cart-button">
+      <button @click="addProductToBasket()" class="add-to-cart-button">
         <span class="add-to-cart-text">เพิ่มเข้าตะกร้าสินค้า</span>
       </button>
     </div>
@@ -41,27 +41,35 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from 'vue'
+import { defineProps, defineEmits, ref } from "vue";
+import shoe1 from "@/assets/shoes/shoe1.png";
+import { updateBasketProducts } from "@/api/productService";
 
 const props = defineProps({
-  product: Object
-})
+  product: Object,
+});
 
-const emit = defineEmits(['select-color', 'remove-product'])
+const currentProduct = ref(null);
 
-const isVisible = ref(true)
-const isRemoving = ref(false)
+const emit = defineEmits(["select-color", "remove-product"]);
+
+const isVisible = ref(true);
+const isRemoving = ref(false);
 
 function selectColor(colorId) {
-  emit('select-color', colorId)
+  currentProduct.value = colorId;
+  emit("select-color", colorId);
 }
 
 function removeFromWishlist() {
-  isRemoving.value = true
+  isRemoving.value = true;
   setTimeout(() => {
-    isVisible.value = false
-    emit('remove-product', props.product.id)
-  }, 600) // รอจนกว่า animation จะเสร็จสิ้น (600ms)
+    if (props.product.pdColor.length <= 1) {
+      isVisible.value = false;
+    } else isRemoving.value = false;
+
+    emit("remove-product", currentProduct.value);
+  }, 600); // รอจนกว่า animation จะเสร็จสิ้น (600ms)
 }
 
 function beforeLeave() {
@@ -70,10 +78,21 @@ function beforeLeave() {
 
 function onLeave(el, done) {
   // เมื่อ card หายไปแล้ว จะทำการลบหรือทำงานเพิ่มเติม
-  done()
+  done();
 }
-</script>
 
+const increaseQuantity = async (pdCode) => {
+  await updateBasketProducts(pdCode, 1);
+};
+
+const addProductToBasket = () => {
+  if (currentProduct.value) {
+    increaseQuantity(currentProduct.value);
+    console.log("Add product to basket", currentProduct.value);
+    removeFromWishlist();
+  } else console.error("Please select color first");
+};
+</script>
 
 <style scoped>
 @import "@/styles/remove-button-icon.scss";
@@ -212,7 +231,7 @@ function onLeave(el, done) {
 }
 
 .add-to-cart-button {
-  background-color: #002FFF;
+  background-color: #002fff;
   color: white;
   border: none;
   padding: 12px;
@@ -225,5 +244,4 @@ function onLeave(el, done) {
 .add-to-cart-button:hover {
   background-color: #0052a3;
 }
-
 </style>

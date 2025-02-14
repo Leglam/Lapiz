@@ -11,7 +11,11 @@
       <div>สินค้าขายดี</div>
       <div class="card-container">
         <div v-for="product in products" :key="product.pdId">
-          <CardComponent :-product-name="product.pdName" :-product-price="product.pdPrice" :-product-color="product.pdColor"/>
+          <CardComponent
+            :-product-name="product.pdName"
+            :-product-price="product.pdPrice"
+            :-product-color="product.pdColor"
+          />
         </div>
       </div>
     </div>
@@ -20,22 +24,14 @@
 
 <script setup>
 import CardComponent from "@/components/Card-Component.vue";
-
-import { getAllProducts } from "@/api/productService";
+import { useProductStore } from "@/stores/productStore";
 import { onMounted, ref } from "vue";
 
+const useProduct = useProductStore();
 const products = ref([]);
 
-const fetchProducts = async () => {
-  const data = await getAllProducts();
-  if (data) {
-    products.value = data;
-  }
-};
-
-onMounted(async () => {
-  await fetchProducts();
-  console.log(products.value);
+onMounted(() => {
+  products.value = useProduct.product;
 });
 </script>
 

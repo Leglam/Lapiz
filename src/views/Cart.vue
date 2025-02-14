@@ -76,7 +76,7 @@ const fetchProductInBasket = async () => {
 
 const removeItem = (item) => {
   cartItems.value = cartItems.value.filter(
-    (cartItem) => cartItem.id !== item.id
+    (cartItem) => cartItem.pdCode !== item.pdCode
   );
 };
 
@@ -88,15 +88,13 @@ const totalPrice = computed(() => {
 });
 
 const increaseQuantity = async (item) => {
-  const response = await updateBasketProducts(item.pdCode, 1);
-  console.log(response);
+  await updateBasketProducts(item.pdCode, 1);
   fetchProductInBasket();
 };
 
 const decreaseQuantity = async (item) => {
   if (item.quantity > 1) {
-    const response = await updateBasketProducts(item.pdCode, -1);
-    console.log(response);
+    await updateBasketProducts(item.pdCode, -1);
     fetchProductInBasket();
   } else {
     removeItem(item);
