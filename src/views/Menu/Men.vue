@@ -5,18 +5,17 @@
     <div class="line"></div>
   </div>
 
-  <div class="wrapper margin-top margin-left margin-right">
+  <div class="wrapper margin-top margin-left margin-right" style="gap: 20px">
     <div class="filter-container"></div>
     <div class="product-wrapper">
       <div>สินค้าขายดี</div>
       <div class="card-container">
-        <div v-for="product in products" :key="product.pdId">
-          <CardComponent
-            :-product-name="product.pdName"
-            :-product-price="product.pdPrice"
-            :-product-color="product.pdColor"
-          />
-        </div>
+        <CardComponent
+          v-for="product in products"
+          :key="product.pdModel"
+          :product="product"
+          @select-color="selectColor"
+        />
       </div>
     </div>
   </div>
@@ -28,10 +27,42 @@ import { useProductStore } from "@/stores/productStore";
 import { onMounted, ref } from "vue";
 
 const useProduct = useProductStore();
+const fetchProduct = ref([]);
 const products = ref([]);
 
+const selectColor = (colorId) => {
+  products.value = products.value.map((product) => {
+    product.pdColor = product.pdColor.map((color) => {
+      color.isSelected = color.pdCode === colorId;
+      return color;
+    });
+    return product;
+  });
+};
+
 onMounted(() => {
-  products.value = useProduct.product;
+  fetchProduct.value = useProduct.product;
+
+  products.value = Object.values(
+    fetchProduct.value.reduce((acc, product) => {
+      const { pdModel, pdId, pdCode, pdColor, pdStock, pdImg, ...rest } =
+        product;
+
+      if (!acc[pdModel]) {
+        acc[pdModel] = { ...rest, pdModel, pdColor: [] }; // Initialize grouped product
+      }
+
+      acc[pdModel].pdColor.push({
+        pdCode,
+        pdColor,
+        pdStock,
+        pdImg,
+        isSelected: false,
+      });
+
+      return acc;
+    }, {})
+  );
 });
 </script>
 

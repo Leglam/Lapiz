@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { ref } from "vue";
 import shoe1 from "@/assets/shoes/shoe1.png";
 import { updateBasketProducts } from "@/api/productService";
 
@@ -56,12 +56,12 @@ const emit = defineEmits(["select-color", "remove-product"]);
 const isVisible = ref(true);
 const isRemoving = ref(false);
 
-function selectColor(colorId) {
+const selectColor = (colorId) => {
   currentProduct.value = colorId;
   emit("select-color", colorId);
 }
 
-function removeFromWishlist() {
+const removeFromWishlist = () => {
   isRemoving.value = true;
   setTimeout(() => {
     if (props.product.pdColor.length <= 1) {
@@ -70,7 +70,7 @@ function removeFromWishlist() {
 
     emit("remove-product", currentProduct.value);
   }, 600); // รอจนกว่า animation จะเสร็จสิ้น (600ms)
-}
+};
 
 function beforeLeave() {
   // สามารถทำอะไรเพิ่มเติมก่อนที่ card จะหายไปได้
