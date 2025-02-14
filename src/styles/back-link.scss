@@ -1,0 +1,9 @@
+.back-link{
+    color: var(--text-back-link-color);
+}
+  
+.back-link:hover{
+    text-decoration-line: underline;
+    cursor: pointer;
+    color: var(--text-back-linkhover-color);
+}

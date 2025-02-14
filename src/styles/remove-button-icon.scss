@@ -1,0 +1,39 @@
+.remove-button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #000;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .remove-button:active {
+    transform: scale(0.9);
+  }
+  
+  .remove-button-animate {
+    animation: remove-button-animation 0.6s ease-in-out forwards;
+  }
+  
+  @keyframes remove-button-animation {
+    0% {
+      transform: rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(90deg) scale(1); /* หมุนครึ่งรอบ */
+      opacity: 1;
+    }
+    100% {
+      transform: rotate(180deg) scale(0); /* หมุนเต็มรอบแล้วหดหาย */
+      opacity: 0;
+    }
+  }
+  
