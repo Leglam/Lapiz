@@ -26,6 +26,9 @@
 import CardComponent from "@/components/Card-Component.vue";
 import { useProductStore } from "@/stores/productStore";
 import { onBeforeMount, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const productStore = useProductStore();
 const products = ref([]);
@@ -41,7 +44,7 @@ const selectColor = (colorId) => {
 };
 
 const clickProduct = () => {
-  console.log("click product");
+  router.push({ name: "product-detail", params: { id: 100001 } });
 };
 
 onBeforeMount(() => {

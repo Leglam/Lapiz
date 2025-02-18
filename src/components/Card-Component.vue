@@ -49,7 +49,6 @@
 <script setup>
 import { ref } from "vue";
 import shoe1 from "@/assets/shoes/shoe1.png";
-import { updateBasketProducts } from "@/api/productService";
 
 const props = defineProps({
   product: Object,

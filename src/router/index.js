@@ -63,6 +63,11 @@ const router = createRouter({
       name: "wishlist",
       component: () => import("../views/Wishlist.vue"),
     },
+    {
+      path: "/product-detail/:id",
+      name: "product-detail",
+      component: () => import("../views/ProductDetail.vue"),
+    },
   ],
   scrollBehavior() {
     return { top: 0 };
