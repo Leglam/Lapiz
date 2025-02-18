@@ -107,7 +107,7 @@ const handleSubmit = async () => {
   if (response.status === 200) {
     const token = response.data.token;
     localStorage.setItem("token", token);
-    router.push({ name: "home" });
+    router.push({ name: "men" });
   } else {
     usernameError.value = true;
     passwordError.value = true;

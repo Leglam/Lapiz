@@ -11,6 +11,7 @@
       <div>สินค้าขายดี</div>
       <div class="card-container">
         <CardComponent
+          @click="clickProduct"
           v-for="product in products"
           :key="product.pdModel"
           :product="product"
@@ -24,10 +25,9 @@
 <script setup>
 import CardComponent from "@/components/Card-Component.vue";
 import { useProductStore } from "@/stores/productStore";
-import { onMounted, ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
-const useProduct = useProductStore();
-const fetchProduct = ref([]);
+const productStore = useProductStore();
 const products = ref([]);
 
 const selectColor = (colorId) => {
@@ -40,29 +40,13 @@ const selectColor = (colorId) => {
   });
 };
 
-onMounted(() => {
-  fetchProduct.value = useProduct.product;
+const clickProduct = () => {
+  console.log("click product");
+};
 
-  products.value = Object.values(
-    fetchProduct.value.reduce((acc, product) => {
-      const { pdModel, pdId, pdCode, pdColor, pdStock, pdImg, ...rest } =
-        product;
-
-      if (!acc[pdModel]) {
-        acc[pdModel] = { ...rest, pdModel, pdColor: [] }; // Initialize grouped product
-      }
-
-      acc[pdModel].pdColor.push({
-        pdCode,
-        pdColor,
-        pdStock,
-        pdImg,
-        isSelected: false,
-      });
-
-      return acc;
-    }, {})
-  );
+onBeforeMount(() => {
+  products.value = productStore.product;
+  console.log(products.value);
 });
 </script>
 
