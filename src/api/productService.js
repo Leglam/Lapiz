@@ -22,6 +22,20 @@ export const getWishlistProducts = async () => {
   }
 };
 
+export const removeWishlistProduct = async (productCode) => {
+  try {
+    const response = await apiClient.put(
+      `/Wishlist/removeFromWishlist/${productCode}`
+    );
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error removing product from wishlist:", error);
+    return null;
+  }
+};
+
 export const getBasketProducts = async () => {
   try {
     const response = await apiClient.get("/Basket/getBasket");

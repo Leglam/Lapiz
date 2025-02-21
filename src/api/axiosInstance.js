@@ -31,6 +31,8 @@ apiClient.interceptors.response.use(
       if (error.response.status === 401) {
         errorStore.setError("Unauthorized! Please log in again.", "auth");
         localStorage.removeItem("token");
+      } else if (error.response.status === 404) {
+        return Promise.reject(error);
       } else {
         errorStore.setError(`Error: ${error.response.statusText}`, "general");
       }

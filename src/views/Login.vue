@@ -69,10 +69,13 @@
 
 <script setup>
 import { loginUser } from "@/api/userService";
+import { useProductStore } from "@/stores/productStore";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { getBasketProducts } from "@/api/productService";
 
 const router = useRouter();
+const productStore = useProductStore();
 
 const usernameError = ref(false);
 const passwordError = ref(false);
@@ -96,6 +99,15 @@ const checkPassword = () => {
   }
 };
 
+const fetchProductInBasket = async () => {
+  const response = await getBasketProducts();
+  const totalQuantity = response.reduce(
+    (sum, product) => sum + product.quantity,
+    0
+  );
+  productStore.setBasketProductCount(totalQuantity);
+};
+
 const handleSubmit = async () => {
   // Implement login logic here
   console.log("Login attempt:", {
@@ -107,6 +119,7 @@ const handleSubmit = async () => {
   if (response.status === 200) {
     const token = response.data.token;
     localStorage.setItem("token", token);
+    await fetchProductInBasket();
     router.push({ name: "men" });
   } else {
     usernameError.value = true;

@@ -19,7 +19,10 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import WishlistCardComponent from "@/components/Wishlist-Card-Component.vue";
-import { getWishlistProducts } from "@/api/productService";
+import {
+  getWishlistProducts,
+  removeWishlistProduct,
+} from "@/api/productService";
 
 const fetchedWishlistProducts = ref([]);
 const wishlistProducts = ref([]);
@@ -63,15 +66,22 @@ const selectColor = (colorId) => {
   });
 };
 
-const removeProduct = (pdCode) => {
-  wishlistProducts.value = wishlistProducts.value.map((product) => {
-    product.pdColor = product.pdColor.filter(
-      (color) => color.pdCode !== pdCode
-    );
-    return product;
-  });
+// const removeProduct = (pdCode) => {
+//   wishlistProducts.value = wishlistProducts.value.map((product) => {
+//     product.pdColor = product.pdColor.filter(
+//       (color) => color.pdCode !== pdCode
+//     );
+//     return product;
+//   });
 
-  console.log(wishlistProducts.value);
+//   console.log(wishlistProducts.value);
+// };
+
+const removeProduct = async (pdCode) => {
+  const response = await removeWishlistProduct(pdCode);
+
+  console.log("Remove product from wishlist: ", response);
+  fetchWishlistProduct();
 };
 
 onMounted(() => {

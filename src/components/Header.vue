@@ -58,6 +58,7 @@
             <a @click="pushPage('cart')" class="utility-icon">
               <img src="@/assets/images/icon-cart.svg" alt="Cart Icon" />
             </a>
+            <div>{{ basketProductCount }}</div>
           </div>
         </div>
       </div>
@@ -66,12 +67,17 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { useProductStore } from "@/stores/productStore";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const productStore = useProductStore();
 
 const searchBarValue = ref("");
+const basketProductCount = computed(() => {
+  return productStore.basketProductCount;
+});
 
 const clearSearch = () => {
   searchBarValue.value = "";

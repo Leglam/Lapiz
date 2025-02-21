@@ -72,6 +72,7 @@ const cartItems = ref([]);
 const fetchProductInBasket = async () => {
   const response = await getBasketProducts();
   cartItems.value = response;
+  console.log(cartItems.value);
 };
 
 const removeItem = (item) => {

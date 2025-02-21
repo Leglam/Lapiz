@@ -71,6 +71,7 @@ const closePopup = () => {
 };
 
 onBeforeMount(async () => {
+  localStorage.removeItem("token");
   await fetchProducts();
   await changeProductFormat();
 });

@@ -11,11 +11,10 @@
       <div>สินค้าขายดี</div>
       <div class="card-container">
         <CardComponent
-          @click="clickProduct"
-          v-for="product in products"
-          :key="product.pdModel"
-          :product="product"
-          @select-color="selectColor"
+        v-for="product in products"
+        :key="product.pdModel"
+        :product="product"
+        @select-color="selectColor"
         />
       </div>
     </div>
@@ -44,7 +43,7 @@ const selectColor = (colorId) => {
 };
 
 const clickProduct = () => {
-  router.push({ name: "product-detail", params: { id: 100001 } });
+  router.push({ name: "product-detail", params: { id: 100002 } });
 };
 
 onBeforeMount(() => {

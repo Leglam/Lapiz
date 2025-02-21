@@ -1,12 +1,14 @@
 <template>
   <transition name="fade" @before-leave="beforeLeave" @leave="onLeave">
     <div v-if="isVisible" class="product-card">
-      <div class="product-image-container">
+      <div @click="selectProduct" class="product-image-container">
         <img :src="shoe1" :alt="product.name" class="product-image" />
       </div>
       <div class="product-info">
-        <h2 class="product-title">{{ product.pdName }}</h2>
-        <div class="product-details" >
+        <h2 @click="selectProduct" class="product-title">
+          {{ product.pdName }}
+        </h2>
+        <div class="product-details">
           <div
             style="
               display: flex;
@@ -49,21 +51,30 @@
 <script setup>
 import { ref } from "vue";
 import shoe1 from "@/assets/shoes/shoe1.png";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   product: Object,
 });
+
+const router = useRouter();
 
 const currentProduct = ref(null);
 
 const emit = defineEmits(["select-color", "remove-product"]);
 
 const isVisible = ref(true);
-const isRemoving = ref(false);
 
 const selectColor = (colorId) => {
   currentProduct.value = colorId;
   emit("select-color", colorId);
+};
+
+const selectProduct = () => {
+  router.push({
+    name: "product-detail",
+    params: { id: props.product.pdColor[0].pdCode },
+  });
 };
 
 function beforeLeave() {

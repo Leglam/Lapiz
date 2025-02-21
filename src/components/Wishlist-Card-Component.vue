@@ -43,12 +43,14 @@
 <script setup>
 import { ref } from "vue";
 import shoe1 from "@/assets/shoes/shoe1.png";
-import { updateBasketProducts } from "@/api/productService";
+import { updateBasketProducts, getBasketProducts } from "@/api/productService";
+import { useProductStore } from "@/stores/productStore";
 
 const props = defineProps({
   product: Object,
 });
 
+const productStore = useProductStore();
 const currentProduct = ref(null);
 
 const emit = defineEmits(["select-color", "remove-product"]);
@@ -59,7 +61,7 @@ const isRemoving = ref(false);
 const selectColor = (colorId) => {
   currentProduct.value = colorId;
   emit("select-color", colorId);
-}
+};
 
 const removeFromWishlist = () => {
   isRemoving.value = true;
@@ -81,11 +83,21 @@ function onLeave(el, done) {
   done();
 }
 
-const increaseQuantity = async (pdCode) => {
-  await updateBasketProducts(pdCode, 1);
+const fetchProductInBasket = async () => {
+  const response = await getBasketProducts();
+  const totalQuantity = response.reduce(
+    (sum, product) => sum + product.quantity,
+    0
+  );
+  productStore.setBasketProductCount(totalQuantity);
 };
 
-const addProductToBasket = () => {
+const increaseQuantity = async (pdCode) => {
+  await updateBasketProducts(pdCode, 1);
+  await fetchProductInBasket();
+};
+
+const addProductToBasket = async () => {
   if (currentProduct.value) {
     increaseQuantity(currentProduct.value);
     console.log("Add product to basket", currentProduct.value);

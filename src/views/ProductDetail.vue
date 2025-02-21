@@ -155,6 +155,7 @@ import Instragram from "@/assets/images/icon-ig2.svg";
 import Share from "@/assets/images/icon-share.svg";
 import { useRoute } from "vue-router";
 import { useProductStore } from "@/stores/productStore";
+import { getBasketProducts, updateBasketProducts } from "@/api/productService";
 
 const route = useRoute();
 const productStore = useProductStore();
@@ -168,20 +169,7 @@ const product = computed(() =>
 );
 
 // Product Data
-const productTitle = ref("รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas");
 const productImage = ref(Shoes1);
-const price = ref(2250.0);
-const productDescription =
-  ref(`รองเท้าผ้าใบรุ่นไอคอนิกของเรามาพร้อมลุคที่ดูสปอร์ตมากขึ้นด้วยการเพิ่มส่วนหัวรองเท้ายาง ตัวรองเท้าออกแบบในสไตล์มินิมอลที่จดจำได้ทันที มีความเรียบง่ายแต่เข้ากับทุกลุค และให้ความสบายตลอด ทั้งวัน รองเท้ารุ่น Champion ของ Keds ถือเป็นไอเท็มคลาสสิกที่ทุกตู้เสื้อผ้าควรมี โดยเวอร์ชั่นที่อัปเดตนี้ มีรายละเอียดหัวรองเท้ายางสีขาวที่เข้ากับพื้นรองเท้า ทำให้ดูเท่ สบาย ๆ และเป็นระเบียบ เหมาะอย่างยิ่งกับ ทุกสไตล์ของกางเกงยีนส์ และยังเข้ากันได้ดีกับการแต่งตัวที่ดูเป็นทางการมากขึ้น
-
-รองเท้าผ้าใบแบบผูกเชือก 
-ผ้าด้านบนทำจากผ้าแคนวาส 100% คอตตอน 
-หัวรองเท้าเป็นยาง 
-ด้านในรองเท้าบุด้วยผ้าทวิลที่นุ่ม และระบายอากาศได้ดี 
-พื้นรองเท้าชั้นในทำจากโฟม PU รีไซเคิล 10% Softerra™ ที่นุ่มสบาย 
-พื้นรองเท้ายางที่ยืดหยุ่น และน้ำหนักเบา 
-คำแนะนำในการดูแลรักษา: ซักเฉพาะจุด แล้วผึ่งลมให้แห้ง 
-นำเข้า`);
 
 // Size Selection
 const sizeGroups = ref([
@@ -190,9 +178,6 @@ const sizeGroups = ref([
 ]);
 
 const selectedSize = ref(null);
-
-// Color Selection
-const selectedColor = ref(null);
 
 // Favorite icon states
 const isFavorite = ref(false);
@@ -249,13 +234,30 @@ const selectColor = (colorId) => {
   });
 };
 
+const fetchProductInBasket = async () => {
+  const response = await getBasketProducts();
+  const totalQuantity = response.reduce(
+    (sum, product) => sum + product.quantity,
+    0
+  );
+  productStore.setBasketProductCount(totalQuantity);
+};
+
 const setActiveTab = (tabId) => {
   activeTab.value = tabId;
 };
 
-const addToCart = () => {
-  // Implementation for adding to cart
-  console.log("Adding to cart...");
+const addToCart = async () => {
+  const selectedColor = product.value.pdColor.find((color) => color.isSelected);
+
+  if (!selectedColor) {
+    console.warn("No color selected!");
+    return; // Exit function if no color is selected
+  }
+
+  // Use the selected color's pdCode
+  await updateBasketProducts(selectedColor.pdCode, 1);
+  await fetchProductInBasket();
 };
 
 // Update toggle favorite function
@@ -269,12 +271,6 @@ const buyNow = () => {
   // Implementation for buy now
   console.log("Proceeding to checkout...");
 };
-
-onMounted(() => {
-  console.log(productStore.product);
-  console.log(productId.value);
-  console.log(product.value);
-});
 </script>
 
 <style scoped>
