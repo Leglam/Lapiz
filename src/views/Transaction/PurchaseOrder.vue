@@ -104,8 +104,8 @@
 
 <script setup>
 import { ref } from "vue";
-import Shoes1 from "@/assets/images/shoe1.png";
-import Shoes2 from "@/assets/images/shoe1.png";
+import Shoes1 from "@/assets/shoes/shoe1.png";
+import Shoes2 from "@/assets/shoes/shoe1.png";
 
 const orderItems = ref([
   {

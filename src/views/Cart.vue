@@ -57,7 +57,7 @@
       <div class="shipping-note">
         Tax included and shipping calculated at checkout
       </div>
-      <button class="checkout-button">ชำระเงิน</button>
+      <button @click="buyProduct" class="checkout-button">ชำระเงิน</button>
     </div>
   </div>
 </template>
@@ -66,6 +66,7 @@
 import { ref, computed, onMounted } from "vue";
 import Shoes1 from "@/assets/shoes/shoe1.png";
 import {
+  buyBasketProducts,
   getBasketProducts,
   removeBasketProduct,
   updateBasketProducts,
@@ -90,12 +91,6 @@ const fetchProductInBasket = async () => {
     productStore.setBasketProductCount(0);
   }
 };
-
-// const removeItem = (item) => {
-//   cartItems.value = cartItems.value.filter(
-//     (cartItem) => cartItem.pdCode !== item.pdCode
-//   );
-// };
 
 const removeItem = async (item) => {
   const response = await removeBasketProduct(item.pdCode);
@@ -126,6 +121,12 @@ const decreaseQuantity = async (item) => {
   } else {
     removeItem(item);
   }
+};
+
+// Method สำหรับซื้อสินค้า
+const buyProduct = async () => {
+  await buyBasketProducts();
+  fetchProductInBasket();
 };
 
 onMounted(() => {

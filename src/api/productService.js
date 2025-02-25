@@ -58,6 +58,16 @@ export const getBasketProducts = async () => {
   }
 };
 
+export const buyBasketProducts = async () => {
+  try {
+    const response = await apiClient.post("/Basket/buyProduct");
+    return response.data;
+  } catch (error) {
+    console.log("Error buying products in basket:", error);
+    return null;
+  }
+};
+
 export const updateBasketProducts = async (productCode, quantity) => {
   try {
     const response = await apiClient.put("/Basket/updateBasket", {
