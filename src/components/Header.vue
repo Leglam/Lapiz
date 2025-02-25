@@ -57,8 +57,18 @@
             </a>
             <a @click="pushPage('cart')" class="utility-icon">
               <img src="@/assets/images/icon-cart.svg" alt="Cart Icon" />
+              <div
+                v-if="basketProductCount > 0"
+                class="basket-count"
+                :class="{
+                  'more-than-99': basketProductCount > 99,
+                  'more-than-9': basketProductCount > 9
+                }"
+              >
+                {{ basketCountDisplay }}
+              </div>
             </a>
-            <div>{{ basketProductCount }}</div>
+            <!-- <div>{{ basketProductCount }}</div> -->
           </div>
         </div>
       </div>
@@ -86,6 +96,11 @@ const clearSearch = () => {
 const pushPage = (pageName) => {
   router.push({ name: pageName });
 };
+
+const basketCountDisplay = computed(() => {
+  return basketProductCount.value > 99 ? '99+' : basketProductCount.value;
+});
+
 </script>
 
 <style scoped>
@@ -210,6 +225,46 @@ const pushPage = (pageName) => {
   height: 18px;
   margin-top: 10px;
 }
+
+.utility-icon {
+  position: relative;
+}
+
+.basket-count {
+  position: absolute;
+  top: 1px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 1px 2px 1px 2px;
+}
+
+.basket-count.more-than-9 {
+  width: 16px; /* จะให้ยืดตามตัวเลข */
+  padding: 1px 2px 1px 2px;
+  font-size: 12px; /* เพิ่มขนาดตัวอักษรให้พอดี */
+  right: -10px;
+}
+
+.basket-count.more-than-99 {
+  width: auto;
+  padding: 1px 2px 1px 2px;
+  font-size: 10px;
+  right: -10px;
+}
+
+/* .basket-count.more-than-99::after {
+  content: '99+';
+} */
+
 
 @media (max-width: 768px) {
   .main-header {
