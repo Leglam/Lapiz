@@ -23,37 +23,30 @@ import {
   getWishlistProducts,
   removeWishlistProduct,
 } from "@/api/productService";
+import { useProductStore } from "@/stores/productStore";
 
-const fetchedWishlistProducts = ref([]);
+const productStore = useProductStore();
 const wishlistProducts = ref([]);
 
 const fetchWishlistProduct = async () => {
   const response = await getWishlistProducts();
-  fetchedWishlistProducts.value = response;
-  console.log("Wishlist Product: ", fetchedWishlistProducts.value);
+  
+  if (response !== null) {
+    productStore.setWishlistProduct(response);
+  } else {
+    productStore.setWishlistProduct([]);
+    wishlistProducts.value = null;
+    return;
+  }
 
-  wishlistProducts.value = Object.values(
-    fetchedWishlistProducts.value.reduce((acc, product) => {
-      const { pdModel, pdId, pdCode, pdColor, pdStock, pdImg, ...rest } =
-        product;
-
-      if (!acc[pdModel]) {
-        acc[pdModel] = { ...rest, pdModel, pdColor: [] }; // Initialize grouped product
-      }
-
-      acc[pdModel].pdColor.push({
-        pdCode,
-        pdColor,
-        pdStock,
-        pdImg,
-        isSelected: false,
-      });
-
-      return acc;
-    }, {})
+  const wishlistPdModels = new Set(
+    response.map((wishlistItem) => wishlistItem.pdModel)
+  );
+  const fullProducts = productStore.product.filter((product) =>
+    wishlistPdModels.has(product.pdModel)
   );
 
-  console.log("Wishlist Product: ", wishlistProducts.value);
+  wishlistProducts.value = fullProducts ? fullProducts : null;
 };
 
 const selectColor = (colorId) => {
@@ -65,17 +58,6 @@ const selectColor = (colorId) => {
     return product;
   });
 };
-
-// const removeProduct = (pdCode) => {
-//   wishlistProducts.value = wishlistProducts.value.map((product) => {
-//     product.pdColor = product.pdColor.filter(
-//       (color) => color.pdCode !== pdCode
-//     );
-//     return product;
-//   });
-
-//   console.log(wishlistProducts.value);
-// };
 
 const removeProduct = async (pdCode) => {
   const response = await removeWishlistProduct(pdCode);

@@ -22,6 +22,18 @@ export const getWishlistProducts = async () => {
   }
 };
 
+export const addWishlistProducts = async (pdCode) => {
+  try {
+    const response = await apiClient.post(`/Wishlist/addToWishlist/${pdCode}`);
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error adding product to wishlist:", error);
+    return null;
+  }
+};
+
 export const removeWishlistProduct = async (productCode) => {
   try {
     const response = await apiClient.put(
@@ -56,6 +68,21 @@ export const updateBasketProducts = async (productCode, quantity) => {
     return response;
   } catch (error) {
     console.error("Error updating products in basket:", error);
+    return null;
+  }
+};
+
+export const removeBasketProduct = async (productCode) => {
+  try {
+    const response = await apiClient.put(
+      "/Basket/removeFromBasket",
+      productCode
+    );
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error removing product from basket:", error);
     return null;
   }
 };

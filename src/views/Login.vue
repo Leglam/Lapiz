@@ -72,7 +72,7 @@ import { loginUser } from "@/api/userService";
 import { useProductStore } from "@/stores/productStore";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getBasketProducts } from "@/api/productService";
+import { getBasketProducts, getWishlistProducts } from "@/api/productService";
 
 const router = useRouter();
 const productStore = useProductStore();
@@ -101,11 +101,26 @@ const checkPassword = () => {
 
 const fetchProductInBasket = async () => {
   const response = await getBasketProducts();
-  const totalQuantity = response.reduce(
-    (sum, product) => sum + product.quantity,
-    0
-  );
-  productStore.setBasketProductCount(totalQuantity);
+
+  if (response !== null) {
+    const totalQuantity = response.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    productStore.setBasketProductCount(totalQuantity);
+  } else {
+    productStore.setBasketProductCount(0);
+  }
+};
+
+const fetchProductInWishlist = async () => {
+  const response = await getWishlistProducts();
+
+  if (response !== null) {
+    productStore.setWishlistProduct(response);
+  } else {
+    productStore.setWishlistProduct([]);
+  }
 };
 
 const handleSubmit = async () => {
@@ -120,6 +135,7 @@ const handleSubmit = async () => {
     const token = response.data.token;
     localStorage.setItem("token", token);
     await fetchProductInBasket();
+    await fetchProductInWishlist();
     router.push({ name: "men" });
   } else {
     usernameError.value = true;

@@ -10,11 +10,13 @@
           ×
         </button>
       </div>
-      <div class="product-image-container">
+      <div @click="selectProduct" class="product-image-container">
         <img :src="shoe1" :alt="product.name" class="product-image" />
       </div>
       <div class="product-info">
-        <h2 class="product-title">{{ product.pdName }}</h2>
+        <h2 @click="selectProduct" class="product-title">
+          {{ product.pdName }}
+        </h2>
         <div class="product-details">
           <span class="product-price">{{ product.pdPrice }} THB</span>
           <div class="product-colors">
@@ -45,10 +47,13 @@ import { ref } from "vue";
 import shoe1 from "@/assets/shoes/shoe1.png";
 import { updateBasketProducts, getBasketProducts } from "@/api/productService";
 import { useProductStore } from "@/stores/productStore";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   product: Object,
 });
+
+const router = useRouter();
 
 const productStore = useProductStore();
 const currentProduct = ref(null);
@@ -70,7 +75,7 @@ const removeFromWishlist = () => {
       isVisible.value = false;
     } else isRemoving.value = false;
 
-    emit("remove-product", currentProduct.value);
+    emit("remove-product", props.product.pdColor[0].pdCode);
   }, 600); // รอจนกว่า animation จะเสร็จสิ้น (600ms)
 };
 
@@ -85,16 +90,28 @@ function onLeave(el, done) {
 
 const fetchProductInBasket = async () => {
   const response = await getBasketProducts();
-  const totalQuantity = response.reduce(
-    (sum, product) => sum + product.quantity,
-    0
-  );
-  productStore.setBasketProductCount(totalQuantity);
+
+  if (response !== null) {
+    const totalQuantity = response.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    productStore.setBasketProductCount(totalQuantity);
+  } else {
+    productStore.setBasketProductCount(0);
+  }
 };
 
 const increaseQuantity = async (pdCode) => {
   await updateBasketProducts(pdCode, 1);
   await fetchProductInBasket();
+};
+
+const selectProduct = () => {
+  router.push({
+    name: "product-detail",
+    params: { id: props.product.pdColor[0].pdCode },
+  });
 };
 
 const addProductToBasket = async () => {

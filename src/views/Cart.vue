@@ -65,27 +65,53 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import Shoes1 from "@/assets/shoes/shoe1.png";
-import { getBasketProducts, updateBasketProducts } from "@/api/productService";
+import {
+  getBasketProducts,
+  removeBasketProduct,
+  updateBasketProducts,
+} from "@/api/productService";
+import { useProductStore } from "@/stores/productStore";
 
 const cartItems = ref([]);
+const productStore = useProductStore();
 
 const fetchProductInBasket = async () => {
   const response = await getBasketProducts();
   cartItems.value = response;
   console.log(cartItems.value);
+
+  if (response !== null) {
+    const totalQuantity = response.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    productStore.setBasketProductCount(totalQuantity);
+  } else {
+    productStore.setBasketProductCount(0);
+  }
 };
 
-const removeItem = (item) => {
-  cartItems.value = cartItems.value.filter(
-    (cartItem) => cartItem.pdCode !== item.pdCode
-  );
+// const removeItem = (item) => {
+//   cartItems.value = cartItems.value.filter(
+//     (cartItem) => cartItem.pdCode !== item.pdCode
+//   );
+// };
+
+const removeItem = async (item) => {
+  const response = await removeBasketProduct(item.pdCode);
+  console.log(response);
+  fetchProductInBasket();
 };
 
 const totalPrice = computed(() => {
-  return cartItems.value.reduce(
-    (sum, item) => sum + item.pdPrice * item.quantity,
-    0
-  );
+  if (cartItems.value !== null) {
+    return cartItems.value.reduce(
+      (sum, item) => sum + item.pdPrice * item.quantity,
+      0
+    );
+  } else {
+    return 0;
+  }
 });
 
 const increaseQuantity = async (item) => {

@@ -42,10 +42,6 @@ const selectColor = (colorId) => {
   });
 };
 
-const clickProduct = () => {
-  router.push({ name: "product-detail", params: { id: 100002 } });
-};
-
 onBeforeMount(() => {
   products.value = productStore.product;
   console.log(products.value);

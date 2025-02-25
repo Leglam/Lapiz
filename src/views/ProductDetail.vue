@@ -142,7 +142,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeMount } from "vue";
 import Shoes1 from "@/assets/shoes/shoe1.png";
 
 import Fav from "@/assets/images/icon-fav-gray.svg";
@@ -153,11 +153,18 @@ import Facebook from "@/assets/images/icon-facebook2.svg";
 import Messenger from "@/assets/images/icon-messenger2.svg";
 import Instragram from "@/assets/images/icon-ig2.svg";
 import Share from "@/assets/images/icon-share.svg";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "@/stores/productStore";
-import { getBasketProducts, updateBasketProducts } from "@/api/productService";
+import {
+  getBasketProducts,
+  updateBasketProducts,
+  getWishlistProducts,
+  addWishlistProducts,
+  removeWishlistProduct,
+} from "@/api/productService";
 
 const route = useRoute();
+const router = useRouter();
 const productStore = useProductStore();
 
 const productId = computed(() => route.params.id);
@@ -167,6 +174,8 @@ const product = computed(() =>
     p.pdColor.some((color) => color.pdCode === productId.value)
   )
 );
+
+const wishlistProduct = computed(() => productStore.wishlistProduct);
 
 // Product Data
 const productImage = ref(Shoes1);
@@ -234,13 +243,28 @@ const selectColor = (colorId) => {
   });
 };
 
+const fetchProductInWishlist = async () => {
+  const response = await getWishlistProducts();
+
+  if (response !== null) {
+    productStore.setWishlistProduct(response);
+  } else {
+    productStore.setWishlistProduct([]);
+  }
+};
+
 const fetchProductInBasket = async () => {
   const response = await getBasketProducts();
-  const totalQuantity = response.reduce(
-    (sum, product) => sum + product.quantity,
-    0
-  );
-  productStore.setBasketProductCount(totalQuantity);
+
+  if (response !== null) {
+    const totalQuantity = response.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    productStore.setBasketProductCount(totalQuantity);
+  } else {
+    productStore.setBasketProductCount(0);
+  }
 };
 
 const setActiveTab = (tabId) => {
@@ -260,17 +284,53 @@ const addToCart = async () => {
   await fetchProductInBasket();
 };
 
-// Update toggle favorite function
-const toggleFavorite = () => {
-  isFavorite.value = !isFavorite.value;
-  // Optional: Add your favorite API call or state management here
-  console.log("Toggling favorite:", isFavorite.value);
+const removeProductFromWishlist = async (pdCode) => {
+  try {
+    await removeWishlistProduct(pdCode);
+    isFavorite.value = false;
+  } catch (error) {
+    console.log("Remove wishlist error");
+  }
 };
 
-const buyNow = () => {
-  // Implementation for buy now
-  console.log("Proceeding to checkout...");
+const addProductToWishlist = async (pdCode) => {
+  try {
+    await addWishlistProducts(pdCode);
+    isFavorite.value = true;
+  } catch (error) {
+    console.log("Add wishlist error");
+  }
 };
+
+const toggleFavorite = async () => {
+  if (isFavorite.value) {
+    await removeProductFromWishlist(product.value.pdColor[0].pdCode);
+  } else {
+    await addProductToWishlist(product.value.pdColor[0].pdCode);
+  }
+
+  await fetchProductInWishlist();
+
+  console.log(isFavorite.value);
+};
+
+const buyNow = async () => {
+  await addToCart();
+  router.push({ name: 'cart' })
+};
+
+onBeforeMount(() => {
+  const wishlistPdCodes = new Set(
+    wishlistProduct.value.map((wishlist) => wishlist.pdCode)
+  );
+
+  isFavorite.value = product.value.pdColor.some((color) =>
+    wishlistPdCodes.has(color.pdCode)
+  );
+
+  console.log(wishlistPdCodes);
+  console.log(isFavorite.value);
+});
 </script>
 
 <style scoped>
