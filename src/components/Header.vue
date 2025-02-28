@@ -2,11 +2,13 @@
   <header>
     <!-- Main header -->
     <div class="main-header">
-      <img
+      <a @click="pushPage('homepage')" class="logo">
+        <img
         src="@/assets/images/img_header_logo.png"
         alt="Logo Image"
         class="logo"
-      />
+        />
+      </a>
 
       <div class="header-content">
         <!-- Navigation menu -->
@@ -52,10 +54,18 @@
               <span>|</span>
               <span class="inactive">EN</span>
             </div>
-            <a @click="pushPage('wishlist')" class="utility-icon">
-              <img src="@/assets/images/icon-fav.svg" alt="Favorites Icon" />
+
+            <a @click="pushPage('wishlist')" class="favorite-button"
+              @mouseenter="isHovered = true"
+              @mouseleave="isHovered = false"
+              :class="{
+                'favorite-button--hovered': isHovered
+              }"
+            >
+              <img :src="currentFavoriteIcon" alt="Favorite" class="favorite-icon" />
             </a>
-            <a @click="pushPage('cart')" class="utility-icon">
+
+            <a @click="pushPage('cart')" class="cart-icon">
               <img src="@/assets/images/icon-cart.svg" alt="Cart Icon" />
               <div
                 v-if="basketProductCount > 0"
@@ -80,6 +90,8 @@
 import { useProductStore } from "@/stores/productStore";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import FavBlack from '@/assets/images/icon-fav-black.svg';
+import FavRed from '@/assets/images/icon-fav-red.svg';
 
 const router = useRouter();
 const productStore = useProductStore();
@@ -100,6 +112,23 @@ const pushPage = (pageName) => {
 const basketCountDisplay = computed(() => {
   return basketProductCount.value > 99 ? '99+' : basketProductCount.value;
 });
+
+// Favorite icon states
+const isHovered = ref(false)
+
+// Define icon paths
+const favoriteIcons = {
+  default: FavBlack,
+  hover: FavRed,
+}
+
+// Compute current icon based on state
+const currentFavoriteIcon = computed(() => {
+  if (isHovered.value) {
+    return favoriteIcons.hover
+  }
+  return favoriteIcons.default
+})
 
 </script>
 
@@ -130,6 +159,10 @@ const basketCountDisplay = computed(() => {
   object-fit: contain;
 }
 
+.logo:hover {
+  transition: transform 0.3s ease;
+}
+
 .header-content {
   display: flex;
   width: 86%;
@@ -155,6 +188,13 @@ const basketCountDisplay = computed(() => {
   text-decoration: none;
 }
 
+.nav-link:hover{
+  font-size: 18px;
+  font-weight: 700;
+  color: #B72121;
+  text-decoration: none;
+}
+
 .utilities-section {
   display: flex;
   width: 40%;
@@ -177,9 +217,17 @@ const basketCountDisplay = computed(() => {
   border: 1px solid #000000;
   background-color: #ffffff;
   font-size: 18px;
-  /* font-weight: 700; */
   letter-spacing: 0.6px;
   color: #b6b6b6;
+}
+
+.search-container:hover {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
+  transition: opacity 0.5s ease, box-shadow 0.3s ease;
 }
 
 .search-icon,
@@ -221,13 +269,49 @@ const basketCountDisplay = computed(() => {
   color: #707070;
 }
 
-.utility-icon img {
-  height: 18px;
-  margin-top: 10px;
+.favorite-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transform-origin: center;
+  margin-top: 2px;
 }
 
-.utility-icon {
+.favorite-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.cart-icon img {
+  height: 18px;
+  margin-top: 10px;
+  transition: transform 0.3s ease;
+}
+
+.logo,
+.cart-icon ,
+.favorite-icon {
   position: relative;
+}
+
+.logo:hover {
+  transform: scale(1.03);
+}
+
+.favorite-button:hover
+.favorite-icon,
+.cart-icon:hover {
+  transform: scale(1.2);
+}
+
+.favorite-button:active .favorite-icon,
+.cart-icon:active {
+  transform: scale(0.95);
 }
 
 .basket-count {
@@ -260,11 +344,6 @@ const basketCountDisplay = computed(() => {
   font-size: 10px;
   right: -10px;
 }
-
-/* .basket-count.more-than-99::after {
-  content: '99+';
-} */
-
 
 @media (max-width: 768px) {
   .main-header {
