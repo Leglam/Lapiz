@@ -1,82 +1,117 @@
 <template>
-    <div class="shoe-categories">
-        <div class="shoe-slider">
-            <button class="slider-button prev" @click="slidePrev">
-            <span class="arrow">‹</span>
-            </button>
-    
-            <div class="slider-container">
-                <div class="slider-track" :style="sliderStyle">
-                    <!-- Loop over recommended products and display Card -->
-                    <div 
-                    v-for="(product, index) in displayItems"
-                    :key="index"
-                    class="category-item"
-                    @click="selectCategory(product)"
-                    >
-                    <CardComponent :product="product" />
-                    </div>
-                </div>
-            </div>
-    
-            <button class="slider-button next" @click="slideNext">
-            <span class="arrow">›</span>
-            </button>
+  <div class="shoe-categories">
+    <div class="shoe-slider">
+      <button class="slider-button prev" @click="slidePrev">
+        <span class="arrow">‹</span>
+      </button>
+
+      <div class="slider-container">
+        <div class="slider-track" :style="sliderStyle">
+          <!-- Loop over recommended products and display Card -->
+          <div
+            v-for="(product, index) in displayItems"
+            :key="index"
+            class="category-item"
+            @click="selectCategory(product)"
+          >
+            <CardComponent :product="product" />
+          </div>
         </div>
+      </div>
+
+      <button class="slider-button next" @click="slideNext">
+        <span class="arrow">›</span>
+      </button>
     </div>
+  </div>
 </template>
-  
-  <script setup>
-  import { ref, computed } from 'vue';
-  import CardComponent from './Card-Component.vue';
-  
-  const currentSlide = ref(0);
-  const displayCount = 5
-  const itemGap = 40; // เพิ่มระยะห่างเป็น 40px
-  const itemWidth = 177 + itemGap; // 177px (ขนาดของ item) + 40px (gap)
-  
-  const recommendedProducts = [
-    { pdName: 'รองเท้าผ้าใบ', pdPrice: 1000, pdColor: [{ pdColor: 'red', isSelected: false }], pdCode: 1 },
-    { pdName: 'รองเท้าแตะ', pdPrice: 800, pdColor: [{ pdColor: 'blue', isSelected: false }], pdCode: 2 },
-    { pdName: 'รองเท้ากีฬา', pdPrice: 1500, pdColor: [{ pdColor: 'green', isSelected: false }], pdCode: 3 },
-    { pdName: 'รองเท้าส้นสูง', pdPrice: 2000, pdColor: [{ pdColor: 'black', isSelected: false }], pdCode: 4 },
-    { pdName: 'รองเท้าส้นเตี้ย', pdPrice: 1200, pdColor: [{ pdColor: 'yellow', isSelected: false }], pdCode: 5 },
-    { pdName: 'รองเท้าบูท', pdPrice: 1800, pdColor: [{ pdColor: 'purple', isSelected: false }], pdCode: 6 },
-    { pdName: 'รองเท้าหนัง', pdPrice: 2200, pdColor: [{ pdColor: 'white', isSelected: false }], pdCode: 7 },
-  ];
-  
-  const displayItems = computed(() => {
-    const items = [...recommendedProducts];
-    const duplicateCount = displayCount - 1;
-    return [...items, ...items.slice(0, duplicateCount)];
-  });
-  
-  const sliderStyle = computed(() => ({
-    transform: `translateX(-${currentSlide.value * itemWidth}px)`,
-    transition: 'transform 0.3s ease-in-out',
-  }));
-  
-  const slidePrev = () => {
-    if (currentSlide.value <= 0) {
-      currentSlide.value = recommendedProducts.length - displayCount;
-    } else {
-      currentSlide.value--;
-    }
-  };
-  
-  const slideNext = () => {
-    if (currentSlide.value >= recommendedProducts.length - displayCount) {
-      currentSlide.value = 0;
-    } else {
-      currentSlide.value++;
-    }
-  };
-  
-  const selectCategory = (product) => {
-    console.log('Selected product:', product.pdName);
-  };
-  </script>
-  
+
+<script setup>
+import { ref, computed } from "vue";
+import CardComponent from "./Card-Component.vue";
+
+const currentSlide = ref(0);
+const displayCount = 5;
+const itemGap = 150; // เพิ่มระยะห่างเป็น 40px
+const itemWidth = 16.46 * (window.innerWidth / 100) + itemGap; // 177px (ขนาดของ item) + 40px (gap)
+
+const recommendedProducts = [
+  {
+    pdName: "รองเท้าผ้าใบ",
+    pdPrice: 1000,
+    pdColor: [{ pdColor: "red", isSelected: false }],
+    pdCode: 1,
+  },
+  {
+    pdName: "รองเท้าแตะ",
+    pdPrice: 800,
+    pdColor: [{ pdColor: "blue", isSelected: false }],
+    pdCode: 2,
+  },
+  {
+    pdName: "รองเท้ากีฬา",
+    pdPrice: 1500,
+    pdColor: [{ pdColor: "green", isSelected: false }],
+    pdCode: 3,
+  },
+  {
+    pdName: "รองเท้าส้นสูง",
+    pdPrice: 2000,
+    pdColor: [{ pdColor: "black", isSelected: false }],
+    pdCode: 4,
+  },
+  {
+    pdName: "รองเท้าส้นเตี้ย",
+    pdPrice: 1200,
+    pdColor: [{ pdColor: "yellow", isSelected: false }],
+    pdCode: 5,
+  },
+  {
+    pdName: "รองเท้าบูท",
+    pdPrice: 1800,
+    pdColor: [{ pdColor: "purple", isSelected: false }],
+    pdCode: 6,
+  },
+  {
+    pdName: "รองเท้าหนัง",
+    pdPrice: 2200,
+    pdColor: [{ pdColor: "white", isSelected: false }],
+    pdCode: 7,
+  },
+];
+
+const displayItems = computed(() => {
+  const items = [...recommendedProducts];
+  const duplicateCount = displayCount - 1;
+  return [...items, ...items.slice(0, duplicateCount)];
+});
+
+const sliderStyle = computed(() => ({
+  transform: `translateX(-${currentSlide.value * itemWidth}px)`,
+  transition: "transform 0.3s ease-in-out",
+}));
+
+const slidePrev = () => {
+  if (currentSlide.value <= 0) {
+    currentSlide.value = recommendedProducts.length - displayCount;
+  } else {
+    currentSlide.value--;
+  }
+};
+
+const slideNext = () => {
+  if (currentSlide.value >= recommendedProducts.length - displayCount) {
+    currentSlide.value = 0;
+  } else {
+    currentSlide.value++;
+  }
+};
+
+const selectCategory = (product) => {
+  console.log("Selected product:", product.pdName);
+};
+</script>
+
 <style scoped>
 @import "@/styles/remove-button-icon.scss";
 
@@ -88,7 +123,6 @@
 }
 
 .shoe-slider {
-  
   position: relative;
   display: flex;
   align-items: center;
@@ -97,7 +131,7 @@
 }
 
 /* ความกว้าง container - ปรับระยะห่างเป็น 40px */
-.slider-container { 
+.slider-container {
   width: calc((216px + 40px) * 5 - 40px); /* 5 items + 4 gaps (gap 40px) */
   overflow: hidden;
 }
@@ -111,7 +145,6 @@
 }
 
 .category-item {
-  width: 177px;
   flex: 0 0 177px;
   text-align: center;
   cursor: pointer;
@@ -164,7 +197,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   border-radius: 0 0 8px 8px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -227,10 +260,9 @@
   .slider-container {
     width: calc((177px + 40px) * 2 - 40px); /* แสดง 2 items */
   }
-  
+
   .shoe-slider {
     gap: 10px;
   }
 }
 </style>
-  

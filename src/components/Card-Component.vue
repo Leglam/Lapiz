@@ -91,6 +91,7 @@ function onLeave(el, done) {
 @import "@/styles/remove-button-icon.scss";
 
 .product-card {
+  width: 16.46vw;
   background-color: #fff;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
@@ -154,15 +155,15 @@ function onLeave(el, done) {
 .product-header {
   display: flex;
   justify-content: flex-end;
-  padding: 8px;
+  padding: 0.5vw;
 }
 
 .product-image-container {
-  padding: 0 20px;
+  padding: 0 1.38vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px;
+  height: 13.88vw;
 }
 
 .product-image {
@@ -172,13 +173,13 @@ function onLeave(el, done) {
 }
 
 .product-info {
-  padding: 16px;
+  padding: 1.11vw;
   flex-grow: 1;
 }
 
 .product-title {
-  font-size: 14px;
-  margin: 0 0 12px 0;
+  font-size: 0.97vw;
+  margin: 0 0 0.83vw 0;
   color: var(--text-title-shoes-color);
   text-decoration: none;
   line-height: 1.4;
@@ -193,21 +194,21 @@ function onLeave(el, done) {
 }
 
 .product-price {
-  font-size: 14px;
+  font-size: 0.97vw;
   font-weight: bold;
 }
 
 .product-colors {
   display: flex;
-  gap: 8px;
+  gap: 0.55vw;
 }
 
 .color-option {
-  width: 16px;
-  height: 16px;
+  width: 1.11vw;
+  height: 1.11vw;
   border-radius: 50%;
-  padding: 1.5px;
-  border: 1px solid transparent;
+  padding: 0.1vw;
+  border: 0.06vw solid transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -219,20 +220,20 @@ function onLeave(el, done) {
 }
 
 .color-inner {
-  width: 13px;
-  height: 13px;
+  width: 0.9vw;
+  height: 0.9vw;
   border-radius: 50%;
-  border: 1px solid #e5e5e5;
+  border: 0.06vw solid #e5e5e5;
 }
 
 .add-to-cart-button {
   background-color: #002fff;
   color: white;
   border: none;
-  padding: 12px;
+  padding: 0.84vw;
   width: 100%;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.97vw;
   transition: background-color 0.2s;
 }
 

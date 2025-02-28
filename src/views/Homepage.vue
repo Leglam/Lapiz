@@ -366,7 +366,7 @@ onBeforeUnmount(() => {
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 20px 40px;
+  padding: 20px 2.77vw;
 }
 
 .product-list::-webkit-scrollbar {
