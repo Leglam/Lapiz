@@ -139,20 +139,41 @@
   </div>
 </template>
 
-<script>
-import PaymentSection from '@/components/PaymentSection.vue'
+<script setup>
+  import { ref } from 'vue'
+  import PaymentSection from '@/components/PaymentSection.vue'
+  import {
+  buyBasketProducts,
+  getBasketProducts,
+  removeBasketProduct,
+  updateBasketProducts,
+  } from "@/api/productService";
+  import { useProductStore } from "@/stores/productStore";
 
-export default {
-  name: 'TransactionPage',
-  components: {
-    PaymentSection
-  },
-  data() {
-    return {
-      paymentMethod: 'card'
+  // State
+  const paymentMethod = ref('card')
+
+  const fetchProductInBasket = async () => {
+    const response = await getBasketProducts();
+    cartItems.value = response;
+    console.log(cartItems.value);
+
+    if (response !== null) {
+      const totalQuantity = response.reduce(
+        (sum, product) => sum + product.quantity,
+        0
+      );
+      productStore.setBasketProductCount(totalQuantity);
+    } else {
+      productStore.setBasketProductCount(0);
     }
-  }
-}
+  };
+
+  // Method สำหรับซื้อสินค้า
+  const buyProduct = async () => {
+    await buyBasketProducts();
+    fetchProductInBasket();
+  };
 </script>
 
 <style scoped>
