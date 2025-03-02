@@ -186,6 +186,7 @@ const currentFavoriteIcon = computed(() => {
   font-weight: 700;
   color: #000000;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .nav-link:hover{
@@ -193,6 +194,7 @@ const currentFavoriteIcon = computed(() => {
   font-weight: 700;
   color: #B72121;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .utilities-section {
