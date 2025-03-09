@@ -132,20 +132,22 @@ const selectCategory = (product) => {
 
 /* ความกว้าง container - ปรับระยะห่างเป็น 40px */
 .slider-container {
-  width: calc((177px + 40px) * 5 - 40px); /* 5 items + 4 gaps (gap 40px) */
+  /* width: calc((177px + 40px) * 5 - 40px); 5 items + 4 gaps (gap 40px) */
+  width: 100%;
   overflow: hidden;
 }
 
 /* แถบเลื่อน - ปรับ gap เป็น 40px */
 .slider-track {
-  min-width: 100%;
   display: flex;
   gap: 1.66vw;
   transition: transform 0.3s ease-in-out;
+  min-width: 100%;
 }
 
 .category-item {
   flex: 0 0 177px;
+  /* max-width: calc(100% / 5 - 2vw); */
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease;
