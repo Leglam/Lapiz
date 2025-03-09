@@ -140,7 +140,7 @@ const selectCategory = (product) => {
 .slider-track {
   min-width: 100%;
   display: flex;
-  gap: 40px;
+  gap: 1.66vw;
   transition: transform 0.3s ease-in-out;
 }
 
