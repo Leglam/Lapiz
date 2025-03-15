@@ -1,5 +1,10 @@
 @use "./variables";
 
+html {
+  overflow-y: scroll;
+  scrollbar-width: initial;
+}
+
 body {
   margin: 0;
   padding: 0;

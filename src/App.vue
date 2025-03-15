@@ -3,7 +3,7 @@
     <TopHeader />
     <Header />
 
-    <div>
+    <div class="router-container">
       <RouterView />
     </div>
     <Footer :style="route.name === 'contact' ? 'margin-top: 8.7%;' : ''" />
@@ -77,4 +77,8 @@ onBeforeMount(async () => {
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.router-container {
+  min-height: calc(100vh - 330px - 73px - 39px);
+}
+</style>
