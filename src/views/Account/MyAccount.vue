@@ -4,9 +4,7 @@
       <!-- Header Section -->
       <div class="page-header">
         <h1 class="page-title">บัญชีของฉัน</h1>
-        <button class="logout-button" @click="handleLogout">
-          ออกจากระบบ
-        </button>
+        <button class="logout-button" @click="handleLogout">ออกจากระบบ</button>
       </div>
 
       <!-- Profile Information Section -->
@@ -18,17 +16,17 @@
               <div class="name-group">
                 <div class="form-field">
                   <label>ชื่อจริง</label>
-                  <input 
-                    v-model="userProfile.firstName" 
-                    type="text" 
+                  <input
+                    v-model="userProfile.firstName"
+                    type="text"
                     placeholder="ธนาทร"
                   />
                 </div>
                 <div class="form-field">
                   <label>นามสกุล</label>
-                  <input 
-                    v-model="userProfile.lastName" 
-                    type="text" 
+                  <input
+                    v-model="userProfile.lastName"
+                    type="text"
                     placeholder="เกริกกวิน"
                   />
                 </div>
@@ -37,17 +35,17 @@
               <div class="contact-group">
                 <div class="form-field">
                   <label>ชื่อผู้ใช้</label>
-                  <input 
-                    v-model="userProfile.username" 
-                    type="text" 
+                  <input
+                    v-model="userProfile.username"
+                    type="text"
                     placeholder="Thanathorn"
                   />
                 </div>
                 <div class="form-field">
                   <label>อีเมล</label>
-                  <input 
-                    v-model="userProfile.email" 
-                    type="text" 
+                  <input
+                    v-model="userProfile.email"
+                    type="text"
                     placeholder="naithanathorn46@gmail.com"
                   />
                 </div>
@@ -56,27 +54,24 @@
               <div class="phone-birthday-group">
                 <div class="form-field">
                   <label>หมายเลขโทรศัพท์</label>
-                  <input 
-                    v-model="userProfile.phone" 
-                    type="text" 
+                  <input
+                    v-model="userProfile.phone"
+                    type="text"
                     placeholder="080-123-4567"
                   />
                 </div>
                 <div class="form-field">
                   <label>วันเกิด</label>
-                  <input 
-                    v-model="userProfile.birthDate" 
-                    type="date"
-                  />
+                  <input v-model="userProfile.birthDate" type="date" />
                 </div>
               </div>
 
               <div class="password-section">
                 <div class="form-field">
                   <label>รหัสผ่าน</label>
-                  <input 
-                    v-model="userProfile.password" 
-                    type="password" 
+                  <input
+                    v-model="userProfile.password"
+                    type="password"
                     placeholder="**************************"
                   />
                 </div>
@@ -96,15 +91,15 @@
             <div class="address-section">
               <div class="form-field">
                 <label>ที่อยู่จัดส่ง</label>
-                <textarea 
-                  v-model="userProfile.shippingAddress" 
+                <textarea
+                  v-model="userProfile.shippingAddress"
                   placeholder="15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400"
                 ></textarea>
               </div>
               <div class="form-field">
                 <label>ที่อยู่สำหรับเรียกเก็บเงิน</label>
-                <textarea 
-                  v-model="userProfile.billingAddress" 
+                <textarea
+                  v-model="userProfile.billingAddress"
                   placeholder="15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400"
                 ></textarea>
               </div>
@@ -145,7 +140,10 @@
                 <td>{{ order.fulfillmentStatus }}</td>
                 <td>{{ order.total }}</td>
                 <td>
-                  <button class="view-order-btn" @click="viewOrderDetails(order.id)">
+                  <button
+                    class="view-order-btn"
+                    @click="viewOrderDetails(order.id)"
+                  >
                     ดูคำสั่งซื้อ
                   </button>
                 </td>
@@ -163,49 +161,50 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive } from "vue";
 
 const userProfile = reactive({
-  firstName: 'ธนาทร',
-  lastName: 'เกริกกวิน',
-  username: 'Thanathorn',
-  email: 'naithanathorn46@gmail.com',
-  password: '**************************',
-  shippingAddress: '15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400',
-  billingAddress: '15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400'
-})
+  firstName: "ธนาทร",
+  lastName: "เกริกกวิน",
+  username: "Thanathorn",
+  email: "naithanathorn46@gmail.com",
+  password: "**************************",
+  shippingAddress:
+    "15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400",
+  billingAddress: "15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400",
+});
 
 const orders = reactive([
   {
-    id: 'KE1600008502',
-    date: '28/08/24',
-    paymentStatus: 'รอดำเนินการ',
-    fulfillmentStatus: 'ไม่สำเร็จ',
-    total: '4,300.00 THB'
-  }
-])
+    id: "KE1600008502",
+    date: "28/08/24",
+    paymentStatus: "รอดำเนินการ",
+    fulfillmentStatus: "ไม่สำเร็จ",
+    total: "4,300.00 THB",
+  },
+]);
 
 const handleLogout = () => {
-  console.log('Logging out...')
+  console.log("Logging out...");
   // Implement actual logout logic
-}
+};
 
 const viewOrderDetails = (orderId) => {
-  console.log(`Viewing details for order ${orderId}`)
+  console.log(`Viewing details for order ${orderId}`);
   // Implement order details viewing logic
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .my-account-container {
   font-family: Arial, sans-serif;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   padding: 20px;
 
   .account-page {
     max-width: 1200px;
     margin: 0 auto;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 30px;
@@ -258,14 +257,15 @@ const viewOrderDetails = (orderId) => {
               color: #000;
             }
 
-            input, textarea {
+            input,
+            textarea {
               width: 100%;
               padding: 10px;
               border: 1px solid #000;
               border-radius: 4px;
-              background-color: #F9F9F9;
+              background-color: #f9f9f9;
               transition: border-color 0.3s ease;
-              box-sizing: border-box;  // Ensure padding and border are included in the width
+              box-sizing: border-box; // Ensure padding and border are included in the width
 
               &:focus {
                 outline: none;
@@ -287,7 +287,9 @@ const viewOrderDetails = (orderId) => {
         }
       }
 
-      .name-group, .contact-group, .phone-birthday-group {
+      .name-group,
+      .contact-group,
+      .phone-birthday-group {
         display: flex;
         gap: 20px;
 
@@ -300,18 +302,20 @@ const viewOrderDetails = (orderId) => {
         display: flex;
         justify-content: flex-start;
         margin-top: 22px;
-        gap: 10px
+        gap: 10px;
       }
 
-      .edit-link, .change-password-link, .edit-address-link {
-        color: #002FFF;
+      .edit-link,
+      .change-password-link,
+      .edit-address-link {
+        color: #002fff;
         text-decoration: none;
         font-weight: 600;
         cursor: pointer;
         transition: color 0.3s ease;
 
         &:hover {
-          color: #4869FF;
+          color: #4869ff;
           text-decoration: underline;
         }
       }
@@ -338,7 +342,7 @@ const viewOrderDetails = (orderId) => {
 
         .order-divider {
           height: 1px;
-          background-color: #4A4A4A;
+          background-color: #4a4a4a;
         }
       }
 
@@ -352,9 +356,9 @@ const viewOrderDetails = (orderId) => {
           th {
             padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid #E0E0E0;
+            border-bottom: 1px solid #e0e0e0;
             font-weight: 600;
-            color: #4A4A4A;
+            color: #4a4a4a;
           }
         }
 
@@ -363,12 +367,12 @@ const viewOrderDetails = (orderId) => {
             transition: background-color 0.3s ease;
 
             &:hover {
-              background-color: darken(#fff, 3%);
+              background-color: color-mix(srgb, #ffffff 97%, #000000 3%);
             }
 
             td {
               padding: 12px 15px;
-              border-bottom: 1px solid #E0E0E0;
+              border-bottom: 1px solid #e0e0e0;
             }
           }
         }
@@ -394,7 +398,7 @@ const viewOrderDetails = (orderId) => {
         text-align: right;
 
         .order-count {
-          color: #4A4A4A;
+          color: #4a4a4a;
         }
       }
     }

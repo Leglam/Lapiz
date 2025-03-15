@@ -4,7 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/homepage",
+      path: "/",
       name: "homepage",
       component: () => import("../views/Homepage.vue"),
     },
@@ -76,7 +76,7 @@ const router = createRouter({
     {
       path: "/cash",
       name: "cash",
-      component: () => import("../views/Transaction/PurchaseOrder.vue")
+      component: () => import("../views/Transaction/PurchaseOrder.vue"),
     },
   ],
   scrollBehavior() {

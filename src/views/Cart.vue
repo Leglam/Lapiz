@@ -2,62 +2,71 @@
   <div class="cart-container">
     <h1 class="cart-title">ตะกร้าสินค้า</h1>
 
-    <div class="cart-header">
-      <div class="cart-header-item product-col">สินค้า</div>
-      <div class="cart-header-item quantity-col">จำนวน</div>
-      <div class="cart-header-item total-col">ยอดรวม</div>
-    </div>
-
-    <div class="cart-items">
-      <transition-group name="fade" tag="div" class="cart-items">
-        <div
-          v-for="(item, index) in cartItems"
-          :key="item.pdId"
-          class="cart-item"
-        >
-          <div class="product-info">
-            <div class="product-image">
-              <img :src="Shoes1" :alt="item.pdName" />
+    <div v-if="cartItems.length > 0">
+      <div class="cart-header">
+        <div class="cart-header-item product-col">สินค้า</div>
+        <div class="cart-header-item quantity-col">จำนวน</div>
+        <div class="cart-header-item total-col">ยอดรวม</div>
+      </div>
+      <div class="cart-items">
+        <transition-group name="fade" tag="div" class="cart-items">
+          <div
+            v-for="(item, index) in cartItems"
+            :key="item.pdId"
+            class="cart-item"
+          >
+            <div class="product-info">
+              <div class="product-image">
+                <img :src="Shoes1" :alt="item.pdName" />
+              </div>
+              <div class="product-details">
+                <div class="product-name">{{ item.pdName }}</div>
+                <div class="product-variant">{{ item.pdColor }} / 9</div>
+                <div class="product-price">
+                  {{ item.pdPrice.toFixed(2) }} THB
+                </div>
+              </div>
             </div>
-            <div class="product-details">
-              <div class="product-name">{{ item.pdName }}</div>
-              <div class="product-variant">{{ item.pdColor }} / 9</div>
-              <div class="product-price">{{ item.pdPrice.toFixed(2) }} THB</div>
+
+            <div class="quantity-control">
+              <div class="quantity-wrapper">
+                <button
+                  @click="decreaseQuantity(item)"
+                  class="quantity-btn-left"
+                >
+                  −
+                </button>
+                <span class="quantity-display">{{ item.quantity }}</span>
+                <button
+                  @click="increaseQuantity(item)"
+                  class="quantity-btn-right"
+                >
+                  +
+                </button>
+              </div>
+              <div class="quantity-label" @click="removeItem(item)">ลบ</div>
+            </div>
+
+            <div class="item-total">
+              {{ (item.pdPrice * item.quantity).toFixed(2) }} THB
             </div>
           </div>
+        </transition-group>
+      </div>
 
-          <div class="quantity-control">
-            <div class="quantity-wrapper">
-              <button @click="decreaseQuantity(item)" class="quantity-btn-left">
-                −
-              </button>
-              <span class="quantity-display">{{ item.quantity }}</span>
-              <button
-                @click="increaseQuantity(item)"
-                class="quantity-btn-right"
-              >
-                +
-              </button>
-            </div>
-            <div class="quantity-label" @click="removeItem(item)">ลบ</div>
-          </div>
-
-          <div class="item-total">
-            {{ (item.pdPrice * item.quantity).toFixed(2) }} THB
-          </div>
+      <div class="cart-summary">
+        <div class="total-section">
+          <div class="total-label">ยอดรวม:</div>
+          <div class="total-amount">{{ totalPrice.toFixed(2) }} THB</div>
         </div>
-      </transition-group>
+        <div class="shipping-note">
+          Tax included and shipping calculated at checkout
+        </div>
+        <button @click="buyProduct" class="checkout-button">ชำระเงิน</button>
+      </div>
     </div>
-
-    <div class="cart-summary">
-      <div class="total-section">
-        <div class="total-label">ยอดรวม:</div>
-        <div class="total-amount">{{ totalPrice.toFixed(2) }} THB</div>
-      </div>
-      <div class="shipping-note">
-        Tax included and shipping calculated at checkout
-      </div>
-      <button @click="buyProduct" class="checkout-button">ชำระเงิน</button>
+    <div v-else>
+      เขียนที่นี่
     </div>
   </div>
 </template>
@@ -88,6 +97,7 @@ const fetchProductInBasket = async () => {
     );
     productStore.setBasketProductCount(totalQuantity);
   } else {
+    cartItems.value = [];
     productStore.setBasketProductCount(0);
   }
 };

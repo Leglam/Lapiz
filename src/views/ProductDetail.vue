@@ -377,6 +377,10 @@ onBeforeMount(() => {
   box-sizing: border-box;
 }
 
+.container {
+  width: 100%;
+}
+
 .back-navigation {
   display: flex;
   align-items: center;
