@@ -84,10 +84,8 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'CookiePolicy',
-}
+<script setup>
+  // const name: 'CookiePolicy';
 </script>
 
 <style scoped>

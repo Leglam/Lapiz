@@ -39,8 +39,29 @@
               align-items: center;
             "
           >
-            <input type="checkbox" name="" id="" />
-            <input type="checkbox" name="" id="" />
+
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                name="" id=""
+              />
+              <span>เปรียบเทียบ</span>
+            </label>
+
+            <a @click="pushPage('wishlist')" class="favorite-button"
+              @mouseenter="isHovered = true"
+              @mouseleave="isHovered = false"
+              :class="{
+                'favorite-button--hovered': isHovered
+              }"
+            >
+              <img 
+                :src="computedFavoriteIcon"
+                alt="Favorite" 
+                class="favorite-icon" 
+                @click="toggleFavorite"
+              />
+            </a>
           </div>
         </div>
       </div>
@@ -49,27 +70,36 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import shoe1 from "@/assets/shoes/shoe1.png";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import shoe1 from "@/assets/shoes/shoe1.png";
+import FavGray from '@/assets/images/FavGray.svg';
+import FavRed from '@/assets/images/icon-fav-red.svg';
 
 const props = defineProps({
   product: Object,
 });
 
 const router = useRouter();
-
 const currentProduct = ref(null);
-
 const emit = defineEmits(["select-color", "remove-product"]);
-
 const isVisible = ref(true);
 
+// สถานะของหัวใจ
+const isFavorite = ref(false);
+
+// ฟังก์ชันสำหรับการคลิกหัวใจ
+const toggleFavorite = () => {
+  isFavorite.value = !isFavorite.value;
+};
+
+// ฟังก์ชันเลือกสี
 const selectColor = (colorId) => {
   currentProduct.value = colorId;
   emit("select-color", colorId);
 };
 
+// ฟังก์ชันเลือกสินค้าและไปที่หน้ารายละเอียด
 const selectProduct = () => {
   router.push({
     name: "product-detail",
@@ -77,15 +107,35 @@ const selectProduct = () => {
   });
 };
 
-function beforeLeave() {
-  // สามารถทำอะไรเพิ่มเติมก่อนที่ card จะหายไปได้
+// ฟังก์ชันก่อนที่คอมโพเนนต์จะหายไป
+const beforeLeave = () => {
+  // สามารถทำการเตรียมตัวก่อนที่การ์ดจะหายไป
+};
+
+// ฟังก์ชันการหายไปของการ์ด
+const onLeave = (el, done) => {
+  done();
+};
+
+// Favorite icon states
+const isHovered = ref(false);
+
+// Define icon paths
+const favoriteIcons = {
+  default: FavGray,
+  hover: FavRed,
 }
 
-function onLeave(el, done) {
-  // เมื่อ card หายไปแล้ว จะทำการลบหรือทำงานเพิ่มเติม
-  done();
-}
+// Compute current icon based on isFavorite and hover state
+const computedFavoriteIcon = computed(() => {
+  if (isFavorite.value || isHovered.value) {
+    return FavRed;  // ใช้ FavRed เมื่อหัวใจถูกคลิกหรือ hovered
+  }
+  return FavGray;
+});
 </script>
+
+
 
 <style scoped>
 @import "@/styles/remove-button-icon.scss";
@@ -183,6 +233,7 @@ function onLeave(el, done) {
   color: var(--text-title-shoes-color);
   text-decoration: none;
   line-height: 1.4;
+  text-align: left;
 }
 
 .product-details {
@@ -240,4 +291,50 @@ function onLeave(el, done) {
 .add-to-cart-button:hover {
   background-color: #0052a3;
 }
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4vw;
+  cursor: pointer;
+  font-size: 0.92vw;
+  color: #000000;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 1.1vw;
+  height: 1.1vw;
+  cursor: pointer;
+  margin: 0vw;
+}
+
+.favorite-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transform-origin: center;
+  margin-top: 0.1vw;
+}
+
+.favorite-icon {
+  width: 1.3vw;
+  height: 1.1vw;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.favorite-button:hover
+.favorite-icon{
+  transform: scale(1.2);
+}
+
+.favorite-button:active 
+.favorite-icon{
+  transform: scale(0.95);
+}
+
 </style>

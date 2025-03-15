@@ -1,18 +1,23 @@
 <template>
-  <Popup
+  <!-- <Popup
     v-if="errorStore.errorMessage"
     :message="errorStore.errorMessage"
     @close="closePopup"
-  />
+  /> -->
   <TopHeader />
   <Header />
+  <!-- <Men/> -->
+  <!-- <Homepage/> -->
   <RouterView />
+   <!-- <EditAddress/> -->
+  <!-- <MyAccount/> -->
   <Footer :style="route.name === 'contact' ? 'margin-top: 8.7%;' : ''" />
 </template>
 
 <script setup>
-import Popup from "./components/Popup.vue";
+// import Popup from "./components/Popup.vue";
 import TopHeader from "./components/TopHeader.vue";
+import Homepage from "./views/Homepage.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 import { RouterView, useRoute, useRouter } from "vue-router";
@@ -20,6 +25,8 @@ import { getAllProducts } from "@/api/productService";
 import { onBeforeMount, ref } from "vue";
 import { useProductStore } from "./stores/productStore";
 import { useErrorStore } from "./stores/errorStore";
+import MyAccount from "./views/Account/MyAccount.vue";
+import Men from "./views/Menu/Men.vue";
 
 const router = useRouter();
 const route = useRoute();

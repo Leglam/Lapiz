@@ -1,0 +1,546 @@
+<template>
+  <div class="filter-container">
+    <div class="filter-content">
+      <!-- Size Section -->
+      <div class="filter-section">
+        <h2 class="filter-title">ขนาด (UK)</h2>
+        <div class="size-selector">
+          <label v-for="size in sizes" :key="size" class="size-chip">
+            <input
+              type="checkbox"
+              :value="size"
+              v-model="selectedSizes"
+              class="size-input"
+            />
+            <span class="size-label">{{ size }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <!-- Color Section -->
+      <div class="filter-section">
+        <h3 class="filter-title">สี</h3>
+        <div class="color-grid">
+          <div v-for="(color, index) in colors" :key="index" class="color-item">
+            <input
+              type="checkbox"
+              :value="color"
+              v-model="selectedColors"
+              class="color-input"
+            />
+            <div class="color-button">
+              <div 
+                :style="{ backgroundColor: color }" 
+                class="color-box"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <!-- Price Range Section (ที่ปรับปรุง) -->
+      <div class="filter-section">
+        <h4 class="filter-title">ราคา</h4>
+        <div class="price-range">
+          <div class="price-input-group">
+            <div class="price-input-container">
+              <input 
+                type="text" 
+                v-model="minPriceInput"
+                @blur="handleMinPriceInput"
+                class="price-text-input"
+                placeholder="0"
+              />
+              <span class="price-currency">THB</span>
+            </div>
+            <span class="price-separator">-</span>
+            <div class="price-input-container">
+              <input 
+                type="text" 
+                v-model="maxPriceInput"
+                @blur="handleMaxPriceInput"
+                class="price-text-input"
+                :placeholder="maxPriceLimit"
+              />
+              <span class="price-currency">THB</span>
+            </div>
+          </div>
+          
+          <div class="range-slider-container">
+            <input 
+              type="range" 
+              :min="0" 
+              :max="maxPriceLimit" 
+              :step="100"
+              v-model.number="minPrice"
+              class="price-slider min-price-slider"
+              @input="updateMinPriceInput"
+            />
+            <input 
+              type="range" 
+              :min="0" 
+              :max="maxPriceLimit" 
+              :step="100"
+              v-model.number="maxPrice"
+              class="price-slider max-price-slider"
+              @input="updateMaxPriceInput"
+            />
+            <div class="range-slider-track"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <!-- Gender Section -->
+      <div class="filter-section">
+        <h5 class="filter-title">เพศ</h5>
+        <div class="gender-options">
+          <label class="checkbox-label">
+            <input type="checkbox" v-model="selectedGenders" value="male" />
+            <span>ผู้ชาย</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" v-model="selectedGenders" value="female" />
+            <span>ผู้หญิง</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <!-- Brand Section -->
+      <div class="filter-section">
+        <h6 class="filter-title">แบรนด์</h6>
+        <div class="brand-options">
+          <label v-for="brand in brands" :key="brand" class="checkbox-label">
+            <input
+              type="checkbox"
+              :value="brand"
+              v-model="selectedBrands"
+            />
+            <span>{{ brand }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, watch } from 'vue'
+
+const sizes = ['3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12']
+const colors = [
+  '#D3D3D3', '#B87070', '#FFFFFF', '#0000FF',
+  '#8B4513', '#008B8B', '#006400', '#9ACD32',
+  '#0000CD', '#FFD700', '#FF69B4', 'rainbow',
+  '#FFE4C4', '#800080', '#90EE90', '#E6E6FA',
+  '#A9A9A9', '#FF0000', '#DDA0DD', '#FFFF00'
+]
+const brands = ['Keds', 'Converse', 'Nike', 'Adidas', 'Reebok', 'Lacoste', 'Puma']
+
+const selectedSizes = ref([])
+const selectedColors = ref([])
+const selectedGenders = ref([])
+const selectedBrands = ref([])
+
+// ตั้งค่าราคาขั้นต่ำและสูงสุด
+const maxPriceLimit = 6000
+const minPrice = ref(0)
+const maxPrice = ref(maxPriceLimit)
+const minPriceInput = ref('0')
+const maxPriceInput = ref(maxPriceLimit.toString())
+
+// ฟังก์ชันอัพเดทค่าที่แสดงในช่องข้อความ
+const updateMinPriceInput = () => {
+  minPriceInput.value = minPrice.value.toString()
+  validatePriceRange()
+}
+
+const updateMaxPriceInput = () => {
+  maxPriceInput.value = maxPrice.value.toString()
+  validatePriceRange()
+}
+
+// ฟังก์ชันจัดการค่าที่ผู้ใช้กรอกในช่องข้อความ
+const handleMinPriceInput = () => {
+  let value = parseInt(minPriceInput.value.replace(/[^0-9]/g, ''))
+  
+  if (isNaN(value)) {
+    value = 0
+  }
+  
+  // ตรวจสอบขอบเขต
+  if (value < 0) value = 0
+  if (value > maxPriceLimit) value = maxPriceLimit
+  
+  minPrice.value = value
+  minPriceInput.value = value.toString()
+  validatePriceRange()
+}
+
+const handleMaxPriceInput = () => {
+  let value = parseInt(maxPriceInput.value.replace(/[^0-9]/g, ''))
+  
+  if (isNaN(value)) {
+    value = maxPriceLimit
+  }
+  
+  // ตรวจสอบขอบเขต
+  if (value < 0) value = 0
+  if (value > maxPriceLimit) value = maxPriceLimit
+  
+  maxPrice.value = value
+  maxPriceInput.value = value.toString()
+  validatePriceRange()
+}
+
+// ฟังก์ชันตรวจสอบช่วงราคา
+const validatePriceRange = () => {
+  if (parseInt(minPrice.value) > parseInt(maxPrice.value)) {
+    minPrice.value = maxPrice.value
+    minPriceInput.value = maxPrice.value.toString()
+  }
+}
+
+// ส่งค่าช่วงราคาที่เปลี่ยนแปลงออกไป
+watch([minPrice, maxPrice], () => {
+  emit('update:priceRange', {
+    min: minPrice.value,
+    max: maxPrice.value
+  })
+})
+
+// Watchers อื่นๆ
+watch(selectedSizes, (newVal) => {
+  emit('update:sizes', newVal)
+})
+
+watch(selectedColors, (newVal) => {
+  emit('update:colors', newVal)
+})
+
+watch(selectedGenders, (newVal) => {
+  emit('update:genders', newVal)
+})
+
+watch(selectedBrands, (newVal) => {
+  emit('update:brands', newVal)
+})
+
+const emit = defineEmits([
+  'update:sizes',
+  'update:colors',
+  'update:genders',
+  'update:brands',
+  'update:priceRange'
+])
+</script>
+
+<style setup>
+.filter-container {
+  width: 100%;
+  max-width: 300px;
+  background: white;
+  padding: 20px;
+}
+
+.filter-container {
+  width: 290px;
+  height: calc(100vh - 69px);
+  background: white;
+  padding: 20px;
+  overflow-y: auto; /* เลื่อนดูเนื้อหา */
+  box-sizing: border-box;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.filter-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filter-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.filter-divider {
+  height: 1px;
+  background-color: #E0E0E0;
+  margin: 8px 0;
+}
+
+/* Size Selector Styles */
+/* Ensure 5 items per row */
+.size-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.size-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 30px;
+  background: white;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.size-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.size-label {
+  font-size: 14px;
+  color: #7b7171;
+  transition: color 0.2s ease;
+}
+
+/* Hover state - black border and text */
+.size-chip:hover {
+  border-color: #000;
+}
+
+.size-chip:hover .size-label {
+  color: #000;
+}
+
+/* Checked state - red border and text */
+.size-input:checked + .size-label {
+  color: #000000;
+  font-weight: 500;
+}
+
+.size-input:checked ~ .size-chip {
+  border-color: #FF0000;
+}
+
+/* Active/Selected state */
+.size-chip:has(.size-input:checked) {
+  border-color: #FF0000;
+}
+
+.size-input:active + .size-label,
+.size-input:focus + .size-label {
+  color: #000000;
+}
+
+/* Color Grid Styles */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 12px;
+  row-gap: 10px;
+}
+
+.color-item {
+  position: relative;
+}
+
+.color-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  width: 47px;
+  height: 47px;
+  z-index: 2;
+}
+
+.color-button {
+  width: 47px;
+  height: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  cursor: pointer;
+  background: white;
+}
+
+.color-box {
+  width: 37px;
+  height: 37px;
+  border-radius: 2px;
+}
+
+.color-input:checked + .color-button {
+  border: 2px solid #333;
+}
+
+/* Price Range Styles */
+.price-range {
+  width: 100%;
+}
+
+.price-values {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.price-value {
+  font-size: 14px;
+  color: #666;
+}
+
+.price-slider {
+  -webkit-appearance: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: transparent;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.price-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #333;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.price-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #333;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.price-input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.price-input-container {
+  position: relative;
+  width: 45%;
+}
+
+.price-text-input {
+  width: 100%;
+  padding: 8px 40px 8px 8px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+.price-text-input:focus {
+  outline: none;
+  border-color: #333;
+}
+
+.price-currency {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 14px;
+}
+
+.price-separator {
+  font-size: 16px;
+  color: #666;
+}
+
+/* ระยะห่างตัวเลื่อนราคา */
+.range-slider-container { 
+  position: relative;
+  height: 30px;
+  margin-top: 10px;
+}
+
+.range-slider-track {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #da0f0f;
+  z-index: 1;
+}
+
+/* เพิ่มความชัดเจนให้กับ thumb ของแต่ละ slider */
+/* .min-price-slider::-webkit-slider-thumb {
+  z-index: 3;
+}
+
+.max-price-slider::-webkit-slider-thumb {
+  z-index: 4;
+} */
+
+/* เพิ่มความชัดเจนให้กับ thumb ของแต่ละ slider (Firefox) */
+/* .min-price-slider::-moz-range-thumb {
+  z-index: 3;
+}
+
+.max-price-slider::-moz-range-thumb {
+  z-index: 4;
+} */
+
+/* Checkbox Styles */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  margin: 4px 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #666;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.gender-options,
+.brand-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+</style>
