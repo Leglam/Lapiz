@@ -7,13 +7,19 @@
 
   <div class="wrapper margin-top margin-left margin-right" style="gap: 20px">
     <div class="filter-container">
-      <ProductFilter/>
+      <ProductFilter />
     </div>
     <div class="product-wrapper">
       <div class="dropdown" @click="toggleDropdown">
         <div class="dropdown-header">
           <span>สินค้าขายดี</span>
-          <span class="arrow" :class="{ 'arrow-up': isDropdownOpen, 'arrow-down': !isDropdownOpen }"></span>
+          <span
+            class="arrow"
+            :class="{
+              'arrow-up': isDropdownOpen,
+              'arrow-down': !isDropdownOpen,
+            }"
+          ></span>
         </div>
         <div v-if="isDropdownOpen" class="dropdown-content">
           <p>Kuy option</p>
@@ -23,10 +29,10 @@
       </div>
       <div class="card-container">
         <CardComponent
-        v-for="product in products"
-        :key="product.pdModel"
-        :product="product"
-        @select-color="selectColor"
+          v-for="product in products"
+          :key="product.pdModel"
+          :product="product"
+          @select-color="selectColor"
         />
       </div>
     </div>
@@ -149,7 +155,8 @@ onBeforeMount(() => {
 
     .card-container {
       margin-top: 30px;
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 2vw;
     }
   }
