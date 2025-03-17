@@ -66,12 +66,19 @@
       </div>
     </div>
     <div v-else>
-      เขียนที่นี่
+      <div class="Shopping-Container">
+        <img src='@/assets/images/shopping-bags.svg' alt="Shopping Image" class="Shopping-Img">
+        <span class="Empty-Cart-text">ถึงเค้าจะไม่ว่าง แต่เราว่างอยู่นะ!</span>
+        <button class="shopping-button" @click="pushPage('homepage')">
+          <span class="Empty-Cart-text">ช้อปปิ้งกันเลย</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
 import { ref, computed, onMounted } from "vue";
 import Shoes1 from "@/assets/shoes/shoe1.png";
 import {
@@ -82,8 +89,13 @@ import {
 } from "@/api/productService";
 import { useProductStore } from "@/stores/productStore";
 
+const router = useRouter();
 const cartItems = ref([]);
 const productStore = useProductStore();
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const fetchProductInBasket = async () => {
   const response = await getBasketProducts();
@@ -145,6 +157,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@import "@/styles/shopping-button.scss";
+
 @font-face {
   font-family: "Mitr";
   src: url("@/assets/fonts/Mitr-Regular.ttf") format("truetype");
@@ -384,6 +398,25 @@ onMounted(() => {
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: background-color 0.5s ease, color 0.5s ease, padding 0.5s ease;
+}
+
+.Shopping-Container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.9444vw;
+  padding-top: 2.0833vw;
+}
+
+.Shopping-Img {
+  width: 10vw;
+  height: 10vw;
+  align-self: center;
+}
+
+.Empty-Cart-text{
+  text-align: center;
+  font-size: 1.1vw ;
 }
 
 @media (max-width: 768px) {

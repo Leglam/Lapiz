@@ -1,0 +1,30 @@
+.shopping-button {
+    align-self: center;
+    width: 14vw;
+    background-color: var(--shopping-button-color);
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 1.1vw;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+  
+.shopping-button:hover {
+    background-color: var(--shopping-button-hover-color);
+}
+  
+@media (max-width: 768px) {
+    .edit-info-content {
+        flex-direction: column;
+    }
+  
+    .edit-info-separator.vertical {
+      display: none;
+    }
+  
+    .edit-info-separator {
+      margin: 1rem 0;
+    }
+}
