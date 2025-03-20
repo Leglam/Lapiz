@@ -16,61 +16,42 @@
               <div class="name-group">
                 <div class="form-field">
                   <label>ชื่อจริง</label>
-                  <input
-                    v-model="userProfile.firstName"
-                    type="text"
-                    placeholder="ธนาทร"
-                  />
+                  <div class="infobox-display">
+                    {{ userProfile.firstName }}
+                  </div>
                 </div>
                 <div class="form-field">
                   <label>นามสกุล</label>
-                  <input
-                    v-model="userProfile.lastName"
-                    type="text"
-                    placeholder="เกริกกวิน"
-                  />
+                  <div class="infobox-display">
+                    {{ userProfile.lastName }}  
+                  </div>
                 </div>
               </div>
 
               <div class="contact-group">
                 <div class="form-field">
                   <label>ชื่อผู้ใช้</label>
-                  <!-- <input v-model="username" type="text" disabled /> -->
-                  <div
-                    style="
-                      flex: 1;
-                      min-height: 18px;
-                      padding: 10px;
-                      border: 1px solid black;
-                      border-radius: 4px;
-                      font-size: 16px;
-                    "
-                  >
+                  <div class="infobox-display">
                     {{ userName }}
                   </div>
                 </div>
                 <div class="form-field">
                   <label>อีเมล</label>
-                  <input
-                    v-model="userProfile.email"
-                    type="text"
-                    placeholder="naithanathorn46@gmail.com"
-                  />
+                  <div class="infobox-display">
+                    {{ userProfile.email }}
+                  </div>
                 </div>
               </div>
 
               <div class="phone-birthday-group">
                 <div class="form-field">
                   <label>หมายเลขโทรศัพท์</label>
-                  <input
-                    v-model="userProfile.phone"
-                    type="text"
-                    placeholder="080-123-4567"
-                  />
+                  <div class="infobox-display">
+                    {{ userProfile.phone }}
+                  </div>
                 </div>
                 <div class="form-field">
                   <label>วันเกิด</label>
-                  <!-- <input v-model="userProfile.birthDate" type="date" /> -->
                   <date />
                 </div>
               </div>
@@ -78,18 +59,16 @@
               <div class="password-section">
                 <div class="form-field">
                   <label>รหัสผ่าน</label>
-                  <input
-                    v-model="userProfile.password"
-                    type="password"
-                    placeholder="**************************"
-                  />
+                  <div class="infobox-display">
+                    {{ userProfile.password }}
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Add Edit and Change Password links in the same line -->
             <div class="edit-links">
-              <a href="#" class="edit-link">แก้ไข</a>
+              <a @click="pushPage('edit-info')" class="edit-link">แก้ไข</a>
               <span>|</span>
               <a href="#" class="change-password-link">เปลี่ยนรหัสผ่าน</a>
             </div>
@@ -171,10 +150,17 @@
 
 <script setup>
 import date from "@/date.vue";
+import { useRouter } from "vue-router";
 import { computed, reactive } from "vue";
 import { useLoginStore } from "@/stores/loginStore";
 
+
 const loginStore = useLoginStore();
+const router = useRouter();
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const userName = computed(() => {
   return loginStore.username;
@@ -264,6 +250,15 @@ const viewOrderDetails = (orderId) => {
         .column {
           flex: 1;
 
+          .infobox-display {
+            flex: 1;
+            min-height: 18px;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: 4px;
+            font-size: 16px;
+          }
+
           .form-field {
             margin-bottom: 15px;
 
@@ -285,12 +280,8 @@ const viewOrderDetails = (orderId) => {
               transition: border-color 0.3s ease;
               box-sizing: border-box;
               font-size: 16px;
-
-              &:focus {
-                outline: none;
-                border-color: #000;
-              }
             }
+            
 
             textarea {
               height: 120px;
