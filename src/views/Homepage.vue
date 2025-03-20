@@ -2,27 +2,33 @@
   <div class="homepage">
     <!-- Main Banner - 1440x560 -->
     <section class="main-banner">
-      <div class="banner-slides" :style="{ transform: `translateX(-${currentSlide * 100}%)` }">
-        <div v-for="(banner, index) in mainBanners" :key="index" class="banner-slide">
-          <img :src="banner.image" :alt="banner.alt" class="banner-image">
+      <div
+        class="banner-slides"
+        :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
+      >
+        <div
+          v-for="(banner, index) in mainBanners"
+          :key="index"
+          class="banner-slide"
+        >
+          <img :src="banner.image" :alt="banner.alt" class="banner-image" />
         </div>
       </div>
       <div class="banner-bullets">
-        <button 
-          v-for="(banner, index) in mainBanners" 
+        <button
+          v-for="(banner, index) in mainBanners"
           :key="index"
           :class="['bullet', { active: currentSlide === index }]"
           @click="goToSlide(index)"
         ></button>
       </div>
     </section>
-
     <!-- Category Menu -->
     <section class="categories">
       <div class="container">
         <div class="category-slider">
           <div class="category-list" ref="categoryList">
-            <Type_Slider/>
+            <Type_Slider />
           </div>
         </div>
       </div>
@@ -30,7 +36,11 @@
 
     <!-- Promo Banner - 1440x404 -->
     <section class="promo-banner">
-      <img src='@/assets/images/img_banner2.svg' alt="Promotion" class="promo-image">
+      <img
+        src="@/assets/images/img_banner2.svg"
+        alt="Promotion"
+        class="promo-image"
+      />
     </section>
 
     <!-- Recommended Products -->
@@ -39,7 +49,7 @@
         <h2 class="section-title">สินค้าแนะนำ</h2>
         <div class="product-slider">
           <div class="product-list" ref="recommendedList">
-            <Recommend_Slide/>
+            <Recommend_Slide />
           </div>
         </div>
       </div>
@@ -47,7 +57,11 @@
 
     <!-- Season Banner - 1440x582 -->
     <section class="season-banner">
-      <img src='@/assets/images/img_banner3.svg' alt="New Season" class="season-image">
+      <img
+        src="@/assets/images/img_banner3.svg"
+        alt="New Season"
+        class="season-image"
+      />
     </section>
 
     <!-- New Products -->
@@ -57,8 +71,8 @@
         <div class="product-slider">
           <!-- <button class="nav-arrow prev" @click="scrollProducts('new', 'left')">&lt;</button> -->
           <div class="product-list" ref="newList">
-            <NewItem_Slide/>
-            
+            <NewItem_Slide />
+
             <!-- <div v-for="(product, index) in newProducts" :key="index" class="product-card">
               <img :src="product.image" :alt="product.name" class="product-image">
               <div class="product-info">
@@ -83,82 +97,82 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import Type_Slider from '@/components/Type_Slider.vue';
-import Recommend_Slide from '@/components/Recommend_Slide.vue';
-import NewItem_Slide from '@/components/NewItem_Slide.vue';
-import Banner from '@/assets/images/img_banner.svg';
-import Banner1 from '@/assets/images/img_bannerPoke.svg'
-import Banner2 from '@/assets/images/img_banner3.svg'
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import Type_Slider from "@/components/Type_Slider.vue";
+import Recommend_Slide from "@/components/Recommend_Slide.vue";
+import NewItem_Slide from "@/components/NewItem_Slide.vue";
+import Banner from "@/assets/images/img_banner.svg";
+import Banner1 from "@/assets/images/img_bannerPoke.svg";
+import Banner2 from "@/assets/images/img_banner3.svg";
 
 const currentSlide = ref(0);
 const autoScrollInterval = ref(null);
 const scrollAmount = 800; // Adjust scroll amount for products and categories
 
 const mainBanners = [
-  { image: Banner, alt: 'Banner 1' },
-  { image: Banner1, alt: 'Banner 2' },
-  { image: Banner2, alt: 'Banner 3' }
+  { image: Banner, alt: "Banner 1" },
+  { image: Banner1, alt: "Banner 2" },
+  { image: Banner2, alt: "Banner 3" },
 ];
 
 const recommendedProducts = [
   {
-    name: 'รองเท้าผ้าใบรุ่นพรีเมี่ยมสุด (รุ่น T-Grip Soft)',
-    price: '3,990.00',
-    image: '/products/tgrip-soft.jpg',
-    colors: ['#000080', '#FFFFFF', '#808080']
+    name: "รองเท้าผ้าใบรุ่นพรีเมี่ยมสุด (รุ่น T-Grip Soft)",
+    price: "3,990.00",
+    image: "/products/tgrip-soft.jpg",
+    colors: ["#000080", "#FFFFFF", "#808080"],
   },
   // Add more recommended products...
 ];
 
 const newProducts = [
   {
-    name: 'รองเท้าผ้าใบ Champion Toe Cap Canvas',
-    price: '2,250.00',
-    image: '/products/champion-toe.jpg',
-    colors: ['#000080', '#FFFFFF', '#808080']
+    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
+    price: "2,250.00",
+    image: "/products/champion-toe.jpg",
+    colors: ["#000080", "#FFFFFF", "#808080"],
   },
 
   {
-    name: 'รองเท้าผ้าใบ Champion Toe Cap Canvas',
-    price: '2,250.00',
-    image: '/products/champion-toe.jpg',
-    colors: ['#000080', '#FFFFFF', '#808080']
+    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
+    price: "2,250.00",
+    image: "/products/champion-toe.jpg",
+    colors: ["#000080", "#FFFFFF", "#808080"],
   },
 
   {
-    name: 'รองเท้าผ้าใบ Champion Toe Cap Canvas',
-    price: '2,250.00',
-    image: '/products/champion-toe.jpg',
-    colors: ['#000080', '#FFFFFF', '#808080']
+    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
+    price: "2,250.00",
+    image: "/products/champion-toe.jpg",
+    colors: ["#000080", "#FFFFFF", "#808080"],
   },
 
   {
-    name: 'รองเท้าผ้าใบ Champion Toe Cap Canvas',
-    price: '2,250.00',
-    image: '/products/champion-toe.jpg',
-    colors: ['#000080', '#FFFFFF', '#808080']
+    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
+    price: "2,250.00",
+    image: "/products/champion-toe.jpg",
+    colors: ["#000080", "#FFFFFF", "#808080"],
   },
 
   {
-    name: 'รองเท้าผ้าใบ Champion Toe Cap Canvas',
-    price: '2,250.00',
-    image: '/products/champion-toe.jpg',
-    colors: ['#000080', '#FFFFFF', '#808080']
+    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
+    price: "2,250.00",
+    image: "/products/champion-toe.jpg",
+    colors: ["#000080", "#FFFFFF", "#808080"],
   },
 
   {
-    name: 'รองเท้าผ้าใบ Champion Toe Cap Canvas',
-    price: '2,250.00',
-    image: '/products/champion-toe.jpg',
-    colors: ['#000080', '#FFFFFF', '#808080']
+    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
+    price: "2,250.00",
+    image: "/products/champion-toe.jpg",
+    colors: ["#000080", "#FFFFFF", "#808080"],
   },
 
   {
-    name: 'รองเท้าผ้าใบ Champion Toe Cap Canvas',
-    price: '2,250.00',
-    image: '/products/champion-toe.jpg',
-    colors: ['#000080', '#FFFFFF', '#808080']
+    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
+    price: "2,250.00",
+    image: "/products/champion-toe.jpg",
+    colors: ["#000080", "#FFFFFF", "#808080"],
   },
   // Add more new products...
 ];
@@ -186,8 +200,8 @@ const resetAutoScroll = () => {
 };
 
 const scrollCategories = (direction) => {
-  const container = document.querySelector('.category-list');
-  if (direction === 'left') {
+  const container = document.querySelector(".category-list");
+  if (direction === "left") {
     container.scrollLeft -= scrollAmount;
   } else {
     container.scrollLeft += scrollAmount;
@@ -196,7 +210,7 @@ const scrollCategories = (direction) => {
 
 const scrollProducts = (section, direction) => {
   const container = document.querySelector(`.${section}-list`);
-  if (direction === 'left') {
+  if (direction === "left") {
     container.scrollLeft -= scrollAmount;
   } else {
     container.scrollLeft += scrollAmount;
@@ -213,7 +227,6 @@ onBeforeUnmount(() => {
   }
 });
 </script>
-
 
 <style scoped>
 .homepage {
@@ -325,7 +338,6 @@ onBeforeUnmount(() => {
   border-radius: 10px;
   padding: 0px 20px 0px 20px;
   margin: 0px auto;
-  
 }
 
 .promo-banner {
@@ -448,11 +460,11 @@ onBeforeUnmount(() => {
   .main-banner {
     height: 39vw; /* Maintain aspect ratio */
   }
-  
+
   .promo-banner {
     height: 28vw;
   }
-  
+
   .season-banner {
     height: 40.4vw;
   }
@@ -463,11 +475,11 @@ onBeforeUnmount(() => {
     width: 80px;
     height: 80px;
   }
-  
+
   .product-card {
     flex: 0 0 220px;
   }
-  
+
   .product-image {
     height: 220px;
   }
