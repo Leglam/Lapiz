@@ -291,7 +291,7 @@ const addToCart = async () => {
   }
 
   // Use the selected color's pdCode
-  await updateBasketProducts(selectedColor.value.pdCode, 1);
+  await updateBasketProducts(selectedColor.value, 1);
   await fetchProductInBasket();
 };
 

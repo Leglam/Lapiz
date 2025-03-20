@@ -23,7 +23,13 @@
                 <div class="product-name">{{ item.pdName }}</div>
                 <div class="product-variant">{{ item.pdColor }} / 9</div>
                 <div class="product-price">
-                  {{ item.pdPrice.toFixed(2) }} THB
+                  {{
+                    item.pdPrice.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  }}
+                  THB
                 </div>
               </div>
             </div>
@@ -48,7 +54,10 @@
             </div>
 
             <div class="item-total">
-              {{ (item.pdPrice * item.quantity).toFixed(2) }} THB
+              {{ (item.pdPrice * item.quantity).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }) }} THB
             </div>
           </div>
         </transition-group>
@@ -57,7 +66,15 @@
       <div class="cart-summary">
         <div class="total-section">
           <div class="total-label">ยอดรวม:</div>
-          <div class="total-amount">{{ totalPrice.toFixed(2) }} THB</div>
+          <div class="total-amount">
+            {{
+              totalPrice.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
+            }}
+            THB
+          </div>
         </div>
         <div class="shipping-note">
           Tax included and shipping calculated at checkout

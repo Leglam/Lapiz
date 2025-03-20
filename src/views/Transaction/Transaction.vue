@@ -87,7 +87,9 @@
             />
             <span class="back-icon">กลับไปที่ตะกร้าสินค้า</span>
           </a>
-          <button class="submit-button">สั่งซื้อเสร็จสมบูรณ์</button>
+          <button @click="buyProduct" class="submit-button">
+            สั่งซื้อเสร็จสมบูรณ์
+          </button>
         </div>
 
         <!-- Footer -->
@@ -108,12 +110,24 @@
         <!-- Product List -->
         <div class="product-list">
           <div v-for="item in cartItems" :key="item.pdId" class="product-item">
-            <img src="/src/assets/shoes/shoe1.png" :alt="item.pdName" class="product-image" />
+            <img
+              src="/src/assets/shoes/shoe1.png"
+              :alt="item.pdName"
+              class="product-image"
+            />
             <div class="product-details">
               <p class="product-name">{{ item.pdName }}</p>
               <p class="product-variant">{{ item.pdColor }} / 9</p>
             </div>
-            <p class="product-price">{{ item.pdPrice.toFixed(2) }} THB</p>
+            <p class="product-price">
+              {{
+                item.pdPrice.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              }}
+              THB
+            </p>
           </div>
 
           <!-- Discount Code -->
@@ -129,8 +143,16 @@
           <!-- Summary -->
           <div class="summary-subtotal">
             <div class="subtotal-row">
-              <p>ยอดรวม ({{ cartItems.length }} รายการ)</p>
-              <p>{{ totalPrice }} THB</p>
+              <p>ยอดรวม ({{ totalQuantity }} รายการ)</p>
+              <p>
+                {{
+                  totalPrice.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                }}
+                THB
+              </p>
             </div>
             <div class="subtotal-row">
               <p>การจัดส่ง</p>
@@ -144,7 +166,15 @@
               <h3>ยอดรวม</h3>
               <p class="tax-note">Including 0.00 THB in taxes</p>
             </div>
-            <p class="total-amount">{{ totalPrice }} THB</p>
+            <p class="total-amount">
+              {{
+                totalPrice.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              }}
+              THB
+            </p>
           </div>
         </div>
       </div>
@@ -157,7 +187,9 @@ import { ref, computed } from "vue";
 import PaymentSection from "@/components/PaymentSection.vue";
 import { buyBasketProducts } from "@/api/productService";
 import { useProductStore } from "@/stores/productStore";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const productStore = useProductStore();
 
 const cartItems = computed(() => {
@@ -175,11 +207,30 @@ const totalPrice = computed(() => {
   }
 });
 
-const paymentMethod = ref("card");
+const totalQuantity = computed(() => {
+  if (cartItems.value !== null) {
+    return cartItems.value.reduce((count, item) => count + item.quantity, 0);
+  }
+});
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
+
+const paymentMethod = ref("promptpay");
 
 const buyProduct = async () => {
-  await buyBasketProducts();
-  fetchProductInBasket();
+  try {
+    await buyBasketProducts();
+    productStore.setBasketProductCount(0);
+    paymentMethod.value === "credit"
+      ? pushPage("credit")
+      : paymentMethod.value === "cash"
+      ? pushPage("cash")
+      : pushPage("promptpay");
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>
 

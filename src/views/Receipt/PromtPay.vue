@@ -1,15 +1,19 @@
 <template>
   <div class="order-page">
     <div class="order-logo">
-      <img src='@/assets/images/img_header_logo.png' alt="Logo Image" class="logo">
+      <img
+        src="@/assets/images/img_header_logo.png"
+        alt="Logo Image"
+        class="logo"
+      />
     </div>
-    
+
     <div class="order-container">
       <!-- Left Column -->
       <div class="order-details">
         <div class="confirmation-header">
           <img
-            src='@/assets/images/checkmark-green.svg'
+            src="@/assets/images/checkmark-green.svg"
             alt="Checkmark"
             class="confirmation-icon"
           />
@@ -22,28 +26,34 @@
         <div class="order-status-box">
           <h3 class="status-title">คำสั่งซื้อของคุณได้รับการยืนยันแล้ว</h3>
           <p class="status-pending">
-            This order has a pending payment. The balance will be updated when payment is received.
+            This order has a pending payment. The balance will be updated when
+            payment is received.
           </p>
           <p class="status-message">
-            ชำระค่าสินค้าได้ที่<br>
-            ชื่อบัญชี : ธนาทร เกริกกวิน<br>
-            ช่องทางการชำระเงิน: PromptPay<br>
-            รหัสพร้อมเพย์: 085-542-1173<br>
+            ชำระค่าสินค้าได้ที่<br />
+            ชื่อบัญชี : ธนาทร เกริกกวิน<br />
+            ช่องทางการชำระเงิน: PromptPay<br />
+            รหัสพร้อมเพย์: 085-542-1173<br />
           </p>
-            
+
           <p class="status-message">
-            ภายหลังการชำระเงินแล้ว กรุณาส่งหลักฐานการโอนเงินมาที่ 
-            Facebook: Lapiz Thailand หรือ Line: @Lapizshoes<br>
-            (ท่านสามารถชำระเงินได้ภายใน 3 วัน นับจากวันที่ท่านสั่งซื้อ โดยหากพ้นกำหนดการชำระเงินแล้ว 
+            ภายหลังการชำระเงินแล้ว กรุณาส่งหลักฐานการโอนเงินมาที่ Facebook:
+            Lapiz Thailand หรือ Line: @Lapizshoes<br />
+            (ท่านสามารถชำระเงินได้ภายใน 3 วัน นับจากวันที่ท่านสั่งซื้อ
+            โดยหากพ้นกำหนดการชำระเงินแล้ว
             ทางบริษัทขอสงวนสิทธิ์ในการยกเลิกรายการสั่งซื้อของท่านโดยอัตโนมัติ)
           </p>
 
-          <img src='@/assets/images/qr_promtpay.png' alt="QR Code PromptPay" class="qr-code" />
+          <img
+            src="@/assets/images/qr_promtpay.png"
+            alt="QR Code PromptPay"
+            class="qr-code"
+          />
         </div>
 
         <div class="customer-info-box">
           <h3 class="info-title">ข้อมูลคำสั่งซื้อ</h3>
-          
+
           <div class="customer-info-content">
             <!-- คอลัมน์ที่ 1 -->
             <div class="info-column">
@@ -65,7 +75,7 @@
                 <p>Free Shipping</p>
               </div>
             </div>
-            
+
             <!-- คอลัมน์ที่ 2 -->
             <div class="info-column">
               <div class="info-section">
@@ -89,35 +99,50 @@
             <p>ต้องการความช่วยเหลือ?</p>
             <a href="#" class="contact-link">ติดต่อเรา</a>
           </div>
-          <button class="continue-shopping">เลือกซื้อสินค้าต่อ</button>
+          <button @click="backToHome" class="continue-shopping">
+            เลือกซื้อสินค้าต่อ
+          </button>
         </div>
       </div>
 
       <!-- Right Column -->
       <div class="order-summary">
         <div class="product-list">
-          <div class="product-item">
-            <img src='@/assets/shoes/shoe1.png' alt="Navy shoe" class="product-image" />
+          <div v-for="item in receiptItems" class="product-item">
+            <img
+              src="@/assets/shoes/shoe1.png"
+              alt="Navy shoe"
+              class="product-image"
+            />
             <div class="product-details">
-              <p class="product-name">รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas</p>
-              <p class="product-variant">Navy / 9</p>
+              <p class="product-name">
+                {{ item.pdName }}
+              </p>
+              <p class="product-variant">{{ item.pdColor }} / 9</p>
             </div>
-            <p class="product-price">2,250.00 THB</p>
-          </div>
-
-          <div class="product-item">
-            <img src='@/assets/shoes/shoe1.png' alt="Pink shoe" class="product-image" />
-            <div class="product-details">
-              <p class="product-name">รองเท้าผ้าใบ รุ่น Champion Organic Cotton</p>
-              <p class="product-variant">Light Pink / 9</p>
-            </div>
-            <p class="product-price">2,050.00 THB</p>
+            <p class="product-price">
+              {{
+                (item.pdPrice * item.quantity).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              }}
+              THB
+            </p>
           </div>
 
           <div class="summary-subtotal">
             <div class="subtotal-row">
-              <p>ยอดรวม (2 รายการ)</p>
-              <p>4,300.00 THB</p>
+              <p>ยอดรวม ({{ totalQuantity }} รายการ)</p>
+              <p>
+                {{
+                  totalPrice.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                }}
+                THB
+              </p>
             </div>
             <div class="subtotal-row">
               <p>การจัดส่ง</p>
@@ -130,7 +155,15 @@
               <h3>ยอดรวม</h3>
               <p class="tax-note">Including 0.00 THB in taxes</p>
             </div>
-            <p class="total-amount">4,300.00 THB</p>
+            <p class="total-amount">
+              {{
+                totalPrice.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              }}
+              THB
+            </p>
           </div>
         </div>
       </div>
@@ -139,7 +172,38 @@
 </template>
 
 <script setup>
-// Component logic can be added here if needed
+import { useProductStore } from "@/stores/productStore";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const productStore = useProductStore();
+
+const receiptItems = computed(() => {
+  return productStore.basketProduct;
+});
+
+const totalPrice = computed(() => {
+  if (receiptItems.value !== null) {
+    return receiptItems.value.reduce(
+      (sum, item) => sum + item.pdPrice * item.quantity,
+      0
+    );
+  } else {
+    return 0;
+  }
+});
+
+const totalQuantity = computed(() => {
+  if (receiptItems.value !== null) {
+    return receiptItems.value.reduce((count, item) => count + item.quantity, 0);
+  }
+});
+
+const backToHome = () => {
+  productStore.setBasketProduct([]);
+  router.push({ name: "homepage" });
+};
 </script>
 
 <style scoped>
@@ -176,7 +240,8 @@
 }
 
 /* ปรับ content ให้อยู่ตรงกลาง */
-.order-details, .order-summary {
+.order-details,
+.order-summary {
   flex: 1;
   padding: 0 2rem;
   display: flex;
@@ -198,7 +263,7 @@
   margin-top: 40px;
   margin-left: 0;
   margin-right: auto;
-  left: -3.1rem
+  left: -3.1rem;
 }
 
 .confirmation-header {
@@ -232,7 +297,8 @@
 }
 
 /* ขยายกรอบข้อความฝั่งซ้าย 2 กล่อง */
-.order-status-box, .customer-info-box {
+.order-status-box,
+.customer-info-box {
   background-color: #fff;
   border: 1px solid #000000;
   border-radius: 8px;
@@ -300,18 +366,18 @@
 }
 
 .contact-link {
-  color: #002FFF;
+  color: #002fff;
   text-decoration: none;
 }
 
 .contact-link:hover {
-  color: #002FFF;
+  color: #002fff;
   text-decoration: underline;
 }
 
 .continue-shopping {
   position: relative;
-  background-color: #375BFE; /* สีน้ำเงินสด */
+  background-color: #375bfe; /* สีน้ำเงินสด */
   color: white; /* ตัวอักษรสีขาว */
   padding: 0.75rem 1.5rem; /* ขยายขนาดปุ่ม */
   font-size: 1.2rem; /* ขนาดตัวอักษรใหญ่ขึ้น */
@@ -324,7 +390,7 @@
 }
 
 .continue-shopping:hover {
-  background-color: #2042D8; /* ทำให้เข้มขึ้นเมื่อโฮเวอร์ */
+  background-color: #2042d8; /* ทำให้เข้มขึ้นเมื่อโฮเวอร์ */
 }
 
 .product-item {
@@ -340,7 +406,7 @@
   height: 90px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1px solid #7F7F7F; /* เพิ่มเส้นขอบ */
+  border: 1px solid #7f7f7f; /* เพิ่มเส้นขอบ */
   padding: 3px; /* เพิ่มระยะห่างระหว่างรูปกับขอบ */
   background-color: #fff; /* กำหนดพื้นหลังสีขาว */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* เพิ่มเงา */
@@ -425,20 +491,21 @@
     flex-direction: column;
   }
 
-  .order-details, .order-summary {
+  .order-details,
+  .order-summary {
     width: 100%;
     padding: 0 2rem;
     align-items: center;
   }
-  
+
   .order-details {
     background-color: #fff;
   }
-  
+
   .order-summary {
     background-color: #f8f8f8;
   }
-  
+
   .customer-info-content {
     flex-direction: column;
   }

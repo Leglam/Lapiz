@@ -88,6 +88,21 @@ const router = createRouter({
       name: "my-account",
       component: () => import("../views/Account/MyAccount.vue"),
     },
+    {
+      path: "/credit-receipt",
+      name: "credit",
+      component: () => import("../views/Receipt/Credit.vue"),
+    },
+    {
+      path: "/cash-receipt",
+      name: "cash",
+      component: () => import("../views/Receipt/CashOn.vue"),
+    },
+    {
+      path: "/promptpay-receipt",
+      name: "promptpay",
+      component: () => import("../views/Receipt/PromtPay.vue"),
+    },
   ],
   scrollBehavior() {
     return { top: 0 };
