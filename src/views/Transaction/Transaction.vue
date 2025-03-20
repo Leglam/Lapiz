@@ -63,7 +63,6 @@
         <!-- Payment Section -->
         <payment-section @update-payment-method="paymentMethod = $event"></payment-section>
 
-
         <!-- Action Buttons -->
         <div class="action-buttons">
           <a href="#" class="back-link">
@@ -89,22 +88,13 @@
       <div class="order-summary">
         <!-- Product List -->
         <div class="product-list">
-          <div class="product-item">
-            <img src='@/assets/shoes/shoe1.png' alt="Navy shoe" class="product-image" />
+          <div v-for="item in cartItems" :key="item.pdId" class="product-item">
+            <img :src="item.image" :alt="item.pdName" class="product-image" />
             <div class="product-details">
-              <p class="product-name">รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas</p>
-              <p class="product-variant">Navy / 9</p>
+              <p class="product-name">{{ item.pdName }}</p>
+              <p class="product-variant">{{ item.pdColor }} / {{ item.size }}</p>
             </div>
-            <p class="product-price">2,250.00 THB</p>
-          </div>
-
-          <div class="product-item">
-            <img src='@/assets/shoes/shoe1.png' alt="Pink shoe" class="product-image" />
-            <div class="product-details">
-              <p class="product-name">รองเท้าผ้าใบ รุ่น Champion Organic Cotton</p>
-              <p class="product-variant">Light Pink / 9</p>
-            </div>
-            <p class="product-price">2,050.00 THB</p>
+            <p class="product-price">{{ item.pdPrice.toFixed(2) }} THB</p>
           </div>
 
           <!-- Discount Code -->
@@ -116,8 +106,8 @@
           <!-- Summary -->
           <div class="summary-subtotal">
             <div class="subtotal-row">
-              <p>ยอดรวม (2 รายการ)</p>
-              <p>4,300.00 THB</p>
+              <p>ยอดรวม ({{ cartItems.length }} รายการ)</p>
+              <p>{{ totalPrice }} THB</p>
             </div>
             <div class="subtotal-row">
               <p>การจัดส่ง</p>
@@ -131,7 +121,7 @@
               <h3>ยอดรวม</h3>
               <p class="tax-note">Including 0.00 THB in taxes</p>
             </div>
-            <p class="total-amount">4,300.00 THB</p>
+            <p class="total-amount">{{ totalPrice }} THB</p>
           </div>
         </div>
       </div>
@@ -140,40 +130,52 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue'
-  import PaymentSection from '@/components/PaymentSection.vue'
-  import {
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import PaymentSection from '@/components/PaymentSection.vue';
+import {
   buyBasketProducts,
   getBasketProducts,
   removeBasketProduct,
   updateBasketProducts,
-  } from "@/api/productService";
-  import { useProductStore } from "@/stores/productStore";
+} from "@/api/productService";
+import { useProductStore } from "@/stores/productStore";
 
-  // State
-  const paymentMethod = ref('card')
+const route = useRoute();
+const cartItems = ref([]);
+const totalPrice = ref(0);
 
-  const fetchProductInBasket = async () => {
-    const response = await getBasketProducts();
-    cartItems.value = response;
-    console.log(cartItems.value);
+onMounted(() => {
+  if (route.query.cartItems) {
+    cartItems.value = JSON.parse(route.query.cartItems);
+  }
+  if (route.query.totalPrice) {
+    totalPrice.value = route.query.totalPrice;
+  }
+});
 
-    if (response !== null) {
-      const totalQuantity = response.reduce(
-        (sum, product) => sum + product.quantity,
-        0
-      );
-      productStore.setBasketProductCount(totalQuantity);
-    } else {
-      productStore.setBasketProductCount(0);
-    }
-  };
+const paymentMethod = ref('card');
 
-  // Method สำหรับซื้อสินค้า
-  const buyProduct = async () => {
-    await buyBasketProducts();
-    fetchProductInBasket();
-  };
+const fetchProductInBasket = async () => {
+  const response = await getBasketProducts();
+  cartItems.value = response;
+  console.log(cartItems.value);
+
+  if (response !== null) {
+    const totalQuantity = response.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    productStore.setBasketProductCount(totalQuantity);
+  } else {
+    productStore.setBasketProductCount(0);
+  }
+};
+
+const buyProduct = async () => {
+  await buyBasketProducts();
+  fetchProductInBasket();
+};
 </script>
 
 <style scoped>
