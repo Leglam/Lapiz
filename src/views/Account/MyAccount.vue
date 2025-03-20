@@ -62,7 +62,8 @@
                 </div>
                 <div class="form-field">
                   <label>วันเกิด</label>
-                  <input v-model="userProfile.birthDate" type="date" />
+                  <!-- <input v-model="userProfile.birthDate" type="date" /> -->
+                  <date />
                 </div>
               </div>
 
@@ -161,6 +162,7 @@
 </template>
 
 <script setup>
+import date from "@/date.vue";
 import { reactive } from "vue";
 
 const userProfile = reactive({
@@ -255,6 +257,7 @@ const viewOrderDetails = (orderId) => {
               margin-bottom: 5px;
               font-weight: 600;
               color: #000;
+              font-size: 18px;
             }
 
             input,
@@ -263,9 +266,10 @@ const viewOrderDetails = (orderId) => {
               padding: 10px;
               border: 1px solid #000;
               border-radius: 4px;
-              background-color: #f9f9f9;
+              background-color: #ffffff;
               transition: border-color 0.3s ease;
-              box-sizing: border-box; // Ensure padding and border are included in the width
+              box-sizing: border-box; 
+              font-size: 16px;
 
               &:focus {
                 outline: none;

@@ -277,7 +277,7 @@ onBeforeUnmount(() => {
 }
 
 .bullet.active {
-  background-color: white;
+  background-color: #000000;
 }
 
 /* Categories */

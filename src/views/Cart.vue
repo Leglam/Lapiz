@@ -62,7 +62,7 @@
         <div class="shipping-note">
           Tax included and shipping calculated at checkout
         </div>
-        <button @click="buyProduct" class="checkout-button">ชำระเงิน</button>
+        <button @click="pushPage('transaction')" class="checkout-button">ชำระเงิน</button>
       </div>
     </div>
     <div v-else>
@@ -146,10 +146,10 @@ const decreaseQuantity = async (item) => {
 };
 
 // Method สำหรับซื้อสินค้า
-const buyProduct = async () => {
-  await buyBasketProducts();
-  fetchProductInBasket();
-};
+// const buyProduct = async () => {
+//   await buyBasketProducts();
+//   fetchProductInBasket();
+// };
 
 onMounted(() => {
   fetchProductInBasket();
