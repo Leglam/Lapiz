@@ -35,11 +35,19 @@
               <div class="contact-group">
                 <div class="form-field">
                   <label>ชื่อผู้ใช้</label>
-                  <input
-                    v-model="username"
-                    type="text"
-                    disabled
-                  />
+                  <!-- <input v-model="username" type="text" disabled /> -->
+                  <div
+                    style="
+                      flex: 1;
+                      min-height: 18px;
+                      padding: 10px;
+                      border: 1px solid black;
+                      border-radius: 4px;
+                      font-size: 16px;
+                    "
+                  >
+                    {{ userName }}
+                  </div>
                 </div>
                 <div class="form-field">
                   <label>อีเมล</label>
@@ -163,9 +171,14 @@
 
 <script setup>
 import date from "@/date.vue";
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
+import { computed, reactive } from "vue";
+import { useLoginStore } from "@/stores/loginStore";
 
+const loginStore = useLoginStore();
+
+const userName = computed(() => {
+  return loginStore.username;
+});
 
 const userProfile = reactive({
   firstName: "ธนาทร",
@@ -270,7 +283,7 @@ const viewOrderDetails = (orderId) => {
               border-radius: 4px;
               background-color: #ffffff;
               transition: border-color 0.3s ease;
-              box-sizing: border-box; 
+              box-sizing: border-box;
               font-size: 16px;
 
               &:focus {

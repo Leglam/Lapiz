@@ -164,13 +164,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
+import { ref, computed } from "vue";
 import PaymentSection from "@/components/PaymentSection.vue";
-import { buyBasketProducts, getBasketProducts } from "@/api/productService";
+import { buyBasketProducts } from "@/api/productService";
 import { useProductStore } from "@/stores/productStore";
 
 const productStore = useProductStore();
+
 const cartItems = computed(() => {
   return productStore.basketProduct;
 });
@@ -187,22 +187,6 @@ const totalPrice = computed(() => {
 });
 
 const paymentMethod = ref("card");
-
-// const fetchProductInBasket = async () => {
-//   const response = await getBasketProducts();
-//   cartItems.value = response;
-//   console.log(cartItems.value);
-
-//   if (response !== null) {
-//     const totalQuantity = response.reduce(
-//       (sum, product) => sum + product.quantity,
-//       0
-//     );
-//     productStore.setBasketProductCount(totalQuantity);
-//   } else {
-//     productStore.setBasketProductCount(0);
-//   }
-// };
 
 const buyProduct = async () => {
   await buyBasketProducts();

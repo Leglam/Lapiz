@@ -25,7 +25,9 @@
       </div>
       <div v-else>
         <div class="login_container">
-          <div @click="pushPage('my-account')" class="login_username">{{ username }}</div>
+          <div @click="pushPage('my-account')" class="login_username">
+            {{ username }}
+          </div>
           <div class="profile-img-container">
             <a
               href="#"
@@ -36,7 +38,11 @@
                 'profile--hovered': isHovered,
               }"
             >
-              <img :src="currentProfileIcon" alt="Profile" class="profile-icon" />
+              <img
+                :src="currentProfileIcon"
+                alt="Profile"
+                class="profile-icon"
+              />
             </a>
           </div>
         </div>
@@ -79,6 +85,7 @@ const getUserName = () => {
     const payloadData = JSON.parse(payloadJson);
 
     username.value = payloadData.unique_name || "Unknown User";
+    loginStore.setUsername(username.value);
   } catch (error) {
     username.value = "Invalid token";
   }
@@ -182,7 +189,7 @@ watch(isLogin, (newValue) => {
 }
 
 .login_username:hover {
-  color: var( --text-userLogin-color);
+  color: var(--text-userLogin-color);
   opacity: 0.8;
 }
 </style>
