@@ -78,6 +78,11 @@ const router = createRouter({
       name: "cash",
       component: () => import("../views/Transaction/PurchaseOrder.vue"),
     },
+    {
+      path: "/transaction",
+      name: "transaction",
+      component: () => import("../views/Transaction/Transaction.vue"),
+    },
   ],
   scrollBehavior() {
     return { top: 0 };

@@ -1,7 +1,7 @@
 <template>
   <div class="top-header">
     <div class="top-header-container">
-      <div class="login-signin-profile-container">
+      <div v-if="!isLogin" class="login-signin-profile-container">
         <div>
           <span @click="pushPage('login')" class="login-link">เข้าสู่ระบบ</span>
           <span class="text-white"> | </span>
@@ -10,52 +10,85 @@
           >
         </div>
         <div class="profile-img-container">
-          <a 
-              href="#"
-              class="profile-img"
-              @mouseenter="isHovered = true"
-              @mouseleave="isHovered = false"
-              :class="{
-                'profile--hovered': isHovered
-              }"
-            >
-              <img :src="currentProfileIcon" alt="Profile" class="profile-icon" />
+          <a
+            href="#"
+            class="profile-img"
+            @mouseenter="isHovered = true"
+            @mouseleave="isHovered = false"
+            :class="{
+              'profile--hovered': isHovered,
+            }"
+          >
+            <img :src="currentProfileIcon" alt="Profile" class="profile-icon" />
           </a>
         </div>
+      </div>
+      <div v-else>
+        <div style="color: white">{{ username }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import ProfileIcon from '@/assets/images/ProfileIcon.svg';
-import ProfileIconHover from '@/assets/images/ProfileIconHover.svg';
+import { ref, computed, watch } from "vue";
+import ProfileIcon from "@/assets/images/ProfileIcon.svg";
+import ProfileIconHover from "@/assets/images/ProfileIconHover.svg";
 import { useRouter } from "vue-router";
+import { useLoginStore } from "@/stores/loginStore";
+import CryptoJS from "crypto-js";
 
 const router = useRouter();
+const loginStore = useLoginStore();
+const isHovered = ref(false);
+const username = ref("");
 
 const pushPage = (name) => {
   router.push({ name: name });
 };
 
-const isHovered = ref(false)
-
 const ProfileIcons = {
   default: ProfileIcon,
   hover: ProfileIconHover,
-}
+};
+
+const getUserName = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    username.value = "No token found";
+    return;
+  }
+
+  try {
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = atob(payloadBase64);
+    const payloadData = JSON.parse(payloadJson);
+
+    username.value = payloadData.unique_name || "Unknown User";
+  } catch (error) {
+    username.value = "Invalid token";
+  }
+};
 
 const currentProfileIcon = computed(() => {
   if (isHovered.value) {
-    return ProfileIcons.hover
+    return ProfileIcons.hover;
   }
-  return ProfileIcons.default
-})
+  return ProfileIcons.default;
+});
+
+const isLogin = computed(() => {
+  return loginStore.isLogin;
+});
+
+watch(isLogin, (newValue) => {
+  if (newValue === true) {
+    getUserName();
+  }
+});
 </script>
 
 <style scoped>
-
 * {
   margin: unset;
 }
@@ -84,7 +117,8 @@ const currentProfileIcon = computed(() => {
   align-items: center;
 }
 
-.login-link, .register-link {
+.login-link,
+.register-link {
   color: #ffffff;
   text-decoration: none;
   font-size: 14px;
@@ -92,7 +126,8 @@ const currentProfileIcon = computed(() => {
   transition: opacity 0.3s ease;
 }
 
-.login-link:hover, .register-link:hover {
+.login-link:hover,
+.register-link:hover {
   opacity: 0.8;
   text-decoration: underline;
   text-decoration-color: #ffffff;

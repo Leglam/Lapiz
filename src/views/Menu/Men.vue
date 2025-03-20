@@ -43,13 +43,15 @@
 import ProductFilter from "@/components/ProductFilter.vue";
 import CardComponent from "@/components/Card-Component.vue";
 import { useProductStore } from "@/stores/productStore";
-import { onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 const productStore = useProductStore();
-const products = ref([]);
+const products = computed(() => {
+  return productStore.product;
+});
 const isDropdownOpen = ref(false);
 
 const selectColor = (colorId) => {
@@ -65,11 +67,6 @@ const selectColor = (colorId) => {
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
 };
-
-onBeforeMount(() => {
-  products.value = productStore.product;
-  console.log(products.value);
-});
 </script>
 
 <style scoped lang="scss">

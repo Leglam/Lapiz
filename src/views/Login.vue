@@ -73,6 +73,7 @@ import { useProductStore } from "@/stores/productStore";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { getBasketProducts, getWishlistProducts } from "@/api/productService";
+import { useLoginStore } from "@/stores/loginStore";
 
 const router = useRouter();
 const productStore = useProductStore();
@@ -136,6 +137,8 @@ const handleSubmit = async () => {
     localStorage.setItem("token", token);
     await fetchProductInBasket();
     await fetchProductInWishlist();
+    const loginStore = useLoginStore();
+    loginStore.setIsLogin(true);
     router.push({ name: "men" });
   } else {
     usernameError.value = true;

@@ -4,13 +4,13 @@
     <div class="main-header">
       <a @click="pushPage('homepage')" class="logo">
         <img
-        src="@/assets/images/img_header_logo.png"
-        alt="Logo Image"
-        class="logo"
+          src="@/assets/images/img_header_logo.png"
+          alt="Logo Image"
+          class="logo"
         />
       </a>
 
-      <div class="header-content">
+      <div v-if="route.name !== 'transaction'" class="header-content">
         <!-- Navigation menu -->
         <ul class="nav-menu">
           <li><a @click="pushPage('men')" class="nav-link">ผู้ชาย</a></li>
@@ -55,14 +55,20 @@
               <span class="inactive">EN</span>
             </div>
 
-            <a @click="pushPage('wishlist')" class="favorite-button"
+            <a
+              @click="pushPage('wishlist')"
+              class="favorite-button"
               @mouseenter="isHovered = true"
               @mouseleave="isHovered = false"
               :class="{
-                'favorite-button--hovered': isHovered
+                'favorite-button--hovered': isHovered,
               }"
             >
-              <img :src="currentFavoriteIcon" alt="Favorite" class="favorite-icon" />
+              <img
+                :src="currentFavoriteIcon"
+                alt="Favorite"
+                class="favorite-icon"
+              />
             </a>
 
             <a @click="pushPage('cart')" class="cart-icon">
@@ -72,7 +78,7 @@
                 class="basket-count"
                 :class="{
                   'more-than-99': basketProductCount > 99,
-                  'more-than-9': basketProductCount > 9
+                  'more-than-9': basketProductCount > 9,
                 }"
               >
                 {{ basketCountDisplay }}
@@ -89,10 +95,11 @@
 <script setup>
 import { useProductStore } from "@/stores/productStore";
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
-import FavBlack from '@/assets/images/icon-fav-black.svg';
-import FavRed from '@/assets/images/icon-fav-red.svg';
+import { useRoute, useRouter } from "vue-router";
+import FavBlack from "@/assets/images/icon-fav-black.svg";
+import FavRed from "@/assets/images/icon-fav-red.svg";
 
+const route = useRoute();
 const router = useRouter();
 const productStore = useProductStore();
 
@@ -110,26 +117,25 @@ const pushPage = (pageName) => {
 };
 
 const basketCountDisplay = computed(() => {
-  return basketProductCount.value > 99 ? '99+' : basketProductCount.value;
+  return basketProductCount.value > 99 ? "99+" : basketProductCount.value;
 });
 
 // Favorite icon states
-const isHovered = ref(false)
+const isHovered = ref(false);
 
 // Define icon paths
 const favoriteIcons = {
   default: FavBlack,
   hover: FavRed,
-}
+};
 
 // Compute current icon based on state
 const currentFavoriteIcon = computed(() => {
   if (isHovered.value) {
-    return favoriteIcons.hover
+    return favoriteIcons.hover;
   }
-  return favoriteIcons.default
-})
-
+  return favoriteIcons.default;
+});
 </script>
 
 <style scoped>
@@ -189,10 +195,10 @@ const currentFavoriteIcon = computed(() => {
   cursor: pointer;
 }
 
-.nav-link:hover{
+.nav-link:hover {
   font-size: 18px;
   font-weight: 700;
-  color: #B72121;
+  color: #b72121;
   text-decoration: none;
   cursor: pointer;
 }
@@ -296,7 +302,7 @@ const currentFavoriteIcon = computed(() => {
 }
 
 .logo,
-.cart-icon ,
+.cart-icon,
 .favorite-icon {
   position: relative;
 }
@@ -305,8 +311,7 @@ const currentFavoriteIcon = computed(() => {
   transform: scale(1.03);
 }
 
-.favorite-button:hover
-.favorite-icon,
+.favorite-button:hover .favorite-icon,
 .cart-icon:hover {
   transform: scale(1.2);
 }
