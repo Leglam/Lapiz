@@ -10,13 +10,18 @@
             :modelPath="modelPaths[selectedModel]" 
             :modelConfig="modelConfigs[selectedModel]" 
           />
+          <!-- <img
+            :src="productImage"
+            :alt="product.pdName"
+            class="product-image"
+          /> -->
         </div>
       </div>
 
       <!-- Product Information -->
       <div class="product-info">
-        <h2 class="product-title">{{ productTitle }}</h2>
-        <h3 class="product-price">{{ formatPrice(price) }}</h3>
+        <h2 class="product-title">{{ product.pdName }}</h2>
+        <h3 class="product-price">{{ formatPrice(product.pdPrice) }}</h3>
         <div class="divider"></div>
 
         <!-- Size Selection -->
@@ -29,7 +34,11 @@
               </div>
             </div>
             <div class="size-grid">
-              <div v-for="(sizeGroup, index) in sizeGroups" :key="index" class="size-row">
+              <div
+                v-for="(sizeGroup, index) in sizeGroups"
+                :key="index"
+                class="size-row"
+              >
                 <button
                   v-for="size in sizeGroup"
                   :key="size"
@@ -44,16 +53,19 @@
           </div>
 
           <!-- Color Selection -->
-          <div class="color-section">
-            <h6 class="color-title">สี</h6>
-            <div class="color-options">
-              <button
-                v-for="(color, index) in colors"
-                :key="index"
-                class="color-option"
-                :style="{ backgroundColor: color }"
-                @click="selectColor(color)"
-              ></button>
+          <h6 class="color-title">สี</h6>
+          <div class="product-colors">
+            <div
+              v-for="color in product.pdColor"
+              :key="color.pdCode"
+              class="color-option"
+              :class="{ 'color-selected': color.isSelected }"
+              @click="selectColor(color.pdCode)"
+            >
+              <div
+                class="color-inner"
+                :style="{ backgroundColor: `var(--${color.pdColor})` }"
+              ></div>
             </div>
           </div>
         </div>
@@ -65,15 +77,21 @@
             <button class="add-to-cart-button" @click="addToCart">
               เพิ่มเข้าตะกร้าสินค้า
             </button>
-            <button class="favorite-button" 
-                    @click="toggleFavorite" 
-                    @mouseenter="isHovered = true"
-                    @mouseleave="isHovered = false"
-                    :class="{
-                      'favorite-button--hovered': isHovered,
-                      'favorite-button--active': isFavorite
-                    }">
-              <img :src="currentFavoriteIcon" alt="Favorite" class="favorite-icon" />
+            <button
+              class="favorite-button"
+              @click="toggleFavorite"
+              @mouseenter="isHovered = true"
+              @mouseleave="isHovered = false"
+              :class="{
+                'favorite-button--hovered': isHovered,
+                'favorite-button--active': isFavorite,
+              }"
+            >
+              <img
+                :src="currentFavoriteIcon"
+                alt="Favorite"
+                class="favorite-icon"
+              />
             </button>
           </div>
           <button class="buy-now-button" @click="buyNow">ซื้อเลย</button>
@@ -93,7 +111,6 @@
         </div>
       </div>
     </div>
-    
 
     <!-- Product Details Tabs -->
     <div class="product-details">
@@ -113,7 +130,7 @@
           <div class="tab-content">
             <div v-if="activeTab === 'description'" class="tab-panel">
               <p class="description-text">
-                {{ productDescription }}
+                {{ product.pdDesc }}
               </p>
             </div>
             <div v-else-if="activeTab === 'features'" class="tab-panel">
@@ -130,18 +147,77 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onBeforeMount } from "vue";
 import ThreeJsScene from '@/components/ThreeJsScene.vue';
+import Shoes1 from "@/assets/shoes/shoe1.png";
 
-import Fav from '@/assets/images/icon-fav-gray.svg';
-import FavBlack from '@/assets/images/icon-fav-black.svg';
-import FavRed from '@/assets/images/icon-fav-red.svg';
+import Fav from "@/assets/images/icon-fav-gray.svg";
+import FavBlack from "@/assets/images/icon-fav-black.svg";
+import FavRed from "@/assets/images/icon-fav-red.svg";
 
-import Facebook from '../assets/images/icon-facebook2.svg';
-import Messenger from '@/assets/images/icon-messenger2.svg';
-import Instragram from '@/assets/images/icon-ig2.svg';
-import Share from '@/assets/images/icon-share.svg';
+import Facebook from "@/assets/images/icon-facebook2.svg";
+import Messenger from "@/assets/images/icon-messenger2.svg";
+import Instragram from "@/assets/images/icon-ig2.svg";
+import Share from "@/assets/images/icon-share.svg";
+import { useRoute, useRouter } from "vue-router";
+import { useProductStore } from "@/stores/productStore";
+import {
+  getBasketProducts,
+  updateBasketProducts,
+  getWishlistProducts,
+  addWishlistProducts,
+  removeWishlistProduct,
+} from "@/api/productService";
 
+const route = useRoute();
+const router = useRouter();
+const productStore = useProductStore();
+
+const productId = computed(() => route.params.id);
+
+const product = computed(() =>
+  productStore.product.find((p) =>
+    p.pdColor.some((color) => color.pdCode === productId.value)
+  )
+);
+
+const wishlistProduct = computed(() => productStore.wishlistProduct);
+
+// Product Data
+const productImage = ref(Shoes1);
+
+// Size Selection
+const sizeGroups = ref([
+  ["5", "5.5", "6", "6.5", "7", "7.5"],
+  ["8", "8.5", "9", "9.5", "10", "10.5"],
+]);
+
+const selectedSize = ref(null);
+
+// Favorite icon states
+const isFavorite = ref(false);
+const isHovered = ref(false);
+
+// Define icon paths
+const favoriteIcons = {
+  default: Fav,
+  hover: FavBlack,
+  active: FavRed,
+};
+
+// Compute current icon based on state
+const currentFavoriteIcon = computed(() => {
+  if (isFavorite.value) {
+    return favoriteIcons.active;
+  }
+  if (isHovered.value) {
+    return favoriteIcons.hover;
+  }
+  return favoriteIcons.default;
+});
+
+// Models
+// สร้าง ref สำหรับเก็บชื่อ model ที่ถูกเลือก
 // เปลี่ยนจาก ref เป็น computed หากคุณต้องการคำนวณค่าเหล่านี้จากตัวแปรอื่นๆ
 const selectedModel = ref('shoe5');
 
@@ -214,93 +290,127 @@ const modelConfigs = {
   }
 };
 
-// Product Data
-const productTitle = ref('รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas')
-const price = ref(2250.00)
-const productDescription = ref('รองเท้าผ้าใบรุ่นไอคอนิกของเรามาพร้อมลุค')
-
-// Size Selection
-const sizeGroups = ref([
-  ['5', '5.5', '6', '6.5', '7', '7.5'],
-  ['8', '8.5', '9', '9.5', '10', '10.5']
-])
-const selectedSize = ref(null)
-
-// Color Selection
-const colors = ref(['#000080', '#FFFFFF', '#808080'])
-const selectedColor = ref(null)
-
-// Favorite icon states
-const isFavorite = ref(false)
-const isHovered = ref(false)
-
-// Define icon paths
-const favoriteIcons = {
-  default: Fav,
-  hover: FavBlack,
-  active: FavRed
-}
-
-// Compute current icon based on state
-const currentFavoriteIcon = computed(() => {
-  if (isFavorite.value) {
-    return favoriteIcons.active
-  }
-  if (isHovered.value) {
-    return favoriteIcons.hover
-  }
-  return favoriteIcons.default
-})
-
 // Tabs
 const tabs = ref([
-  { id: 'description', label: 'รายละเอียด' },
-  { id: 'features', label: 'คุณสมบัติ' },
-  { id: 'reviews', label: 'รีวิว' }
-])
-const activeTab = ref('description')
+  { id: "description", label: "รายละเอียด" },
+  { id: "features", label: "คุณสมบัติ" },
+  { id: "reviews", label: "รีวิว" },
+]);
+const activeTab = ref("description");
 
 // Social Icons
 const socialIcons = ref([
-  { name: 'Share', icon: Share},
-  { name: 'Facebook', icon: Facebook },
-  { name: 'Messenger', icon: Messenger },
-  { name: 'Instagram', icon: Instragram }
-])
+  { name: "Share", icon: Share },
+  { name: "Facebook", icon: Facebook },
+  { name: "Messenger", icon: Messenger },
+  { name: "Instagram", icon: Instragram },
+]);
 
 // Methods
+
 const formatPrice = (value) => {
-  return `${value.toFixed(2)} THB`
-}
+  return `${value.toFixed(2)} THB`;
+};
 
 const selectSize = (size) => {
-  selectedSize.value = size
-}
+  selectedSize.value = size;
+};
 
-const selectColor = (color) => {
-  selectedColor.value = color
-}
+const selectColor = (colorId) => {
+  product.value.pdColor = product.value.pdColor.map((color) => {
+    color.isSelected = color.pdCode === colorId;
+    return color;
+  });
+};
+
+const fetchProductInWishlist = async () => {
+  const response = await getWishlistProducts();
+
+  if (response !== null) {
+    productStore.setWishlistProduct(response);
+  } else {
+    productStore.setWishlistProduct([]);
+  }
+};
+
+const fetchProductInBasket = async () => {
+  const response = await getBasketProducts();
+
+  if (response !== null) {
+    const totalQuantity = response.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    productStore.setBasketProductCount(totalQuantity);
+  } else {
+    productStore.setBasketProductCount(0);
+  }
+};
 
 const setActiveTab = (tabId) => {
-  activeTab.value = tabId
-}
+  activeTab.value = tabId;
+};
 
-const addToCart = () => {
-  // Implementation for adding to cart
-  console.log('Adding to cart...')
-}
+const addToCart = async () => {
+  const selectedColor = product.value.pdColor.find((color) => color.isSelected);
 
-// Update toggle favorite function
-const toggleFavorite = () => {
-  isFavorite.value = !isFavorite.value
-  // Optional: Add your favorite API call or state management here
-  console.log('Toggling favorite:', isFavorite.value)
-}
+  if (!selectedColor) {
+    console.warn("No color selected!");
+    return; // Exit function if no color is selected
+  }
 
-const buyNow = () => {
-  // Implementation for buy now
-  console.log('Proceeding to checkout...')
-}
+  // Use the selected color's pdCode
+  await updateBasketProducts(selectedColor.pdCode, 1);
+  await fetchProductInBasket();
+};
+
+const removeProductFromWishlist = async (pdCode) => {
+  try {
+    await removeWishlistProduct(pdCode);
+    isFavorite.value = false;
+  } catch (error) {
+    console.log("Remove wishlist error");
+  }
+};
+
+const addProductToWishlist = async (pdCode) => {
+  try {
+    await addWishlistProducts(pdCode);
+    isFavorite.value = true;
+  } catch (error) {
+    console.log("Add wishlist error");
+  }
+};
+
+const toggleFavorite = async () => {
+  if (isFavorite.value) {
+    await removeProductFromWishlist(product.value.pdColor[0].pdCode);
+  } else {
+    await addProductToWishlist(product.value.pdColor[0].pdCode);
+  }
+
+  await fetchProductInWishlist();
+
+  console.log(isFavorite.value);
+};
+
+const buyNow = async () => {
+  await addToCart();
+  router.push({ name: 'cart' })
+};
+
+onBeforeMount(() => {
+  const wishlistPdCodes = new Set(
+    wishlistProduct.value.map((wishlist) => wishlist.pdCode)
+  );
+
+  isFavorite.value = product.value.pdColor.some((color) =>
+    wishlistPdCodes.has(color.pdCode)
+  );
+
+  console.log(wishlistPdCodes);
+  console.log(isFavorite.value);
+});
 </script>
 
 <style scoped>
@@ -332,20 +442,23 @@ const buyNow = () => {
   /* width: 60%; */
 }
 
-.product-header-img{
+.product-header-img {
   /* ให้แสดงรูปอยู่ที่ซ้ายสุดและกลางในแนวตั้ง */
   display: flex;
   justify-content: flex-start; /* ชิดซ้าย */
   align-items: center; /* จัดกลางในแนวตั้ง */
-
 }
 
 .product-details {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   width: 100%;
   padding: 0px 10%;
   box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
 }
 
 .back-navigation {
@@ -363,7 +476,7 @@ const buyNow = () => {
   width: 600px;
   height: 600px;
   object-fit: contain;
-  border: #B7B7B7 solid 2px;
+  border: #b7b7b7 solid 2px;
 }
 
 .product-info {
@@ -424,31 +537,46 @@ const buyNow = () => {
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.9px;
-  color: #002FFF;
+  color: #002fff;
   text-decoration: underline;
   cursor: pointer;
 }
 
-.size-chart-link:hover{
-  color: #B72121;
+.size-chart-link:hover {
+  color: #b72121;
 }
 
-.color-section {
-  margin-top: 24px;
-}
-
-.color-options {
+.product-colors {
   display: flex;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 8px;
+}
+
+.color-title {
+  margin: 24px 0 16px 0;
+  font-size: 20px;
 }
 
 .color-option {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #000;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
+  padding: 1.5px;
+  border: 1px solid transparent;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-option.color-selected {
+  border-color: #4338ca;
+}
+
+.color-inner {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid #e5e5e5;
 }
 
 .action-buttons {
@@ -465,20 +593,20 @@ const buyNow = () => {
 .add-to-cart-button {
   width: 100%;
   height: 42px;
-  background-color: #002FFF;
+  background-color: #002fff;
   color: #fff;
   border: 2px solid #000;
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.22px;
-  transition: all 0.3s ease; 
-  cursor: pointer; 
-  box-sizing: border-box; 
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-sizing: border-box;
   transform-origin: center;
 }
 
-.add-to-cart-button:hover{
-  background-color: #375BFE;
+.add-to-cart-button:hover {
+  background-color: #375bfe;
 }
 
 /*=====================================================*/
@@ -497,12 +625,12 @@ const buyNow = () => {
 }
 /* เพิ่มเข้ามาลองทำ animate*/
 .favorite-button--hovered {
-  background-color: #DEDEDE;
+  background-color: #dedede;
 }
 
 /* Active/Selected state styles */
 .favorite-button--active {
-  background-color: #BEBEBE;
+  background-color: #bebebe;
   /* border-color: #ff4040; */
 }
 
@@ -535,9 +663,9 @@ const buyNow = () => {
   font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.22px;
-  transition: all 0.3s ease; 
-  cursor: pointer; 
-  box-sizing: border-box; 
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-sizing: border-box;
   transform-origin: center;
 }
 
@@ -545,10 +673,9 @@ const buyNow = () => {
 .buy-now-button:active {
   transform: scale(0.98); /* หดตัวปุ่มเมื่อคลิก */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* เพิ่มเงาขณะคลิก */
-  
 }
 
-.buy-now-button:hover{
+.buy-now-button:hover {
   background-color: #323232;
 }
 
@@ -579,10 +706,9 @@ const buyNow = () => {
   object-fit: contain;
   width: 24px;
   height: 24px;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
   cursor: pointer;
   transform-origin: center;
-  
 }
 
 .tabs-section {
