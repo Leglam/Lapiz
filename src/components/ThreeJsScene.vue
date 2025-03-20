@@ -3,31 +3,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const props = defineProps({
   objToRender: {
     type: String,
-    default: 'nike'
+    default: "",
   },
   modelPath: {
     type: String,
-    required: true
+    required: true,
   },
-  modelConfig: {
-    type: Object,
-    default: () => ({
-      rotatable: true,
-      cameraDistance: 500,
-      lightIntensity: 1,
-      initialRotation: { x: 0, y: 0, z: 0 },
-      autoRotate: false,
-      rotationSpeed: 0.01
-    })
-  }
 });
 
 const container3D = ref(null);
@@ -44,44 +33,23 @@ const getModelConfig = () => {
   // ค่า config เริ่มต้นสำหรับ model ทั่วไป
   const defaultConfig = {
     rotatable: true,
-    cameraDistance: 500,
-    lightIntensity: 1,
-    initialRotation: { x: 0, y: 0, z: 0 },
+    cameraDistance: 1,
+    lightIntensity: 2,
+    initialRotation: { x: 0, y: 1.5, z: 0 },
     autoRotate: false,
-    rotationSpeed: 0.01
+    rotationSpeed: 0.01,
+    useOrbitControls: true,
   };
 
-  // ค่า config พิเศษสำหรับ model เฉพาะ
-  const modelSpecificConfig = {
-    nike: {
-      rotatable: true,
-      cameraDistance: 500,
-      initialRotation: { x: -1.2, y: -3, z: 0 }
-    },
-    dino: {
-      rotatable: true,
-      cameraDistance: 25,
-      lightIntensity: 5,
-      initialRotation: { x: 0, y: 0, z: 0 },
-      useOrbitControls: true
-    }
-    // เพิ่ม model อื่นๆ ได้ตามต้องการ
-  };
-
-  // ใช้ค่าจาก props ถ้ามี หรือใช้ค่าเฉพาะของ model หรือใช้ค่า default
-  const specificConfig = modelSpecificConfig[props.objToRender] || {};
-  
   // รวมค่า config ทั้งหมด โดยเรียงลำดับความสำคัญ: props > model specific > default
-  return { 
-    ...defaultConfig, 
-    ...specificConfig,
-    ...props.modelConfig 
+  return {
+    ...defaultConfig,
   };
 };
 
 const initThreeJS = () => {
   const config = getModelConfig();
-  
+
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 0.1, 1000);
   camera.position.z = config.cameraDistance;
@@ -91,11 +59,16 @@ const initThreeJS = () => {
   container3D.value.appendChild(renderer.domElement);
 
   const topLight = new THREE.DirectionalLight(0xffffff, 1);
-  topLight.position.set(500, 500, 500);
-  topLight.castShadow = true;
+  topLight.position.set(100, 100, 500);
+  topLight.castShadow = false;
   scene.add(topLight);
 
-  const ambientLight = new THREE.AmbientLight(0x333333, config.lightIntensity);
+  const backLight = new THREE.DirectionalLight(0xffffff, 1);
+  backLight.position.set(-100, 100, -500);
+  backLight.castShadow = false;
+  scene.add(backLight);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, config.lightIntensity);
   scene.add(ambientLight);
 
   const loader = new GLTFLoader();
@@ -103,21 +76,21 @@ const initThreeJS = () => {
     props.modelPath,
     function (gltf) {
       object = gltf.scene;
-      
+
       // ตั้งค่าการหมุนเริ่มต้น
       if (config.initialRotation) {
         object.rotation.x = config.initialRotation.x;
         object.rotation.y = config.initialRotation.y;
         object.rotation.z = config.initialRotation.z;
       }
-      
+
       scene.add(object);
     },
     function (xhr) {
-      console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
     },
     function (error) {
-      console.error('Error loading model:', error);
+      console.error("Error loading model:", error);
     }
   );
 
@@ -129,7 +102,7 @@ const initThreeJS = () => {
   }
 
   animate(config);
-  
+
   // เพิ่ม event listener สำหรับ mouse move ถ้า model สามารถหมุนได้
   if (config.rotatable && !config.useOrbitControls) {
     container3D.value.addEventListener("mousemove", handleMouseMove);
@@ -138,25 +111,25 @@ const initThreeJS = () => {
 
 const animate = (config) => {
   animationId = requestAnimationFrame(() => animate(config));
-  
+
   if (object) {
     // จัดการการหมุนตาม mouse ถ้า rotatable แต่ไม่ใช้ OrbitControls
     if (config.rotatable && !config.useOrbitControls) {
-      object.rotation.y = config.initialRotation.y + mouseX / WIDTH * 3;
-      object.rotation.x = config.initialRotation.x + mouseY * 2.5 / HEIGHT;
+      object.rotation.y = config.initialRotation.y + (mouseX / WIDTH) * 3;
+      object.rotation.x = config.initialRotation.x + (mouseY * 2.5) / HEIGHT;
     }
-    
+
     // หมุนอัตโนมัติถ้า config กำหนด
     if (config.autoRotate) {
       object.rotation.y += config.rotationSpeed;
     }
   }
-  
+
   // อัพเดท OrbitControls ถ้ามี
   if (controls) {
     controls.update();
   }
-  
+
   renderer.render(scene, camera);
 };
 
@@ -167,40 +140,46 @@ const handleMouseMove = (e) => {
 };
 
 // Watch สำหรับการเปลี่ยน props
-watch(() => props.objToRender, (newModel, oldModel) => {
-  if (newModel !== oldModel) {
-    resetScene();
-    initThreeJS();
+watch(
+  () => props.objToRender,
+  (newModel, oldModel) => {
+    if (newModel !== oldModel) {
+      resetScene();
+      initThreeJS();
+    }
   }
-});
+);
 
-watch(() => props.modelPath, (newPath, oldPath) => {
-  if (newPath !== oldPath) {
-    resetScene();
-    initThreeJS();
+watch(
+  () => props.modelPath,
+  (newPath, oldPath) => {
+    if (newPath !== oldPath) {
+      resetScene();
+      initThreeJS();
+    }
   }
-});
+);
 
 const resetScene = () => {
   if (animationId !== null) {
     cancelAnimationFrame(animationId);
   }
-  
+
   if (container3D.value) {
     container3D.value.removeEventListener("mousemove", handleMouseMove);
   }
-  
+
   if (renderer) {
     renderer.dispose();
     if (container3D.value && container3D.value.contains(renderer.domElement)) {
       container3D.value.removeChild(renderer.domElement);
     }
   }
-  
+
   if (scene) {
     scene.clear();
   }
-  
+
   if (controls) {
     controls.dispose();
     controls = null;
@@ -221,6 +200,6 @@ onBeforeUnmount(() => {
   width: 600px;
   height: 600px;
   display: block;
-  border: 2px solid #B7B7B7;
+  border: 2px solid #b7b7b7;
 }
 </style>

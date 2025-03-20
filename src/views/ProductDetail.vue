@@ -5,11 +5,7 @@
       <!-- Header with Navigation and Image -->
       <div class="product-header">
         <div class="product-header-img">
-          <ThreeJsScene 
-            :objToRender="selectedModel" 
-            :modelPath="modelPaths[selectedModel]" 
-            :modelConfig="modelConfigs[selectedModel]" 
-          />
+          <ThreeJsScene :objToRender="selectedColor" :modelPath="modelPaths" />
           <!-- <img
             :src="productImage"
             :alt="product.pdName"
@@ -147,8 +143,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeMount } from "vue";
-import ThreeJsScene from '@/components/ThreeJsScene.vue';
+import { ref, computed, onMounted, onBeforeMount, watch } from "vue";
+import ThreeJsScene from "@/components/ThreeJsScene.vue";
 import Shoes1 from "@/assets/shoes/shoe1.png";
 
 import Fav from "@/assets/images/icon-fav-gray.svg";
@@ -175,16 +171,9 @@ const productStore = useProductStore();
 
 const productId = computed(() => route.params.id);
 
-const product = computed(() =>
-  productStore.product.find((p) =>
-    p.pdColor.some((color) => color.pdCode === productId.value)
-  )
-);
+const product = ref();
 
 const wishlistProduct = computed(() => productStore.wishlistProduct);
-
-// Product Data
-const productImage = ref(Shoes1);
 
 // Size Selection
 const sizeGroups = ref([
@@ -219,76 +208,19 @@ const currentFavoriteIcon = computed(() => {
 // Models
 // สร้าง ref สำหรับเก็บชื่อ model ที่ถูกเลือก
 // เปลี่ยนจาก ref เป็น computed หากคุณต้องการคำนวณค่าเหล่านี้จากตัวแปรอื่นๆ
-const selectedModel = ref('shoe5');
 
-// ใช้ URL ที่เป็น relative จาก assets แทน
-const modelPaths = {
-  eye: new URL('../assets/models/eye/scene.gltf', import.meta.url).href,
-  dino: new URL('../assets/models/dino/scene.gltf', import.meta.url).href,
-  shoe1: new URL('../assets/models/shoe1/scene.gltf', import.meta.url).href,
-  shoe2: new URL('../assets/models/shoe2/scene.gltf', import.meta.url).href,
-  shoe3: new URL('../assets/models/shoe3/scene.gltf', import.meta.url).href,
-  shoe4: new URL('../assets/models/shoe4/scene.gltf', import.meta.url).href,
-  shoe5: new URL('../assets/models/shoe5/scene.gltf', import.meta.url).href,
-  
-  // เพิ่ม models ใหม่ตรงนี้
-  newModel: new URL('../assets/models/newModel/scene.gltf', import.meta.url).href
-};
+const selectedColor = ref("");
 
-// เพิ่ม configs เฉพาะสำหรับแต่ละ model
-const modelConfigs = {
-  eye: {
-    rotatable: true,
-    cameraDistance: 500,
-    initialRotation: { x: -1.2, y: -3, z: 0 }
-  },
-  dino: {
-    rotatable: true,
-    cameraDistance: 25,
-    lightIntensity: 5,
-    useOrbitControls: true
-  },
-  shoe1: {
-    rotatable: true,
-    cameraDistance: 500,
-    initialRotation: { x: -1.2, y: -3, z: 0 }
-  },
-  shoe2: {
-    rotatable: true,
-    cameraDistance: 300,
-    lightIntensity: 5,
-    useOrbitControls: true
-  },
-  shoe3: {
-    rotatable: true,
-    cameraDistance: 0.75,
-    lightIntensity: 5,
-    useOrbitControls: true
-  },
-  shoe4: {
-    rotatable: true,
-    cameraDistance: 2,
-    lightIntensity: 5,
-    initialRotation: { x: 0, y: 1.5, z: 0 },
-    useOrbitControls: true
-  },
-  shoe5: {
-    rotatable: true,
-    cameraDistance: 1,
-    lightIntensity: 5,
-    initialRotation: { x: 0, y: 1.5, z: 0 },
-    useOrbitControls: true
-  },
-  // เพิ่ม config สำหรับ model ใหม่
-  newModel: {
-    rotatable: true,
-    cameraDistance: 100, // ปรับตามขนาดและลักษณะของ model
-    lightIntensity: 1.5,
-    initialRotation: { x: 0, y: 0, z: 0 },
-    autoRotate: true, // เพิ่มการหมุนอัตโนมัติถ้าต้องการ
-    rotationSpeed: 0.005
-  }
-};
+const modelPaths = computed(() => {
+  return new URL(
+    `../assets/models/${
+      selectedColor.value && selectedColor.value !== ""
+        ? selectedColor.value
+        : productId.value
+    }/scene.gltf`,
+    import.meta.url
+  ).href;
+});
 
 // Tabs
 const tabs = ref([
@@ -321,6 +253,7 @@ const selectColor = (colorId) => {
     color.isSelected = color.pdCode === colorId;
     return color;
   });
+  selectedColor.value = colorId;
 };
 
 const fetchProductInWishlist = async () => {
@@ -352,15 +285,13 @@ const setActiveTab = (tabId) => {
 };
 
 const addToCart = async () => {
-  const selectedColor = product.value.pdColor.find((color) => color.isSelected);
-
   if (!selectedColor) {
     console.warn("No color selected!");
     return; // Exit function if no color is selected
   }
 
   // Use the selected color's pdCode
-  await updateBasketProducts(selectedColor.pdCode, 1);
+  await updateBasketProducts(selectedColor.value.pdCode, 1);
   await fetchProductInBasket();
 };
 
@@ -396,10 +327,25 @@ const toggleFavorite = async () => {
 
 const buyNow = async () => {
   await addToCart();
-  router.push({ name: 'cart' })
+  router.push({ name: "cart" });
 };
 
+watch(selectedColor, (newValue) => {
+  if (newValue)
+    console.log(
+      selectedColor.value && selectedColor.value !== ""
+        ? selectedColor.value
+        : productId,
+      "and this is the modelPath: ",
+      modelPaths.value
+    );
+});
+
 onBeforeMount(() => {
+  product.value = productStore.product.find((p) =>
+    p.pdColor.some((color) => color.pdCode === productId.value)
+  );
+
   const wishlistPdCodes = new Set(
     wishlistProduct.value.map((wishlist) => wishlist.pdCode)
   );

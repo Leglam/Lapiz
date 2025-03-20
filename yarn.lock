@@ -901,7 +901,7 @@ kolorist@^1.8.0:
   dependencies:
     axios "^1.7.9"
     crypto-js "^4.2.0"
-    lapizfrontend "file:"
+    lapizfrontend "file:../../../AppData/Local/Yarn/Cache/v6/npm-lapizfrontend-0.0.0-5da8110c-c20b-4692-a228-d18f89870043-1742457329442/node_modules/lapizfrontend"
     pinia "^2.3.0"
     sass "^1.83.1"
     three "^0.174.0"
@@ -1178,7 +1178,7 @@ svg-tags@^1.0.0:
 
 three@^0.174.0:
   version "0.174.0"
-  resolved "https://registry.npmjs.org/three/-/three-0.174.0.tgz"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.174.0.tgz#53f46d6fd27515231b2af321f798f1e0ecf3f905"
   integrity sha512-p+WG3W6Ov74alh3geCMkGK9NWuT62ee21cV3jEnun201zodVF4tCE5aZa2U122/mkLRmhJJUQmLLW1BH00uQJQ==
 
 to-regex-range@^5.0.1:
