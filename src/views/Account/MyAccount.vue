@@ -36,9 +36,9 @@
                 <div class="form-field">
                   <label>ชื่อผู้ใช้</label>
                   <input
-                    v-model="userProfile.username"
+                    v-model="username"
                     type="text"
-                    placeholder="Thanathorn"
+                    disabled
                   />
                 </div>
                 <div class="form-field">
@@ -164,6 +164,8 @@
 <script setup>
 import date from "@/date.vue";
 import { reactive } from "vue";
+import { useRouter } from "vue-router";
+
 
 const userProfile = reactive({
   firstName: "ธนาทร",

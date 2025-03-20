@@ -24,7 +24,22 @@
         </div>
       </div>
       <div v-else>
-        <div style="color: white">{{ username }}</div>
+        <div class="login_container">
+          <div @click="pushPage('my-account')" class="login_username">{{ username }}</div>
+          <div class="profile-img-container">
+            <a
+              href="#"
+              class="profile-img"
+              @mouseenter="isHovered = true"
+              @mouseleave="isHovered = false"
+              :class="{
+                'profile--hovered': isHovered,
+              }"
+            >
+              <img :src="currentProfileIcon" alt="Profile" class="profile-icon" />
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -148,5 +163,26 @@ watch(isLogin, (newValue) => {
 .profile-icon {
   width: 18px;
   height: auto;
+}
+
+.login_container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+}
+
+.login_username {
+  color: var(--white-color);
+  font-size: 16px;
+  font-weight: medium;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: 0.3s;
+}
+
+.login_username:hover {
+  color: var( --text-userLogin-color);
+  opacity: 0.8;
 }
 </style>
