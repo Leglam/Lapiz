@@ -36,7 +36,6 @@ import ProfileIcon from "@/assets/images/ProfileIcon.svg";
 import ProfileIconHover from "@/assets/images/ProfileIconHover.svg";
 import { useRouter } from "vue-router";
 import { useLoginStore } from "@/stores/loginStore";
-import CryptoJS from "crypto-js";
 
 const router = useRouter();
 const loginStore = useLoginStore();

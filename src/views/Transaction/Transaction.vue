@@ -1,7 +1,11 @@
 <template>
   <div class="transaction-container">
     <div class="header-logo">
-      <img src='@/assets/images/img_header_logo.png' alt="Logo Image" class="logo">
+      <img
+        src="@/assets/images/img_header_logo.png"
+        alt="Logo Image"
+        class="logo"
+      />
     </div>
 
     <div class="order-container">
@@ -16,7 +20,11 @@
             </div>
           </div>
           <div class="input-group">
-            <input type="text" class="form-input full-width" placeholder="อีเมล" />
+            <input
+              type="text"
+              class="form-input full-width"
+              placeholder="อีเมล"
+            />
             <label class="checkbox-wrapper">
               <input type="checkbox" />
               <span>ส่งข่าวสาร และข้อเสนอพิเศษถึงฉันทางอีเมล</span>
@@ -32,13 +40,25 @@
               <input type="text" class="form-input" placeholder="ชื่อจริง" />
               <input type="text" class="form-input" placeholder="นามสกุล" />
             </div>
-            <input type="text" class="form-input full-width" placeholder="ที่อยู่" />
+            <input
+              type="text"
+              class="form-input full-width"
+              placeholder="ที่อยู่"
+            />
             <div class="address-details">
               <input type="text" class="form-input" placeholder="เขต/แขวง" />
               <input type="text" class="form-input" placeholder="จังหวัด" />
-              <input type="text" class="form-input" placeholder="รหัสไปรษณีย์" />
+              <input
+                type="text"
+                class="form-input"
+                placeholder="รหัสไปรษณีย์"
+              />
             </div>
-            <input type="text" class="form-input full-width" placeholder="โทรศัพท์" />
+            <input
+              type="text"
+              class="form-input full-width"
+              placeholder="โทรศัพท์"
+            />
             <div class="checkbox-group">
               <label class="checkbox-wrapper">
                 <input type="checkbox" checked />
@@ -46,7 +66,10 @@
               </label>
               <label class="checkbox-wrapper">
                 <input type="checkbox" checked />
-                <span>ที่อยู่เรียกเก็บเงิน และที่อยู่จัดส่งของฉันเป็นที่อยู่เดียวกัน</span>
+                <span
+                  >ที่อยู่เรียกเก็บเงิน
+                  และที่อยู่จัดส่งของฉันเป็นที่อยู่เดียวกัน</span
+                >
               </label>
             </div>
           </div>
@@ -61,12 +84,18 @@
         </div>
 
         <!-- Payment Section -->
-        <payment-section @update-payment-method="paymentMethod = $event"></payment-section>
+        <payment-section
+          @update-payment-method="paymentMethod = $event"
+        ></payment-section>
 
         <!-- Action Buttons -->
         <div class="action-buttons">
           <a href="#" class="back-link">
-            <img src='@/assets/images/icon-back.svg' alt="BackIcon" class="back-icon" />
+            <img
+              src="@/assets/images/icon-back.svg"
+              alt="BackIcon"
+              class="back-icon"
+            />
             <span class="back-icon">กลับไปที่ตะกร้าสินค้า</span>
           </a>
           <button class="submit-button">สั่งซื้อเสร็จสมบูรณ์</button>
@@ -74,7 +103,8 @@
 
         <!-- Footer -->
         <div class="footer">
-          <div class="footer-line"></div> <!-- เส้นขีดด้านบน -->
+          <div class="footer-line"></div>
+          <!-- เส้นขีดด้านบน -->
           <div class="footer-links">
             <a href="#">นโยบายการคืนสินค้า</a>
             <a href="#">นโยบายข้อมูลส่วนบุคคล</a>
@@ -89,20 +119,24 @@
         <!-- Product List -->
         <div class="product-list">
           <div v-for="item in cartItems" :key="item.pdId" class="product-item">
-            <img :src="item.image" :alt="item.pdName" class="product-image" />
+            <img src="/src/assets/shoes/shoe1.png" :alt="item.pdName" class="product-image" />
             <div class="product-details">
               <p class="product-name">{{ item.pdName }}</p>
-              <p class="product-variant">{{ item.pdColor }} / {{ item.size }}</p>
+              <p class="product-variant">{{ item.pdColor }} / 9</p>
             </div>
             <p class="product-price">{{ item.pdPrice.toFixed(2) }} THB</p>
           </div>
 
           <!-- Discount Code -->
           <div class="discount-section">
-            <input type="text" class="form-input full-width" placeholder="โค้ดส่วนลด" />
+            <input
+              type="text"
+              class="form-input full-width"
+              placeholder="โค้ดส่วนลด"
+            />
             <button class="apply-button">นำไปใช้</button>
           </div>
-          
+
           <!-- Summary -->
           <div class="summary-subtotal">
             <div class="subtotal-row">
@@ -130,47 +164,45 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import PaymentSection from '@/components/PaymentSection.vue';
-import {
-  buyBasketProducts,
-  getBasketProducts,
-  removeBasketProduct,
-  updateBasketProducts,
-} from "@/api/productService";
+import { ref, onMounted, computed } from "vue";
+import { useRoute } from "vue-router";
+import PaymentSection from "@/components/PaymentSection.vue";
+import { buyBasketProducts, getBasketProducts } from "@/api/productService";
 import { useProductStore } from "@/stores/productStore";
 
-const route = useRoute();
-const cartItems = ref([]);
-const totalPrice = ref(0);
+const productStore = useProductStore();
+const cartItems = computed(() => {
+  return productStore.basketProduct;
+});
 
-onMounted(() => {
-  if (route.query.cartItems) {
-    cartItems.value = JSON.parse(route.query.cartItems);
-  }
-  if (route.query.totalPrice) {
-    totalPrice.value = route.query.totalPrice;
+const totalPrice = computed(() => {
+  if (cartItems.value !== null) {
+    return cartItems.value.reduce(
+      (sum, item) => sum + item.pdPrice * item.quantity,
+      0
+    );
+  } else {
+    return 0;
   }
 });
 
-const paymentMethod = ref('card');
+const paymentMethod = ref("card");
 
-const fetchProductInBasket = async () => {
-  const response = await getBasketProducts();
-  cartItems.value = response;
-  console.log(cartItems.value);
+// const fetchProductInBasket = async () => {
+//   const response = await getBasketProducts();
+//   cartItems.value = response;
+//   console.log(cartItems.value);
 
-  if (response !== null) {
-    const totalQuantity = response.reduce(
-      (sum, product) => sum + product.quantity,
-      0
-    );
-    productStore.setBasketProductCount(totalQuantity);
-  } else {
-    productStore.setBasketProductCount(0);
-  }
-};
+//   if (response !== null) {
+//     const totalQuantity = response.reduce(
+//       (sum, product) => sum + product.quantity,
+//       0
+//     );
+//     productStore.setBasketProductCount(totalQuantity);
+//   } else {
+//     productStore.setBasketProductCount(0);
+//   }
+// };
 
 const buyProduct = async () => {
   await buyBasketProducts();
@@ -261,7 +293,7 @@ const buyProduct = async () => {
 
 .login-text {
   position: relative;
-  color: #002FFF;
+  color: #002fff;
   font-size: 16px;
   text-decoration: underline;
   bottom: 0.5rem;
@@ -323,7 +355,7 @@ const buyProduct = async () => {
 .shipping-notice {
   width: 609px;
   padding: 20px;
-  background-color: #FFF4CA;
+  background-color: #fff4ca;
   /* border: 2px solid #000000; */
   border-radius: 8px;
   font-size: 14px;
@@ -342,7 +374,7 @@ const buyProduct = async () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #002FFF;
+  color: #002fff;
   text-decoration: none;
 }
 
@@ -352,7 +384,7 @@ const buyProduct = async () => {
 
 .submit-button {
   position: relative;
-  background-color: #375BFE; /* สีน้ำเงินสด */
+  background-color: #375bfe; /* สีน้ำเงินสด */
   color: white; /* ตัวอักษรสีขาว */
   padding: 0.75rem 1.5rem; /* ขยายขนาดปุ่ม */
   font-size: 1.2rem; /* ขนาดตัวอักษรใหญ่ขึ้น */
@@ -365,13 +397,14 @@ const buyProduct = async () => {
 }
 
 .submit-button:hover {
-  background-color: #2042D8; /* ทำให้เข้มขึ้นเมื่อโฮเวอร์ */
+  background-color: #2042d8; /* ทำให้เข้มขึ้นเมื่อโฮเวอร์ */
 }
 
 /* Order Summary */
 
 /* ปรับ content ให้อยู่ตรงกลาง */
-.form-section, .order-summary {
+.form-section,
+.order-summary {
   flex: 1;
   padding: 0 2rem;
   display: flex;
@@ -393,7 +426,7 @@ const buyProduct = async () => {
   margin-top: 40px;
   margin-left: 0;
   margin-right: auto;
-  left: -3.1rem
+  left: -3.1rem;
 }
 
 /* Product List */
@@ -410,7 +443,7 @@ const buyProduct = async () => {
   height: 90px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1px solid #7F7F7F; /* เพิ่มเส้นขอบ */
+  border: 1px solid #7f7f7f; /* เพิ่มเส้นขอบ */
   padding: 3px; /* เพิ่มระยะห่างระหว่างรูปกับขอบ */
   background-color: #fff; /* กำหนดพื้นหลังสีขาว */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* เพิ่มเงา */
@@ -526,7 +559,7 @@ const buyProduct = async () => {
 }
 
 .footer-links a:hover {
-  color: #002FFF;
+  color: #002fff;
 }
 
 /* Responsive Design */

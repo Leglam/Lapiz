@@ -62,12 +62,18 @@
         <div class="shipping-note">
           Tax included and shipping calculated at checkout
         </div>
-        <button @click="pushPage('transaction')" class="checkout-button">ชำระเงิน</button>
+        <button @click="pushPage('transaction')" class="checkout-button">
+          ชำระเงิน
+        </button>
       </div>
     </div>
     <div v-else>
       <div class="Shopping-Container">
-        <img src='@/assets/images/shopping-bags.svg' alt="Shopping Image" class="Shopping-Img">
+        <img
+          src="@/assets/images/shopping-bags.svg"
+          alt="Shopping Image"
+          class="Shopping-Img"
+        />
         <span class="Empty-Cart-text">ถึงเค้าจะไม่ว่าง แต่เราว่างอยู่นะ!</span>
         <button class="shopping-button" @click="pushPage('homepage')">
           <span class="Empty-Cart-text">ช้อปปิ้งกันเลย</span>
@@ -107,9 +113,11 @@ const fetchProductInBasket = async () => {
       (sum, product) => sum + product.quantity,
       0
     );
+    productStore.setBasketProduct(response);
     productStore.setBasketProductCount(totalQuantity);
   } else {
     cartItems.value = [];
+    productStore.setBasketProduct([]);
     productStore.setBasketProductCount(0);
   }
 };
@@ -414,9 +422,9 @@ onMounted(() => {
   align-self: center;
 }
 
-.Empty-Cart-text{
+.Empty-Cart-text {
   text-align: center;
-  font-size: 1.1vw ;
+  font-size: 1.1vw;
 }
 
 @media (max-width: 768px) {
