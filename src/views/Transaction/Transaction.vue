@@ -1,13 +1,5 @@
 <template>
   <div class="transaction-container">
-    <div class="header-logo">
-      <img
-        src="@/assets/images/img_header_logo.png"
-        alt="Logo Image"
-        class="logo"
-      />
-    </div>
-
     <div class="order-container">
       <!-- Left Section -->
       <div class="form-section">
@@ -15,9 +7,6 @@
         <div class="contact-section">
           <div class="contact-header">
             <h1 class="section-heading">ข้อมูลติดต่อ</h1>
-            <div class="login-link">
-              <a href="#" class="login-text">เข้าสู่ระบบ</a>
-            </div>
           </div>
           <div class="input-group">
             <input
@@ -203,21 +192,6 @@ const buyProduct = async () => {
   flex-direction: column;
 }
 
-.header-logo {
-  display: flex;
-  padding: 0.375rem 2.875rem;
-  background-color: #ecefbb;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
-}
-
-.logo {
-  height: 48px;
-  width: 108px;
-  object-fit: contain;
-  margin-left: 80px;
-}
-
 /* ปรับให้ container แบ่งเป็น 50:50 */
 .order-container {
   display: flex;
@@ -269,24 +243,6 @@ const buyProduct = async () => {
   gap: 8px;
   margin-top: 10px;
   font-size: 14px;
-}
-
-.login-link {
-  margin-top: 15px;
-}
-
-.login-text {
-  position: relative;
-  color: #002fff;
-  font-size: 16px;
-  text-decoration: underline;
-  bottom: 0.5rem;
-  left: 3rem;
-  transition: all 0.3s ease-in-out;
-}
-
-.login-text:hover {
-  transform: scale(1.05);
 }
 
 .input-group {
