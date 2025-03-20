@@ -1,0 +1,11 @@
+Model Information:
+* title:	Adidas shoe .::RAWscan::. NO TEXTURE
+* source:	https://sketchfab.com/3d-models/adidas-shoe-rawscan-no-texture-ff89973bbc5242a9bd428b7858084dcd
+* author:	Andrea Spognetta (Spogna) (https://sketchfab.com/spogna)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Adidas shoe .::RAWscan::. NO TEXTURE" (https://sketchfab.com/3d-models/adidas-shoe-rawscan-no-texture-ff89973bbc5242a9bd428b7858084dcd) by Andrea Spognetta (Spogna) (https://sketchfab.com/spogna) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

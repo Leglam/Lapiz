@@ -12,6 +12,8 @@ export default defineConfig({
     vueJsx(),
     vueDevTools(),
   ],
+  assetsInclude: ['**/*.gltf', '**/*.glb', '**/*.bin'],
+  // You might also need this for other 3D model related files
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
