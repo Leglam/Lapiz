@@ -429,7 +429,7 @@ onBeforeMount(() => {
   /* width: 40%; */
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  margin-bottom: 2rem;
 }
 
 .product-title {
@@ -503,15 +503,15 @@ onBeforeMount(() => {
 }
 
 .color-option {
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  padding: 1.5px;
   border: 1px solid transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 0.5rem;
 }
 
 .color-option.color-selected {
@@ -519,8 +519,8 @@ onBeforeMount(() => {
 }
 
 .color-inner {
-  width: 13px;
-  height: 13px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: 1px solid #e5e5e5;
 }
