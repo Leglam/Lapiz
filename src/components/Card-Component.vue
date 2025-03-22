@@ -52,7 +52,6 @@
             </label>
 
             <a
-              @click="pushPage('wishlist')"
               class="favorite-button"
               @mouseenter="isHovered = true"
               @mouseleave="isHovered = false"
@@ -75,11 +74,17 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import shoe1 from "@/assets/shoes/shoe1.png";
 import FavGray from "@/assets/images/FavGray.svg";
 import FavRed from "@/assets/images/icon-fav-red.svg";
+import {
+  addWishlistProducts,
+  getWishlistProducts,
+  removeWishlistProduct,
+} from "@/api/productService";
+import { useProductStore } from "@/stores/productStore";
 
 const props = defineProps({
   product: Object,
@@ -93,26 +98,62 @@ const emit = defineEmits([
   "select-compare-product",
   "remove-compare-product",
 ]);
+
+const productStore = useProductStore();
 const router = useRouter();
 const currentProduct = ref(null);
 const isVisible = ref(true);
 const isCheckboxChecked = ref(false);
 
-// สถานะของหัวใจ
 const isFavorite = ref(false);
 
-// ฟังก์ชันสำหรับการคลิกหัวใจ
-const toggleFavorite = () => {
-  isFavorite.value = !isFavorite.value;
+const wishlistProduct = computed(() => productStore.wishlistProduct);
+
+const fetchProductInWishlist = async () => {
+  const response = await getWishlistProducts();
+
+  if (response !== null) {
+    productStore.setWishlistProduct(response);
+  } else {
+    productStore.setWishlistProduct([]);
+  }
 };
 
-// ฟังก์ชันเลือกสี
+const toggleFavorite = async () => {
+  if (isFavorite.value) {
+    await removeProductFromWishlist(props.product.pdColor[0].pdCode);
+  } else {
+    await addProductToWishlist(props.product.pdColor[0].pdCode);
+  }
+
+  await fetchProductInWishlist();
+
+  console.log(isFavorite.value);
+};
+
+const addProductToWishlist = async (pdCode) => {
+  try {
+    await addWishlistProducts(pdCode);
+    isFavorite.value = true;
+  } catch (error) {
+    console.log("Add wishlist error");
+  }
+};
+
+const removeProductFromWishlist = async (pdCode) => {
+  try {
+    await removeWishlistProduct(pdCode);
+    isFavorite.value = false;
+  } catch (error) {
+    console.log("Remove wishlist error");
+  }
+};
+
 const selectColor = (colorId) => {
   currentProduct.value = colorId;
   emit("select-color", colorId);
 };
 
-// ฟังก์ชันเลือกสินค้าและไปที่หน้ารายละเอียด
 const selectProduct = () => {
   router.push({
     name: "product-detail",
@@ -125,7 +166,6 @@ const handleCheckbox = () => {
   else emit("remove-compare-product", props.product);
 };
 
-// ฟังก์ชันก่อนที่คอมโพเนนต์จะหายไป
 const beforeLeave = () => {
   // สามารถทำการเตรียมตัวก่อนที่การ์ดจะหายไป
 };
@@ -135,19 +175,11 @@ const onLeave = (el, done) => {
   done();
 };
 
-// Favorite icon states
 const isHovered = ref(false);
 
-// Define icon paths
-const favoriteIcons = {
-  default: FavGray,
-  hover: FavRed,
-};
-
-// Compute current icon based on isFavorite and hover state
 const computedFavoriteIcon = computed(() => {
   if (isFavorite.value || isHovered.value) {
-    return FavRed; // ใช้ FavRed เมื่อหัวใจถูกคลิกหรือ hovered
+    return FavRed;
   }
   return FavGray;
 });
@@ -158,6 +190,16 @@ watch(
     isCheckboxChecked.value = newValue;
   }
 );
+
+onBeforeMount(() => {
+  const wishlistPdCodes = new Set(
+    wishlistProduct.value.map((wishlist) => wishlist.pdCode)
+  );
+
+  isFavorite.value = props.product.pdColor.some((color) =>
+    wishlistPdCodes.has(color.pdCode)
+  );
+});
 </script>
 
 <style scoped>

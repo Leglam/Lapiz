@@ -46,12 +46,12 @@ const pushPage = (pageName) => {
 };
 const fetchWishlistProduct = async () => {
   const response = await getWishlistProducts();
-  
+
   if (response !== null) {
     productStore.setWishlistProduct(response);
   } else {
     productStore.setWishlistProduct([]);
-    wishlistProducts.value = null;
+    wishlistProducts.value = [];
     return;
   }
 
@@ -63,6 +63,7 @@ const fetchWishlistProduct = async () => {
   );
 
   wishlistProducts.value = fullProducts ? fullProducts : null;
+  console.log(wishlistProducts.value);
 };
 
 const selectColor = (colorId) => {
@@ -80,8 +81,6 @@ const removeProduct = async (pdCode) => {
 
   console.log("Remove product from wishlist: ", response);
   fetchWishlistProduct();
-
-  
 };
 
 onMounted(() => {
