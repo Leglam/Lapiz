@@ -30,7 +30,7 @@
             ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
           </p>
           <div class="forgot-password">
-            <a href="#">ลืมรหัสผ่าน</a>
+            <a @click="pushPage('forgot-password')">ลืมรหัสผ่าน</a>
           </div>
         </div>
 
@@ -80,6 +80,10 @@ const productStore = useProductStore();
 
 const usernameError = ref(false);
 const passwordError = ref(false);
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const userAuth = reactive({
   username: "",
