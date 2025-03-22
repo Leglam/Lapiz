@@ -304,7 +304,7 @@ const emit = defineEmits([
   border-radius: 10px;
   cursor: pointer;
   padding: 0;
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
 }
 
 .size-input {
@@ -323,11 +323,12 @@ const emit = defineEmits([
 
 /* Hover state - black border and text */
 .size-chip:hover {
-  border-color: #000;
+  outline: 1px solid rgb(56, 56, 56);
 }
 
 .size-chip:hover .size-label {
   color: #000;
+  font-size: medium;
 }
 
 /* Checked state - red border and text */
@@ -468,7 +469,7 @@ const emit = defineEmits([
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
-  color: #333;
+  color: black;
 }
 
 .price-text-input:focus {
@@ -530,6 +531,7 @@ const emit = defineEmits([
 .checkbox-label {
   display: flex;
   align-items: center;
+  width: 40%;
   gap: 8px;
   cursor: pointer;
   font-size: 14px;
@@ -543,6 +545,28 @@ const emit = defineEmits([
   border: 2px solid #666;
   border-radius: 2px;
   cursor: pointer;
+  appearance: none; /* ลบสไตล์เริ่มต้น */
+  border: 1px solid #000000; 
+  border-radius: 3px;
+  background-color: white; 
+  position: relative;
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+  content: ''; /* สร้างเนื้อหาใหม่ */
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  width: 4px;
+  height: 11px;
+  border: solid black; /* ขีดเส้นสีขาว */
+  border-width: 0 3px 3px 0; /* กำหนดขนาดของขีดเส้นเพื่อให้เหมือนติ๊กถูก */
+  transform: rotate(45deg); /* หมุนให้เป็นรูปติ๊กถูก */
+}
+
+.checkbox-label input[type="checkbox"]:hover {
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3); /* เพิ่มเงาดำเมื่อ hover */
+  transition: 0.3s;
 }
 
 .checkbox-label span {
