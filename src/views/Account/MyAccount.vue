@@ -89,9 +89,9 @@
 
             <!-- Add Edit and Change Password links in the same line -->
             <div class="edit-links">
-              <a href="#" class="edit-link">แก้ไข</a>
+              <a @click="pushPage('edit-info')" class="edit-link">แก้ไข</a>
               <span>|</span>
-              <a href="#" class="change-password-link">เปลี่ยนรหัสผ่าน</a>
+              <a @click="pushPage('edit-info')" class="change-password-link">เปลี่ยนรหัสผ่าน</a>
             </div>
           </div>
 
@@ -116,7 +116,7 @@
 
             <!-- Add Edit link at the bottom right of the right column -->
             <div class="edit-address-links">
-              <a href="#" class="edit-address-link">แก้ไข</a>
+              <a @click="pushPage('edit-address')" class="edit-address-link">แก้ไข</a>
             </div>
           </div>
         </div>
@@ -171,10 +171,17 @@
 
 <script setup>
 import date from "@/date.vue";
+import { useRouter } from "vue-router";
 import { computed, reactive } from "vue";
 import { useLoginStore } from "@/stores/loginStore";
 
+const router = useRouter();
+
 const loginStore = useLoginStore();
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const userName = computed(() => {
   return loginStore.username;
@@ -341,7 +348,7 @@ const viewOrderDetails = (orderId) => {
 
       .edit-address-links {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
         margin-top: 20px;
       }
     }

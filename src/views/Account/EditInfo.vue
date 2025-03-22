@@ -3,7 +3,7 @@
     <div class="edit-info-header">
       <div class="edit-info-navigation">
         <img src='@/assets/images/icon-back.svg' alt="BackIcon" class="back-icon" />
-        <span class="back-link">ย้อนกลับ</span>
+        <span @click="pushPage('my-account')" class="back-link">ย้อนกลับ</span>
       </div>
       <h1 class="page-title">แก้ไขข้อมูลบัญชี</h1>
     </div>
@@ -134,7 +134,14 @@
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
 import { ref, reactive } from 'vue'
+
+const router = useRouter();
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const userProfile = reactive({
   firstName: 'ธนาทร',

@@ -99,6 +99,11 @@ const router = createRouter({
       component: () => import("../views/Account/EditInfo.vue"),
     },
     {
+      path: "/edit-address",
+      name: "edit-address",
+      component: () => import("../views/EditAddress.vue"),
+    },
+    {
       path: "/credit-receipt",
       name: "credit",
       component: () => import("../views/Receipt/Credit.vue"),

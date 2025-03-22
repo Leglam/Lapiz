@@ -2,7 +2,7 @@
   <div class="edit-address-page">
     <div class="back-navigation">
       <img src='@/assets/images/icon-back.svg' alt="BackIcon" class="back-icon" />
-      <span class="back-link">ย้อนกลับ</span>
+      <span @click="pushPage('my-account')" class="back-link">ย้อนกลับ</span>
     </div>
     
     <h1 class="page-title">แก้ไขที่อยู่</h1>
@@ -95,7 +95,14 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+
+const router = useRouter();
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const shippingAddress = ref({
   detail: '',
