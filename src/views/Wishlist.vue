@@ -3,7 +3,7 @@
     <div class="wishlist-container">
       <h1 class="wishlist-title">รายการโปรด</h1>
       <div class="wishlist-separator"></div>
-      <div class="wishlist-product-grid">
+      <div v-if="wishlistProducts.length > 0" class="wishlist-product-grid">
         <WishlistCardComponent
           v-for="product in wishlistProducts"
           :key="product.pdModel"
@@ -12,11 +12,23 @@
           @remove-product="removeProduct"
         />
       </div>
+      <div v-else class="wishlist-empty-Container">
+        <img
+          src="@/assets/images/favourite-empty.svg"
+          alt="wishlist-empty-Image"
+          class="wishlist-empty-Image"
+        />
+        <span class="Empty-Cart-text">ถึงเค้าจะไม่ชอบ แต่เราชอบนะ!</span>
+        <button class="shopping-button" @click="pushPage('homepage')">
+          <span class="Empty-Cart-text">ช้อปปิ้งกันเลย</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import WishlistCardComponent from "@/components/Wishlist-Card-Component.vue";
 import {
@@ -25,9 +37,13 @@ import {
 } from "@/api/productService";
 import { useProductStore } from "@/stores/productStore";
 
+const router = useRouter();
 const productStore = useProductStore();
 const wishlistProducts = ref([]);
 
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 const fetchWishlistProduct = async () => {
   const response = await getWishlistProducts();
   
@@ -64,6 +80,8 @@ const removeProduct = async (pdCode) => {
 
   console.log("Remove product from wishlist: ", response);
   fetchWishlistProduct();
+
+  
 };
 
 onMounted(() => {
@@ -72,6 +90,8 @@ onMounted(() => {
 </script>
 
 <style>
+@import "@/styles/shopping-button.scss";
+
 .wishlist {
   padding: 20px;
   max-width: 1200px;
@@ -98,6 +118,25 @@ onMounted(() => {
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   width: 100%;
+}
+
+.wishlist-empty-Container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.9444vw;
+  padding-top: 2.0833vw;
+}
+
+.wishlist-empty-Image {
+  width: 10vw;
+  height: 10vw;
+  align-self: center;
+}
+
+.Empty-Cart-text {
+  text-align: center;
+  font-size: 1.1vw;
 }
 
 @media only screen and (max-width: 1024px) {
