@@ -111,7 +111,7 @@
         <div class="product-list">
           <div v-for="item in cartItems" :key="item.pdId" class="product-item">
             <img
-              src="/src/assets/shoes/shoe1.png"
+              :src="item.pdImg"
               :alt="item.pdName"
               class="product-image"
             />
@@ -217,7 +217,7 @@ const pushPage = (pageName) => {
   router.push({ name: pageName });
 };
 
-const paymentMethod = ref("promptpay");
+const paymentMethod = ref("cash");
 
 const buyProduct = async () => {
   try {

@@ -104,11 +104,7 @@
       <div class="order-summary">
         <div class="product-list">
           <div v-for="item in receiptItems" class="product-item">
-            <img
-              src="@/assets/shoes/shoe1.png"
-              alt="Navy shoe"
-              class="product-image"
-            />
+            <img :src="item.pdImg" alt="Navy shoe" class="product-image" />
             <div class="product-details">
               <p class="product-name">
                 {{ item.pdName }}

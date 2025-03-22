@@ -11,7 +11,7 @@
         </button>
       </div>
       <div @click="selectProduct" class="product-image-container">
-        <img :src="shoe1" :alt="product.name" class="product-image" />
+        <img :src="getProductImage" :alt="product.name" class="product-image" />
       </div>
       <div class="product-info">
         <h2 @click="selectProduct" class="product-title">
@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import shoe1 from "@/assets/shoes/shoe1.png";
 import { updateBasketProducts, getBasketProducts } from "@/api/productService";
 import { useProductStore } from "@/stores/productStore";
@@ -51,6 +51,7 @@ import { useRouter } from "vue-router";
 
 const props = defineProps({
   product: Object,
+  pdImgNumber: String,
 });
 
 const router = useRouter();
@@ -62,6 +63,16 @@ const emit = defineEmits(["select-color", "remove-product"]);
 
 const isVisible = ref(true);
 const isRemoving = ref(false);
+
+const getProductImage = computed(() => {
+  if (!props.product?.pdColor) return shoe1;
+
+  const matchedColor = props.product.pdColor.find(
+    (color) => color.pdCode === props.pdImgNumber
+  );
+
+  return matchedColor?.pdImg || props.product.pdColor[0].pdImg;
+});
 
 const selectColor = (colorId) => {
   currentProduct.value = colorId;

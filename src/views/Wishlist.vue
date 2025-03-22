@@ -8,6 +8,7 @@
           v-for="product in wishlistProducts"
           :key="product.pdModel"
           :product="product"
+          :pd-img-number="selectedProduct"
           @select-color="selectColor"
           @remove-product="removeProduct"
         />
@@ -40,10 +41,12 @@ import { useProductStore } from "@/stores/productStore";
 const router = useRouter();
 const productStore = useProductStore();
 const wishlistProducts = ref([]);
+const selectedProduct = ref("");
 
 const pushPage = (pageName) => {
   router.push({ name: pageName });
 };
+
 const fetchWishlistProduct = async () => {
   const response = await getWishlistProducts();
 
@@ -74,6 +77,8 @@ const selectColor = (colorId) => {
     });
     return product;
   });
+
+  selectedProduct.value = colorId;
 };
 
 const removeProduct = async (pdCode) => {

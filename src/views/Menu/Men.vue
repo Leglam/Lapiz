@@ -36,6 +36,7 @@
           :product="product"
           :is-disable="compareProductList.length >= 2"
           :checkbox-value="isProductInCompareList(product)"
+          :pd-img-number="selectedProduct"
           @select-color="selectColor"
           @select-compare-product="handleCompareProduct"
           @remove-compare-product="handleRemoveCompareProduct"
@@ -64,6 +65,8 @@ const products = computed(() => {
   return productStore.filteredProduct;
 });
 
+const selectedProduct = ref("");
+
 const compareProductList = ref([]);
 
 const handleCompareProduct = (value) => {
@@ -71,13 +74,15 @@ const handleCompareProduct = (value) => {
 };
 
 const selectColor = (colorId) => {
-  products.value = products.value.map((product) => {
+  products.value.map((product) => {
     product.pdColor = product.pdColor.map((color) => {
       color.isSelected = color.pdCode === colorId;
       return color;
     });
     return product;
   });
+
+  selectedProduct.value = colorId;
 };
 
 const toggleDropdown = () => {

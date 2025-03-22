@@ -17,7 +17,7 @@
           >
             <div class="product-info">
               <div class="product-image">
-                <img :src="Shoes1" :alt="item.pdName" />
+                <img :src="item.pdImg" :alt="item.pdName" />
               </div>
               <div class="product-details">
                 <div class="product-name">{{ item.pdName }}</div>

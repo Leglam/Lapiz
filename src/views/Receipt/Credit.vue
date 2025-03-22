@@ -104,7 +104,7 @@
         <div class="product-list">
           <div v-for="item in receiptItems" class="product-item">
             <img
-              src="@/assets/shoes/shoe1.png"
+              :src="item.pdImg"
               alt="Navy shoe"
               class="product-image"
             />

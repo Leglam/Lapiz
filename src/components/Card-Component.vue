@@ -2,7 +2,7 @@
   <transition name="fade" @before-leave="beforeLeave" @leave="onLeave">
     <div v-if="isVisible" class="product-card">
       <div @click="selectProduct" class="product-image-container">
-        <img :src="shoe1" :alt="product.name" class="product-image" />
+        <img :src="getProductImage" :alt="product.name" class="product-image" />
       </div>
       <div class="product-info">
         <h2 @click="selectProduct" class="product-title">
@@ -16,7 +16,9 @@
               align-items: center;
             "
           >
-            <span class="product-price">{{ (product.pdPrice).toLocaleString("en-US") }} THB</span>
+            <span class="product-price"
+              >{{ product.pdPrice.toLocaleString("en-US") }} THB</span
+            >
             <div class="product-colors">
               <div
                 v-for="color in product.pdColor"
@@ -90,6 +92,7 @@ const props = defineProps({
   product: Object,
   isDisable: Boolean,
   checkboxValue: Boolean,
+  pdImgNumber: String,
 });
 
 const emit = defineEmits([
@@ -108,6 +111,16 @@ const isCheckboxChecked = ref(false);
 const isFavorite = ref(false);
 
 const wishlistProduct = computed(() => productStore.wishlistProduct);
+
+const getProductImage = computed(() => {
+  if (!props.product?.pdColor) return shoe1;
+
+  const matchedColor = props.product.pdColor.find(
+    (color) => color.pdCode === props.pdImgNumber
+  );
+
+  return matchedColor?.pdImg || props.product.pdColor[0].pdImg;
+});
 
 const fetchProductInWishlist = async () => {
   const response = await getWishlistProducts();

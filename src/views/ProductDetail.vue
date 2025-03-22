@@ -13,7 +13,7 @@
           />
           <img
             v-else
-            :src="Shoes1"
+            :src="getProductImage"
             :alt="product.pdName"
             class="product-image"
           />
@@ -207,8 +207,18 @@ const currentFavoriteIcon = computed(() => {
 
 // Models
 const selectedColor = ref("");
-
 const isModelError = ref(false);
+
+const getProductImage = computed(() => {
+  if (!product.value?.pdColor) return Shoes1;
+
+  const matchedColor = product.value.pdColor.find(
+    (color) => color.pdCode === selectedColor.value
+  );
+
+  return matchedColor?.pdImg || product.value.pdColor[0].pdImg;
+});
+
 const modelPaths = computed(() => {
   return new URL(
     `../assets/models/${
@@ -332,14 +342,7 @@ const buyNow = async () => {
 };
 
 watch(selectedColor, (newValue) => {
-  if (newValue)
-    console.log(
-      selectedColor.value && selectedColor.value !== ""
-        ? selectedColor.value
-        : productId,
-      "and this is the modelPath: ",
-      modelPaths.value
-    );
+  if (newValue) isModelError.value = false;
 });
 
 onBeforeMount(() => {
