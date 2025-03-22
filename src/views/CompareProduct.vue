@@ -1,64 +1,72 @@
 <template>
   <div class="compare-page">
     <div class="nav-back">
-      <router-link to="/" class="back-link">
+      <div style="cursor: pointer" @click="backTo" class="back-link">
         ย้อนกลับ
-      </router-link>
+      </div>
     </div>
 
     <h1 class="page-title">เปรียบเทียบสินค้า</h1>
 
     <div class="comparison-container">
-      <div class="product-column" v-for="product in products" :key="product.sku">
+      <div
+        class="product-column"
+        v-for="(product, index) in compareProductList"
+        :key="index"
+      >
         <div class="product-image-container">
-          <img :src="product.image" :alt="product.title" class="product-image">
+          <img :src="Shoes1" :alt="product.pdModel" class="product-image" />
         </div>
-        <!-- <div class="product-image-container">
-          <img src='@/assets/images/img_image_5.png' alt="วิธีการวัดขนาดรองเท้าเด็ก" />
-        </div> -->
-        <h2 class="product-name">{{ product.title }}</h2>
-        <button class="add-to-cart-btn">เพิ่มเข้าตะกร้าสินค้า</button>
-        
+        <h2 class="product-name">{{ product.pdName }}</h2>
+        <button
+          @click="addToCart(product.pdColor[0].pdCode)"
+          class="add-to-cart-btn"
+        >
+          เพิ่มเข้าตะกร้าสินค้า
+        </button>
+
         <div class="product-details">
           <div class="detail-row">
             <div class="detail-label">ราคา</div>
-            <div class="detail-value">{{ product.price }} THB</div>
+            <div class="detail-value">{{ product.pdPrice }} THB</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">SKU</div>
-            <div class="detail-value">{{ product.sku }}</div>
+            <div class="detail-value">SSSSS</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">ประเภทสินค้า</div>
-            <div class="detail-value">{{ product.type }}</div>
+            <div class="detail-value">{{ product.pdType }}</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">วัสดุ</div>
-            <div class="detail-value">{{ product.material }}</div>
+            <div class="detail-value">{{ product.pdMaterial }}</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">พื้นรองเท้า</div>
-            <div class="detail-value">{{ product.sole }}</div>
+            <div class="detail-value">SSSSSSS</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">แบรนด์</div>
-            <div class="detail-value">{{ product.brand }}</div>
+            <div class="detail-value">{{ product.pdBrand }}</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">รุ่น</div>
-            <div class="detail-value">{{ product.model }}</div>
+            <div class="detail-value">{{ product.pdModel }}</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">เพศ</div>
-            <div class="detail-value">{{ product.gender }}</div>
+            <div class="detail-value">{{ product.pdGender }}</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">ขนาด</div>
-            <div class="detail-value">{{ product.sizes }}</div>
+            <div class="detail-value">9</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">คำอธิบาย</div>
-            <div class="detail-value description">{{ product.description }}</div>
+            <div class="detail-value description">
+              {{ product.pdDesc }}
+            </div>
           </div>
         </div>
       </div>
@@ -67,62 +75,54 @@
 </template>
 
 <script setup>
-import Shoes1 from '@/assets/images/shoe1.png';
-import Shoes2 from '@/assets/images/shoe1.png';
+import { getBasketProducts, updateBasketProducts } from "@/api/productService";
+import Shoes1 from "@/assets/shoes/shoe1.png";
+import Shoes2 from "@/assets/shoes/shoe1.png";
+import { useProductStore } from "@/stores/productStore";
+import { onMounted, onUnmounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
-const products = [
-  {
-    image: Shoes1,
-    title: 'รองเท้าผ้าใบ รุ่น Champion Toe Cap Canvas',
-    price: '2,250.00',
-    sku: 'S70832-1',
-    type: 'รองเท้าผ้าใบ',
-    material: '-',
-    sole: 'ยาง',
-    brand: 'Keds',
-    model: 'Champion',
-    gender: 'ชาย',
-    sizes: '5 / 5.5 / 6 / 6.5 / 7 / 7.5 / 8 / 8.5 / 9 / 9.5 / 10 / 10.5',
-    description: `รองเท้าผ้าใบรุ่นไอคอนิกของเราที่มาพร้อมลุคที่ดูสปอร์ตมากขึ้นด้วยการเพิ่มส่วนหัวรองเท้ายาง ตัวรองเท้าออกแบบในสไตล์มินิมอลที่จดจำได้ทันที มีความเรียบง่ายแต่เข้ากับทุกลุค และให้ความสบายตลอด ทั้งวัน รองเท้ารุ่น Champion ของ Keds ถือเป็นไอเท็มคลาสสิกที่ทุกตู้เสื้อผ้าควรมี โดยเวอร์ชั่นที่อัปเดตนี้ มีรายละเอียดหัวรองเท้ายางสีขาวที่เข้ากับพื้นรองเท้า ทำให้ดูเท่ สบาย ๆ และเป็นระเบียบ เหมาะอย่างยิ่งกับทุกสไตล์ของกางเกงยีนส์ และยังเข้ากันได้ดีกับการแต่งตัวที่ดูเป็นทางการมากขึ้น
+const router = useRouter();
+const productStore = useProductStore();
+const compareProductList = ref([]);
 
-• รองเท้าผ้าใบแบบผูกเชือก
-• ผ้าด้านบนทำจากผ้าแคนวาส 100% คอตตอน 
-• หัวรองเท้าเป็นยาง
-• ด้านในรองเท้าบุด้วยผ้าทวิลที่นุ่ม และระบายอากาศได้ดี
-• พื้นรองเท้าชั้นในทำจากโฟม PU รีไซเคิล 10% Softerra™ ที่นุ่มสบาย
-• พื้นรองเท้ายางที่ยืดหยุ่น และน้ำหนักเบา
-• คำแนะนำในการดูแลรักษา: ซักเฉพาะจุด แล้วผึ่งลมให้แห้ง
-• นำเข้า`
-  },
-  {
-    image: Shoes2,
-    title: 'รองเท้าผ้าใบ รุ่น Chillax Mini Twill',
-    price: '2,250.00',
-    sku: 'S70832-1',
-    type: 'รองเท้าผ้าใบ',
-    material: 'ถุงยาง',
-    sole: 'ยาง',
-    brand: 'Keds',
-    model: 'Chillax',
-    gender: 'ชาย',
-    sizes: '5 / 5.5 / 6 / 6.5 / 7 / 7.5 / 8 / 8.5 / 9 / 9.5 / 10 / 10.5',
-    description: `รองเท้าผ้าใบเท้าที่คุณจะสวมใส่จนกลายเป็นคู่โปรด รุ่น Chillax มาพร้อมความรู้สึกสบายเหมือนรองเท้าที่ใส่มานานแล้ว ตั้งแต่แรกที่สวม ด้วยผ้าที่วาดลวดลายแบบที่นุ่มสบาย และพื้นรองเท้าที่ถอดออกได้ที่จะนิ่มพอเหมาะ ทำให้พอดี สบาย ไร้ขอบ ทนทาน และยังเข้ากันได้กับทุกอย่าง และการโปรดล่าสุดของทุก แบบไม่รู้ตัวอีก ของคุณ
-    
+const backTo = () => {
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push("/");
+  }
+};
 
-• ผ้าใบแบบเท่าจากผ้าทวิลลายด็อตตอน
-• รองเท้าผบบแบบใส่แล้วสวยนิสัย พร้อมรูรูดเชือกที่กว้าง
-• ด้านเหนือผ้าในเพื่อให้สวมใส่ และทนถลอกได้ดี
-• ด้านในรองเท้าบุด้วนผ้าทวิลที่นุ่มและระบายอากาศได้ดี
-• พื้นรองเท้าชั้นใน EVA Softerra™ ที่ถอดออกได้ ทำจากโฟม PU รีไซเคิล 10%
-• พื้นรองเท้ายางที่ยืดหยุ่น และน้ำหนักเบา
-• คำแนะนำในการดูแลรักษา: ซักเฉพาะจุด แล้วผึ่งลมให้แห้ง
-• นำเข้า`
-  },
-]
+const fetchProductInBasket = async () => {
+  const response = await getBasketProducts();
+
+  if (response !== null) {
+    const totalQuantity = response.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    productStore.setBasketProductCount(totalQuantity);
+  } else {
+    productStore.setBasketProductCount(0);
+  }
+};
+const addToCart = async (productCode) => {
+  // Use the selected color's pdCode
+  await updateBasketProducts(productCode, 1);
+  await fetchProductInBasket();
+};
+
+onMounted(() => {
+  compareProductList.value = productStore.compareProduct;
+});
+
+onUnmounted(() => {
+  // productStore.setCompareProduct([]);
+});
 </script>
 
 <style scoped>
-
 .comparison-container {
   display: flex;
   gap: 138px; /* gap 40px = ชิดกันเลย + อีก 98 ตามระยะห่าง design ใน figma */
@@ -155,7 +155,7 @@ const products = [
   margin-bottom: 104px;
   opacity: 0;
   transform: translateY(-5%); /* เลื่อนออกจากซ้าย */
-  animation: slideIn 1s ease-out forwards; 
+  animation: slideIn 1s ease-out forwards;
 }
 
 .nav-back {
@@ -163,12 +163,12 @@ const products = [
 }
 
 .back-link {
-  color: #002FFF;
+  color: #002fff;
   text-decoration: none;
 }
 
-.back-link:hover{
-  color: #002FFF;
+.back-link:hover {
+  color: #002fff;
   text-decoration: underline;
 }
 
@@ -216,11 +216,10 @@ const products = [
   font-size: 16px;
   margin-bottom: 26px;
   margin-top: 26px;
-  
 }
 
 .add-to-cart-btn {
-  background-color: #0047FF;
+  background-color: #0047ff;
   color: white;
   border: none;
   padding: 8px 20px;
@@ -240,8 +239,8 @@ const products = [
   font-weight: bold;
   transition: all 0.2s ease-in-out; /* ทำให้เอฟเฟกต์ลื่นขึ้น */
 
-.add-to-cart-btn:hover{
-  background-color: #4869FF;
+.add-to-cart-btn:hover {
+  background-color: #4869ff;
   color: white;
   border: none;
   padding: 8px 20px;
@@ -254,7 +253,7 @@ const products = [
 
 .product-details {
   width: 100%;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 20px;
   flex-grow: 1; /* ทำให้ขยายเต็มที่และเท่ากัน */
@@ -264,7 +263,7 @@ const products = [
 
 .product-details:hover {
   width: 100%;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 20px;
   flex-grow: 1; /* ทำให้ขยายเต็มที่และเท่ากัน */
@@ -296,7 +295,6 @@ const products = [
   .products-container {
     flex-direction: column;
   }
-  
 }
 
 @keyframes slideIn {

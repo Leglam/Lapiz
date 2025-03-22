@@ -32,9 +32,18 @@
           v-for="product in products"
           :key="product.pdModel"
           :product="product"
+          :is-disable="compareProductList.length >= 2"
+          :checkbox-value="isProductInCompareList(product)"
           @select-color="selectColor"
+          @select-compare-product="handleCompareProduct"
+          @remove-compare-product="handleRemoveCompareProduct"
         />
       </div>
+
+      <CompareBar
+        v-if="compareProductList.length > 0"
+        :compare-product-list="compareProductList"
+      />
     </div>
   </div>
 </template>
@@ -43,16 +52,24 @@
 import ProductFilter from "@/components/ProductFilter.vue";
 import CardComponent from "@/components/Card-Component.vue";
 import { useProductStore } from "@/stores/productStore";
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import CompareBar from "@/components/compareBar.vue";
 
 const router = useRouter();
 
 const productStore = useProductStore();
+const isDropdownOpen = ref(false);
+
 const products = computed(() => {
   return productStore.product;
 });
-const isDropdownOpen = ref(false);
+
+const compareProductList = ref([]);
+
+const handleCompareProduct = (value) => {
+  compareProductList.value.push(value);
+};
 
 const selectColor = (colorId) => {
   products.value = products.value.map((product) => {
@@ -66,6 +83,20 @@ const selectColor = (colorId) => {
 
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const isProductInCompareList = (product) => {
+  return compareProductList.value.some((p) => p.pdModel === product.pdModel);
+};
+
+const handleRemoveCompareProduct = (product) => {
+  const index = compareProductList.value.findIndex(
+    (p) => p.pdModel === product.pdModel
+  );
+
+  if (index !== -1) {
+    compareProductList.value.splice(index, 1);
+  }
 };
 </script>
 

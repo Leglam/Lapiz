@@ -89,6 +89,11 @@ const router = createRouter({
       component: () => import("../views/Account/MyAccount.vue"),
     },
     {
+      path: "/edit-info",
+      name: "edit-info",
+      component: () => import("../views/Account/EditInfo.vue"),
+    },
+    {
       path: "/credit-receipt",
       name: "credit",
       component: () => import("../views/Receipt/Credit.vue"),
@@ -102,6 +107,11 @@ const router = createRouter({
       path: "/promptpay-receipt",
       name: "promptpay",
       component: () => import("../views/Receipt/PromtPay.vue"),
+    },
+    {
+      path: "/compare",
+      name: "compare",
+      component: () => import("../views/CompareProduct.vue"),
     },
   ],
   scrollBehavior() {

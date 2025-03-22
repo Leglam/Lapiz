@@ -39,26 +39,31 @@
               align-items: center;
             "
           >
-
             <label class="checkbox-label">
               <input
+                v-model="isCheckboxChecked"
                 type="checkbox"
-                name="" id=""
+                name=""
+                id=""
+                @change="handleCheckbox"
+                :disabled="isDisable"
               />
               <span>เปรียบเทียบ</span>
             </label>
 
-            <a @click="pushPage('wishlist')" class="favorite-button"
+            <a
+              @click="pushPage('wishlist')"
+              class="favorite-button"
               @mouseenter="isHovered = true"
               @mouseleave="isHovered = false"
               :class="{
-                'favorite-button--hovered': isHovered
+                'favorite-button--hovered': isHovered,
               }"
             >
-              <img 
+              <img
                 :src="computedFavoriteIcon"
-                alt="Favorite" 
-                class="favorite-icon" 
+                alt="Favorite"
+                class="favorite-icon"
                 @click="toggleFavorite"
               />
             </a>
@@ -70,20 +75,28 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import shoe1 from "@/assets/shoes/shoe1.png";
-import FavGray from '@/assets/images/FavGray.svg';
-import FavRed from '@/assets/images/icon-fav-red.svg';
+import FavGray from "@/assets/images/FavGray.svg";
+import FavRed from "@/assets/images/icon-fav-red.svg";
 
 const props = defineProps({
   product: Object,
+  isDisable: Boolean,
+  checkboxValue: Boolean,
 });
 
+const emit = defineEmits([
+  "select-color",
+  "remove-product",
+  "select-compare-product",
+  "remove-compare-product",
+]);
 const router = useRouter();
 const currentProduct = ref(null);
-const emit = defineEmits(["select-color", "remove-product"]);
 const isVisible = ref(true);
+const isCheckboxChecked = ref(false);
 
 // สถานะของหัวใจ
 const isFavorite = ref(false);
@@ -107,6 +120,11 @@ const selectProduct = () => {
   });
 };
 
+const handleCheckbox = () => {
+  if (isCheckboxChecked.value) emit("select-compare-product", props.product);
+  else emit("remove-compare-product", props.product);
+};
+
 // ฟังก์ชันก่อนที่คอมโพเนนต์จะหายไป
 const beforeLeave = () => {
   // สามารถทำการเตรียมตัวก่อนที่การ์ดจะหายไป
@@ -124,18 +142,23 @@ const isHovered = ref(false);
 const favoriteIcons = {
   default: FavGray,
   hover: FavRed,
-}
+};
 
 // Compute current icon based on isFavorite and hover state
 const computedFavoriteIcon = computed(() => {
   if (isFavorite.value || isHovered.value) {
-    return FavRed;  // ใช้ FavRed เมื่อหัวใจถูกคลิกหรือ hovered
+    return FavRed; // ใช้ FavRed เมื่อหัวใจถูกคลิกหรือ hovered
   }
   return FavGray;
 });
+
+watch(
+  () => props.checkboxValue,
+  (newValue) => {
+    isCheckboxChecked.value = newValue;
+  }
+);
 </script>
-
-
 
 <style scoped>
 @import "@/styles/remove-button-icon.scss";
@@ -306,6 +329,10 @@ const computedFavoriteIcon = computed(() => {
   height: 1.1vw;
   cursor: pointer;
   margin: 0vw;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
 
 .favorite-button {
@@ -327,14 +354,11 @@ const computedFavoriteIcon = computed(() => {
   transition: transform 0.3s ease;
 }
 
-.favorite-button:hover
-.favorite-icon{
+.favorite-button:hover .favorite-icon {
   transform: scale(1.2);
 }
 
-.favorite-button:active 
-.favorite-icon{
+.favorite-button:active .favorite-icon {
   transform: scale(0.95);
 }
-
 </style>
