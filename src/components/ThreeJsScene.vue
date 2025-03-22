@@ -19,6 +19,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["model:error"]);
+
 const container3D = ref(null);
 let scene, camera, renderer, object, controls;
 let mouseX = 300;
@@ -91,6 +93,7 @@ const initThreeJS = () => {
     },
     function (error) {
       console.error("Error loading model:", error);
+      emit("model:error");
     }
   );
 
@@ -187,6 +190,8 @@ const resetScene = () => {
 };
 
 onMounted(() => {
+  console.log(props.modelPath);
+
   initThreeJS();
 });
 

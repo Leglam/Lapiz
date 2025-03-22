@@ -5,12 +5,18 @@
       <!-- Header with Navigation and Image -->
       <div class="product-header">
         <div class="product-header-img">
-          <ThreeJsScene :objToRender="selectedColor" :modelPath="modelPaths" />
-          <!-- <img
-            :src="productImage"
+          <ThreeJsScene
+            v-if="!isModelError"
+            :objToRender="selectedColor"
+            :modelPath="modelPaths"
+            @model:error="handleModelError"
+          />
+          <img
+            v-else
+            :src="Shoes1"
             :alt="product.pdName"
             class="product-image"
-          /> -->
+          />
         </div>
       </div>
 
@@ -170,12 +176,9 @@ const router = useRouter();
 const productStore = useProductStore();
 
 const productId = computed(() => route.params.id);
-
 const product = ref();
-
 const wishlistProduct = computed(() => productStore.wishlistProduct);
 
-// Size Selection
 const sizeGroups = ref([
   ["5", "5.5", "6", "6.5", "7", "7.5"],
   ["8", "8.5", "9", "9.5", "10", "10.5"],
@@ -183,18 +186,15 @@ const sizeGroups = ref([
 
 const selectedSize = ref(null);
 
-// Favorite icon states
 const isFavorite = ref(false);
 const isHovered = ref(false);
 
-// Define icon paths
 const favoriteIcons = {
   default: Fav,
   hover: FavBlack,
   active: FavRed,
 };
 
-// Compute current icon based on state
 const currentFavoriteIcon = computed(() => {
   if (isFavorite.value) {
     return favoriteIcons.active;
@@ -206,11 +206,9 @@ const currentFavoriteIcon = computed(() => {
 });
 
 // Models
-// สร้าง ref สำหรับเก็บชื่อ model ที่ถูกเลือก
-// เปลี่ยนจาก ref เป็น computed หากคุณต้องการคำนวณค่าเหล่านี้จากตัวแปรอื่นๆ
-
 const selectedColor = ref("");
 
+const isModelError = ref(false);
 const modelPaths = computed(() => {
   return new URL(
     `../assets/models/${
@@ -239,6 +237,9 @@ const socialIcons = ref([
 ]);
 
 // Methods
+const handleModelError = () => {
+  isModelError.value = true;
+};
 
 const formatPrice = (value) => {
   return `${value.toFixed(2)} THB`;
