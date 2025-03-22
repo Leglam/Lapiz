@@ -16,7 +16,7 @@
               align-items: center;
             "
           >
-            <span class="product-price">{{ product.pdPrice }} THB</span>
+            <span class="product-price">{{ (product.pdPrice).toLocaleString("en-US") }} THB</span>
             <div class="product-colors">
               <div
                 v-for="color in product.pdColor"

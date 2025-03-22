@@ -3,50 +3,50 @@
     {
       "bufferView": 2,
       "componentType": 5126,
-      "count": 24010,
+      "count": 13807,
       "max": [
-        0.0632999986410141,
-        0.14307700097560883,
-        0.09871699661016464
+        0.05648057535290718,
+        0.15488222241401672,
+        0.14049914479255676
       ],
       "min": [
-        -0.05408899858593941,
-        -0.17844200134277344,
-        -0.05525600165128708
+        -0.05665983632206917,
+        -0.14711160957813263,
+        -0.0002077695244224742
       ],
       "type": "VEC3"
     },
     {
       "bufferView": 2,
-      "byteOffset": 288120,
+      "byteOffset": 165684,
       "componentType": 5126,
-      "count": 24010,
+      "count": 13807,
       "max": [
-        0.9999934434890747,
-        0.9999802112579346,
-        0.9999939203262329
+        0.9999765753746033,
+        0.9999891519546509,
+        0.999945342540741
       ],
       "min": [
-        -0.9999977350234985,
-        -0.9993466734886169,
-        -0.9999964237213135
+        -0.9999945163726807,
+        -1.0,
+        -1.0
       ],
       "type": "VEC3"
     },
     {
       "bufferView": 3,
       "componentType": 5126,
-      "count": 24010,
+      "count": 13807,
       "max": [
-        1.0,
-        0.9999858140945435,
-        0.999999463558197,
+        0.9998124837875366,
+        0.9998528361320496,
+        0.999997079372406,
         1.0
       ],
       "min": [
-        -0.999972939491272,
-        -0.9999586343765259,
-        -0.9999964833259583,
+        -0.999999463558197,
+        -0.9999955892562866,
+        -0.9999969005584717,
         -1.0
       ],
       "type": "VEC4"
@@ -54,61 +54,91 @@
     {
       "bufferView": 1,
       "componentType": 5126,
-      "count": 24010,
+      "count": 13807,
       "max": [
-        0.99338299036026,
-        0.9824280142784119
+        0.9967010617256165,
+        0.9982510805130005
       ],
       "min": [
-        0.010885999538004398,
-        0.006457999814301729
+        0.0014571771025657654,
+        0.0014538224786520004
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 110456,
+      "componentType": 5126,
+      "count": 13807,
+      "max": [
+        0.9967010617256165,
+        0.9982510805130005
+      ],
+      "min": [
+        0.0014571771025657654,
+        0.0014538224786520004
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 220912,
+      "componentType": 5126,
+      "count": 13807,
+      "max": [
+        0.9967010617256165,
+        0.9982510805130005
+      ],
+      "min": [
+        0.0014571771025657654,
+        0.0014538224786520004
       ],
       "type": "VEC2"
     },
     {
       "bufferView": 0,
       "componentType": 5125,
-      "count": 136704,
+      "count": 63558,
       "type": "SCALAR"
     }
   ],
   "asset": {
     "extras": {
-      "author": "StudioAira! (https://sketchfab.com/studioaira)",
-      "license": "CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)",
-      "source": "https://sketchfab.com/3d-models/nike-air-max-90-f1d3988d09dc47e88cb3e08c104c5461",
-      "title": "Nike Air Max 90"
+      "author": "mister dude (https://sketchfab.com/misterdude)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/nike-air-force-1-b580fb8a337e4609807185f1fab2f305",
+      "title": "Nike Air Force 1"
     },
-    "generator": "Sketchfab-13.90.0",
+    "generator": "Sketchfab-14.21.0",
     "version": "2.0"
   },
   "bufferViews": [
     {
       "buffer": 0,
-      "byteLength": 546816,
+      "byteLength": 254232,
       "name": "floatBufferViews",
       "target": 34963
     },
     {
       "buffer": 0,
-      "byteLength": 192080,
-      "byteOffset": 546816,
+      "byteLength": 331368,
+      "byteOffset": 254232,
       "byteStride": 8,
       "name": "floatBufferViews",
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteLength": 576240,
-      "byteOffset": 738896,
+      "byteLength": 331368,
+      "byteOffset": 585600,
       "byteStride": 12,
       "name": "floatBufferViews",
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteLength": 384160,
-      "byteOffset": 1315136,
+      "byteLength": 220912,
+      "byteOffset": 916968,
       "byteStride": 16,
       "name": "floatBufferViews",
       "target": 34962
@@ -116,25 +146,25 @@
   ],
   "buffers": [
     {
-      "byteLength": 1699296,
+      "byteLength": 1137880,
       "uri": "scene.bin"
     }
   ],
   "images": [
     {
-      "uri": "textures/Material.001_baseColor.jpeg"
+      "uri": "textures/.007_baseColor.jpeg"
     },
     {
-      "uri": "textures/Material.001_metallicRoughness.png"
+      "uri": "textures/.007_metallicRoughness.png"
     },
     {
-      "uri": "textures/Material.001_normal.jpeg"
+      "uri": "textures/.007_normal.jpeg"
     }
   ],
   "materials": [
     {
       "doubleSided": true,
-      "name": "Material.001",
+      "name": ".007",
       "normalTexture": {
         "index": 2
       },
@@ -142,7 +172,6 @@
         "baseColorTexture": {
           "index": 0
         },
-        "metallicFactor": 0.0,
         "metallicRoughnessTexture": {
           "index": 1
         }
@@ -151,16 +180,18 @@
   ],
   "meshes": [
     {
-      "name": "Object_0",
+      "name": "Nikes_low_����������������.007_0",
       "primitives": [
         {
           "attributes": {
             "NORMAL": 1,
             "POSITION": 0,
             "TANGENT": 2,
-            "TEXCOORD_0": 3
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "TEXCOORD_2": 5
           },
-          "indices": 4,
+          "indices": 6,
           "material": 0,
           "mode": 4
         }
@@ -173,17 +204,17 @@
         1
       ],
       "matrix": [
-        0.7662248015403748,
+        1.0,
         0.0,
         0.0,
         0.0,
         0.0,
-        1.7013608334179303e-16,
-        -0.7662248015403748,
+        2.220446049250313e-16,
+        -1.0,
         0.0,
         0.0,
-        0.7662248015403748,
-        1.7013608334179303e-16,
+        1.0,
+        2.220446049250313e-16,
         0.0,
         0.0,
         0.0,
@@ -196,11 +227,59 @@
       "children": [
         2
       ],
-      "name": "02_Airmax_Sketchfab.obj.cleaner.materialmerger.gles"
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "43635bfb5b394882ab8ea5185f7f47ed.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        100.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.629206793918314e-05,
+        -99.99999999999868,
+        0.0,
+        0.0,
+        99.99999999999868,
+        -1.629206793918314e-05,
+        0.0,
+        0.0,
+        -0.04495060816407204,
+        7.105427357601002e-13,
+        1.0
+      ],
+      "name": "Nikes_low"
     },
     {
       "mesh": 0,
-      "name": "Object_2"
+      "name": "Nikes_low_����������������.007_0"
     }
   ],
   "samplers": [
