@@ -53,16 +53,13 @@ import ProductFilter from "@/components/ProductFilter.vue";
 import CardComponent from "@/components/Card-Component.vue";
 import { useProductStore } from "@/stores/productStore";
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
 import CompareBar from "@/components/compareBar.vue";
-
-const router = useRouter();
 
 const productStore = useProductStore();
 const isDropdownOpen = ref(false);
 
 const products = computed(() => {
-  return productStore.product;
+  return productStore.filteredProduct;
 });
 
 const compareProductList = ref([]);

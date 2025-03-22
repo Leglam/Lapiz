@@ -28,6 +28,7 @@
               type="text"
               placeholder="ค้นหา"
               class="search-input"
+              @input="handleSearch"
             />
             <button
               v-if="searchBarValue"
@@ -114,6 +115,10 @@ const clearSearch = () => {
 
 const pushPage = (pageName) => {
   router.push({ name: pageName });
+};
+
+const handleSearch = () => {
+  productStore.setFilteredProduct(searchBarValue.value);
 };
 
 const basketCountDisplay = computed(() => {
