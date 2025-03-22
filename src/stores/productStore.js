@@ -1,26 +1,25 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
 export const useProductStore = defineStore("product", () => {
   const product = ref([]);
-  const filteredProduct = ref([]);
+  const filteredProduct = computed(() => {
+    if (searchValue.value === "") {
+      return product.value;
+    } else {
+      return product.value.filter((p) =>
+        p.pdName.toLowerCase().includes(searchValue.value.toLowerCase())
+      );
+    }
+  });
   const compareProduct = ref([]);
   const wishlistProduct = ref([]);
   const basketProduct = ref([]);
   const basketProductCount = ref(0);
+  const searchValue = ref("");
 
   const setProduct = (newProduct) => {
     product.value = newProduct;
-  };
-
-  const setFilteredProduct = (searchValue) => {
-    if (!searchValue || searchValue === "") {
-      filteredProduct.value = product.value;
-    } else {
-      filteredProduct.value = product.value.filter((p) =>
-        p.pdName.toLowerCase().includes(searchValue.toLowerCase())
-      );
-    }
   };
 
   const setCompareProduct = (newCompareProduct) => {
@@ -39,6 +38,10 @@ export const useProductStore = defineStore("product", () => {
     basketProductCount.value = newBasketProductCount;
   };
 
+  const setSearchValue = (newValue) => {
+    searchValue.value = newValue;
+  };
+
   return {
     product,
     filteredProduct,
@@ -46,11 +49,12 @@ export const useProductStore = defineStore("product", () => {
     wishlistProduct,
     basketProduct,
     basketProductCount,
+    searchValue,
     setProduct,
-    setFilteredProduct,
     setCompareProduct,
     setWishlistProduct,
     setBasketProduct,
     setBasketProductCount,
+    setSearchValue,
   };
 });

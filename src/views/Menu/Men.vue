@@ -1,7 +1,9 @@
 <template>
   <div class="topic-wrapper">
     <div class="line"></div>
-    <div class="">Men</div>
+    <div class="">
+      {{ productStore.searchValue !== "" ? productStore.searchValue : "Men" }}
+    </div>
     <div class="line"></div>
   </div>
 

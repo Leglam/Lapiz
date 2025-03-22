@@ -118,7 +118,7 @@ const pushPage = (pageName) => {
 };
 
 const handleSearch = () => {
-  productStore.setFilteredProduct(searchBarValue.value);
+  productStore.setSearchValue(searchBarValue.value);
 };
 
 const basketCountDisplay = computed(() => {

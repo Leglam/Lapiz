@@ -58,7 +58,6 @@ const changeProductFormat = async () => {
   );
 
   productStore.setProduct(products.value);
-  productStore.setFilteredProduct();
 };
 
 const closePopup = () => {
