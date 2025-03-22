@@ -231,7 +231,7 @@ const currentFavoriteIcon = computed(() => {
   background-color: #ffffff;
   font-size: 18px;
   letter-spacing: 0.6px;
-  color: #b6b6b6;
+  color: #000000;
 }
 
 .search-container:hover {

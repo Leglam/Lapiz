@@ -259,7 +259,7 @@ const emit = defineEmits([
 .filter-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 15px;
   max-height: none; /* ทำให้ขยายตามเนื้อหาที่มี */
   height: auto; /* ให้ความสูงปรับตามเนื้อหาภายใน */
 }
@@ -275,6 +275,7 @@ const emit = defineEmits([
   font-size: 18px;
   font-weight: bold;
   color: #333;
+  margin: 10px 0 20px;
 }
 
 .filter-divider {
@@ -418,7 +419,7 @@ const emit = defineEmits([
   -webkit-appearance: none;
   position: absolute;
   top: 2px;
-  left: 0;
+  left: -2px;
   width: 100%;
   height: 2px;
   background: transparent;
@@ -438,15 +439,15 @@ const emit = defineEmits([
   pointer-events: auto;
 }
 
-.price-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: white;
-  border: 2px solid #333;
-  cursor: pointer;
-  pointer-events: auto;
-}
+// .price-slider::-moz-range-thumb {
+//   width: 20px;
+//   height: 20px;
+//   border-radius: 50%;
+//   background: white;
+//   border: 2px solid #333;
+//   cursor: pointer;
+//   pointer-events: auto;
+// }
 
 .price-input-group {
   display: flex;
@@ -542,6 +543,11 @@ const emit = defineEmits([
   border: 2px solid #666;
   border-radius: 2px;
   cursor: pointer;
+}
+
+.checkbox-label span {
+  font-size: 16px;
+  color: #333;
 }
 
 .gender-options,
