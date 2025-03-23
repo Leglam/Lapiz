@@ -14,7 +14,7 @@
     <div class="product-wrapper">
       <div class="dropdown" @click="toggleDropdown">
         <div class="dropdown-header">
-          <span>เลือกประเภทสินค้า</span>
+          <span>สินค้าที่เกี่ยวข้อง</span>
           <span
             class="arrow"
             :class="{
@@ -24,9 +24,11 @@
           ></span>
         </div>
         <div v-if="isDropdownOpen" class="dropdown-content">
-          <p>Kuy option</p>
-          <p>yed option</p>
-          <p>hee option</p>
+          <p class="dropdown-style">สินค้าที่เกี่ยวข้อง</p>
+          <p class="dropdown-style">สินค้าขายดี</p>
+          <p class="dropdown-style">สินค้าใหม่</p>
+          <p class="dropdown-style">ราคา : จากน้อยไปมาก</p>
+          <p class="dropdown-style">ราคา : จากมากไปน้อย</p>
         </div>
       </div>
       <div class="card-container">
@@ -184,10 +186,22 @@ const handleRemoveCompareProduct = (product) => {
       right: 0;
       background-color: #fff;
       border: 1px solid #ccc;
-      border-radius: 0px 0px 8px 8px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       z-index: 10;
-      padding: 10px;
+    }
+
+    .dropdown-style {
+      outline: 1px solid #ccc;
+      margin: 0px;
+      padding: 8px;
+    }
+
+    .dropdown-style:hover {
+      background-color: #ececec;
+      outline: 1px solid black;
+      transition: 0.1s;
+      font-weight: 600;
+      
     }
 
     .card-container {

@@ -15,7 +15,7 @@
         :key="index"
       >
         <div class="product-image-container">
-          <img :src="Shoes1" :alt="product.pdModel" class="product-image" />
+          <img :src="product.pdColor[0].pdImg" :alt="product.pdModel" class="product-image" />
         </div>
         <h2 class="product-name">{{ product.pdName }}</h2>
         <button

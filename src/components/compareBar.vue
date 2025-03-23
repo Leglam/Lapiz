@@ -11,7 +11,7 @@
         >
           <div class="product-image-container">
             <img
-              src="/src/assets/shoes/shoe1.png"
+              :src="product.pdColor[0].pdImg"
               :alt="product.name"
               class="product-image"
             />
@@ -78,7 +78,7 @@ watch(
 );
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .comparison-container {
   position: fixed;
   left: 0;
