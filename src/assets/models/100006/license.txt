@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nike Air Max 90
+* source:	https://sketchfab.com/3d-models/nike-air-max-90-f1d3988d09dc47e88cb3e08c104c5461
+* author:	StudioAira! (https://sketchfab.com/studioaira)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nike Air Max 90" (https://sketchfab.com/3d-models/nike-air-max-90-f1d3988d09dc47e88cb3e08c104c5461) by StudioAira! (https://sketchfab.com/studioaira) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

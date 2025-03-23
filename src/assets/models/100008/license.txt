@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nike Shoe 01 - Low Definition Quality
+* source:	https://sketchfab.com/3d-models/nike-shoe-01-low-definition-quality-3593098780f14700ab85c4969205b0ed
+* author:	3DScanX (https://sketchfab.com/3dscanx)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nike Shoe 01 - Low Definition Quality" (https://sketchfab.com/3d-models/nike-shoe-01-low-definition-quality-3593098780f14700ab85c4969205b0ed) by 3DScanX (https://sketchfab.com/3dscanx) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

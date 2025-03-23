@@ -333,8 +333,8 @@ onBeforeMount(() => {
 }
 
 .color-option {
-  width: 1.11vw;
-  height: 1.11vw;
+  width: 1.10vw;
+  height: 1.10vw;
   border-radius: 50%;
   padding: 0.1vw;
   border: 0.06vw solid transparent;
