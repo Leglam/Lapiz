@@ -201,7 +201,7 @@ onUnmounted(() => {
   overflow: hidden;
   border: 1px solid black; /* ใส่ขอบสีดำ */
   border-radius: 8px; /* มุมโค้งมน (ปรับได้) */
-  background-color: #f8f8f8; /* เพิ่มพื้นหลังเพื่อให้รูปดูเด่นขึ้น */
+  background-color: #ffffff; /* เพิ่มพื้นหลังเพื่อให้รูปดูเด่นขึ้น */
 }
 
 .product-image {
