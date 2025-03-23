@@ -1,6 +1,6 @@
 <template>
-  <div class="homepage">
-    <!-- Main Banner - 1440x560 -->
+  <div class="homepage" v-show = "isHomepageVisible">
+  <!-- Main Banner - 1440x560 -->
     <section class="main-banner">
       <div
         class="banner-slides"
@@ -46,7 +46,11 @@
     <!-- Recommended Products -->
     <section class="product-section">
       <div class="container">
-        <h2 class="section-title">สินค้าแนะนำ</h2>
+        <div class="section-title-container">
+          <div class="line"></div>
+          <h2 class="section-title">สินค้าแนะนำ</h2>
+          <div class="line"></div>
+        </div>
         <div class="product-slider">
           <div class="product-list" ref="recommendedList">
             <Recommend_Slide />
@@ -67,7 +71,11 @@
     <!-- New Products -->
     <section class="product-section">
       <div class="container">
-        <h2 class="section-title">สินค้าใหม่</h2>
+        <div class="section-title-container">
+          <div class="line"></div>
+          <h2 class="section-title">สินค้าใหม่</h2>
+          <div class="line"></div>
+        </div>
         <div class="product-slider">
           <!-- <button class="nav-arrow prev" @click="scrollProducts('new', 'left')">&lt;</button> -->
           <div class="product-list" ref="newList">
@@ -108,6 +116,7 @@ import Banner2 from "@/assets/images/img_banner3.svg";
 const currentSlide = ref(0);
 const autoScrollInterval = ref(null);
 const scrollAmount = 800; // Adjust scroll amount for products and categories
+const isHomepageVisible = ref(true);
 
 const mainBanners = [
   { image: Banner, alt: "Banner 1" },
@@ -291,6 +300,7 @@ onBeforeUnmount(() => {
 
 .bullet.active {
   background-color: #000000;
+  opacity: 0.5;
 }
 
 /* Categories */
@@ -361,10 +371,25 @@ onBeforeUnmount(() => {
   padding: 40px 0;
 }
 
+.section-title-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.line {
+  flex: 1;
+  height: 3px;
+  background-color: #00000025;
+  margin: 0 5vw 0 5vw ;
+}
+
 .section-title {
   font-size: 28px;
   margin-bottom: 30px;
   text-align: center;
+  
 }
 
 .product-slider {
@@ -483,5 +508,20 @@ onBeforeUnmount(() => {
   .product-image {
     height: 220px;
   }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-0.5%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.homepage {
+  animation: slideIn 0.6s ease-out;
 }
 </style>

@@ -158,4 +158,19 @@ onMounted(() => {
     padding: 16px;
   }
 }
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.wishlist-container {
+  animation: slideIn 0.6s ease-out;
+}
 </style>

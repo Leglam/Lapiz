@@ -88,6 +88,7 @@ watch(
   width: 100%;
   margin: 0 auto;
   z-index: 1001;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .comparison-header {
@@ -96,7 +97,7 @@ watch(
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  margin: 20px;
+  margin: 0px 50px 0 50px;
 }
 
 .comparison-title {
@@ -138,8 +139,8 @@ watch(
   position: absolute;
   top: -10px;
   right: -10px;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background-color: red;
   color: white;
   border: none;
@@ -153,6 +154,10 @@ watch(
 
 .remove-icon {
   line-height: 1;
+}
+
+.remove-icon:hover {
+  transform: scale(1.1);
 }
 
 .action-buttons {
@@ -175,6 +180,17 @@ watch(
   }
 }
 
+.compare-button:hover {
+  background-color: #4869FF;
+  border: #000000 solid 1px;
+  transition: 0.3s;
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #737373;
+  }
+}
+
 .reset-button {
   padding: 10px 20px;
   background-color: white;
@@ -184,4 +200,26 @@ watch(
   font-weight: bold;
   min-width: 120px;
 }
+
+.reset-button:hover {
+  background-color: #D9D9D9;
+  border: #000000 solid 1px ;
+  transition: 0.3s;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.comparison-container {
+  animation: slideIn 0.6s ease;
+}
+
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="topic-wrapper">
     <div class="line"></div>
-    <div class="">
+    <div class="men-text">
       {{ productStore.searchValue !== "" ? productStore.searchValue : "Men" }}
     </div>
     <div class="line"></div>
@@ -119,6 +119,11 @@ const handleRemoveCompareProduct = (product) => {
   }
 }
 
+.men-text {
+  font-size: 24px;
+  font-weight: bold;
+}
+
 .wrapper {
   display: flex;
   margin: 3vh 3vw 3vh 3vw;
@@ -140,7 +145,7 @@ const handleRemoveCompareProduct = (product) => {
     .dropdown {
       position: relative;
       cursor: pointer;
-      margin-bottom: 20px;
+      margin-bottom: 0px;
       padding: 8px;
       border: 1px solid #ccc;
       background-color: #fff;
@@ -192,5 +197,20 @@ const handleRemoveCompareProduct = (product) => {
       gap: 2vw;
     }
   }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.card-container {
+  animation: slideIn 0.6s;
 }
 </style>

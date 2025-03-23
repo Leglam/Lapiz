@@ -338,4 +338,19 @@ const handleSubmit = async () => {
   color: #2222dd;
   font-weight: 600;
 }
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(5%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.register-container {
+  animation: slideIn 0.6s ease;
+}
 </style>

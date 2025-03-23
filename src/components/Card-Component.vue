@@ -384,10 +384,37 @@ onBeforeMount(() => {
   height: 1.1vw;
   cursor: pointer;
   margin: 0vw;
+  appearance: none; /* ลบสไตล์เริ่มต้น */
+  border: 1px solid #000000; 
+  border-radius: 3px;
+  background-color: white; 
+  position: relative;
 
   &:disabled {
     cursor: not-allowed;
   }
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+  content: ''; /* สร้างเนื้อหาใหม่ */
+  position: absolute;
+  top: 1px;
+  left: 6px;
+  width: 4px;
+  height: 12px;
+  border: solid black; /* ขีดเส้นสีขาว */
+  border-width: 0 3px 3px 0; /* กำหนดขนาดของขีดเส้นเพื่อให้เหมือนติ๊กถูก */
+  transform: rotate(45deg); /* หมุนให้เป็นรูปติ๊กถูก */
+}
+
+.checkbox-label input[type="checkbox"]:hover {
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3); /* เพิ่มเงาดำเมื่อ hover */
+  transition: 0.3s;
+}
+
+.checkbox-label input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5; /* ทำให้ดูจางเมื่อไม่สามารถคลิกได้ */
 }
 
 .favorite-button {

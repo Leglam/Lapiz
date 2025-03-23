@@ -276,15 +276,8 @@ const handleSubmit = async () => {
   font-weight: 600;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.card-container {
+  animation: slideIn 0.6s;
 }
 
 .form-group {
@@ -299,5 +292,31 @@ const handleSubmit = async () => {
 }
 .form-group:nth-child(3) {
   animation-delay: 0.3s;
+}
+
+/* @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} */
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.login-container {
+  animation: slideIn 0.6s ease-out;
 }
 </style>
