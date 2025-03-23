@@ -45,16 +45,15 @@ const userAuth = reactive({
 });
 </script>
   
-<style>
-@import "@/styles/social-button.scss";
+<style scoped>
 
 .login-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   max-width: 480px;
-  margin: 48px auto; /* ใช้ margin auto ในแนวนอน */
-  padding: 32px 24px;
+  margin: 100px auto; /* ใช้ margin auto ในแนวนอน */
+  padding: 28px 24px;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

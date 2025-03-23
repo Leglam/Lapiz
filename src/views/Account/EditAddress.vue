@@ -134,6 +134,7 @@ const saveAddresses = () => {
   gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto; 
+  margin-top: 10px;
   padding: 6rem 6rem 6rem 6rem;
   
 }
@@ -220,5 +221,20 @@ const saveAddresses = () => {
 .edit-info-separator.vertical {
   width: 0.5px;
   height: 300px;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translatex(5%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.address-container{
+  animation: slideIn 0.6s ease;
 }
 </style>

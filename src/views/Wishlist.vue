@@ -100,6 +100,7 @@ onMounted(() => {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 60px;
   padding: 4rem 6rem 6rem 6rem;
 }
 

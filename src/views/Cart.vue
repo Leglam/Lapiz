@@ -222,6 +222,7 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  padding-top: 80px;
   font-family: "Mitr";
   margin-bottom: 71px;
   opacity: 0;

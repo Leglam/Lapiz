@@ -112,6 +112,7 @@ const handleRemoveCompareProduct = (product) => {
   justify-content: center;
   align-items: center;
   margin-top: 3vh;
+  padding-top: 45px;
 
   .line {
     flex: 1;

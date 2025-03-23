@@ -241,6 +241,7 @@ const handleSubmit = async () => {
   justify-content: center;
   max-width: 480px;
   margin: 48px auto;
+  margin-top: 108px;
   padding: 32px 24px;
   background-color: #ffffff;
   border-radius: 8px;

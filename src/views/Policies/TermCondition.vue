@@ -73,7 +73,7 @@ const sections = [
     font-family: 'Mitr', sans-serif;
     max-width: 1200px;
     margin: 0 auto 30px;
-    padding: 3rem;
+    padding: 6rem;
     color: rgb(0, 0, 0);
   }
 
@@ -154,5 +154,20 @@ const sections = [
     .terms-subtitle {
       font-size: 1.1rem;
     }
+  }
+
+  @keyframes slideIn {
+  0% {
+    transform: translateY(5%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  }
+
+  .terms-container {
+    animation: slideIn 0.6s ease-out;
   }
 </style>

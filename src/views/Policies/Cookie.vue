@@ -102,7 +102,7 @@
     font-family: 'Mitr', sans-serif;
     max-width: 1200px;
     margin: 0 auto 30px;
-    padding: 3rem;
+    padding: 6rem;
     color: rgb(0, 0, 0);
   }
 
@@ -182,5 +182,20 @@
     background-color: #f5f5f5;
     padding: 1.5rem;
     border-radius: 8px;
+  }
+
+  @keyframes slideIn {
+  0% {
+    transform: translateY(5%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  }
+
+  .cookie-container {
+    animation: slideIn 0.6s ease-out;
   }
 </style>

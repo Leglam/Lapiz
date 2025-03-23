@@ -46,8 +46,8 @@
     font-size: 16px; /* Base font size */
     font-family: 'Mitr', sans-serif;
     max-width: 1200px;
-    margin: 0 auto 30px;
-    padding: 3rem;
+    margin: 0 auto;
+    padding: 5rem;
     color: rgb(0, 0, 0);
   }
 
@@ -112,5 +112,20 @@
     .contact-item {
       font-size: 1.1rem;
     }
+  }
+
+  @keyframes slideIn {
+  0% {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  }
+
+  .contact {
+    animation: slideIn 0.6s ease-out;
   }
 </style>

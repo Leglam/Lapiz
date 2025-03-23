@@ -153,15 +153,23 @@ const currentFavoriteIcon = computed(() => {
 }
 
 .main-header {
+  max-width: 100vw;
+  position: fixed;
+  top: 39px;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
   background-color: #ecefbb;
-  padding: 0.375rem 2.875rem;
+  /* padding: 0.375rem 2.875rem; */
+  padding: 0 47px 0 47px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
   font-family: "Mitr", sans-serif;
   margin: 0;
+  box-sizing: border-box;
 }
 
 .logo {

@@ -184,7 +184,7 @@ const saveChanges = () => {
   max-width: 1200px;
   margin: 0 auto; 
   padding: 6rem 6rem 6rem 6rem;
-  
+  margin-top: 10px;
 }
 
 .edit-info-header {
@@ -282,7 +282,7 @@ const saveChanges = () => {
   }
 }
 
-.edit-info-container {
+.edit-info-content {
   animation: slideIn 0.6s ease;
 }
 </style>

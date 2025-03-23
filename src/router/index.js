@@ -101,7 +101,7 @@ const router = createRouter({
     {
       path: "/edit-address",
       name: "edit-address",
-      component: () => import("../views/EditAddress.vue"),
+      component: () => import("../views/Account/EditAddress.vue"),
     },
     {
       path: "/credit-receipt",

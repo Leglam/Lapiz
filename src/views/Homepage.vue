@@ -237,10 +237,11 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .homepage {
   width: 100%;
   overflow-x: hidden;
+  padding-top: 61px ;//ทำ fix position ของ topheader , header ไว้เลยต้องขยับ container ลงมา
 }
 
 .container {

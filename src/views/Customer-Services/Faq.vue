@@ -95,7 +95,7 @@ const toggleAnswer = (index) => {
     font-family: 'Mitr', sans-serif;
     max-width: 1000px;
     margin: 0 auto 30px;
-    padding: 3rem;
+    padding: 5rem;
     color: rgb(0, 0, 0);
   }
 
@@ -194,5 +194,20 @@ const toggleAnswer = (index) => {
     .faq-question {
       font-size: 0.9rem;
     }
+  }
+
+  @keyframes slideIn {
+  0% {
+    transform: translateY(5%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  }
+
+  .faq-container {
+    animation: slideIn 0.6s ease-out;
   }
 </style>

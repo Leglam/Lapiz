@@ -151,7 +151,7 @@ onUnmounted(() => {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 100px; /*จากเดิม 50 + มาอีก 50(fix bar)*/
   margin-bottom: 104px;
   opacity: 0;
   transform: translateY(-5%); /* เลื่อนออกจากซ้าย */

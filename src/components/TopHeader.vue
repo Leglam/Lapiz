@@ -121,8 +121,15 @@ watch(isLogin, (newValue) => {
 }
 
 .top-header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   background-color: #000000;
-  padding: 10px 44px;
+  padding: 10px 0px;
+  z-index: 1000;
+  box-sizing: border-box;
 }
 
 .top-header-container {
@@ -130,6 +137,7 @@ watch(isLogin, (newValue) => {
   justify-content: flex-end; /* ขยับเนื้อหาทั้งหมดไปขวา */
   align-items: center; /* จัดตำแหน่งในแนวตั้ง */
   width: 100%; /* ทำให้ความกว้างเต็ม */
+  padding: 0px 44.75px;
 }
 
 .login-signin-profile-container {

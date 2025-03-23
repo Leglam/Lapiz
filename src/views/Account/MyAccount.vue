@@ -224,6 +224,7 @@ const viewOrderDetails = (orderId) => {
   font-family: Arial, sans-serif;
   background-color: #f5f5f5;
   padding: 20px;
+  padding-top: 60px;
 
   .account-page {
     max-width: 1200px;

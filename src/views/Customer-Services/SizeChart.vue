@@ -133,7 +133,7 @@
     font-size: 16px; /* Base font size */
     max-width: 1200px;
     margin: 0 auto 30px;
-    padding: 3rem;
+    padding: 5rem;
   }
 
   .size-chart_title {
@@ -198,5 +198,20 @@
   ul li {
     margin-bottom: 1rem;
     line-height: 1.6;
+  }
+
+  @keyframes slideIn {
+  0% {
+    transform: translateY(2.5%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  }
+
+  .size-chart {
+    animation: slideIn 0.6s ease-out;
   }
 </style>

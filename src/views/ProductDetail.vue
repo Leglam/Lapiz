@@ -402,7 +402,7 @@ onBeforeMount(() => {
   align-items: center;
   min-height: 100vh;
   overflow: hidden;
-  padding: 80px;
+  padding: 110px 80px 80px 80px;
 }
 
 .product-layout {
