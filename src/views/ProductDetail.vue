@@ -516,8 +516,8 @@ onBeforeMount(() => {
 }
 
 .color-option {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 1px solid transparent;
   cursor: pointer;

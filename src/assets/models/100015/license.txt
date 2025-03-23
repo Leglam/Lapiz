@@ -1,0 +1,11 @@
+Model Information:
+* title:	2008 - Mercurial Vapor IV Legend
+* source:	https://sketchfab.com/3d-models/2008-mercurial-vapor-iv-legend-3af6eccd362a49429e7496f620c40708
+* author:	NIKE (https://sketchfab.com/nike)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "2008 - Mercurial Vapor IV Legend" (https://sketchfab.com/3d-models/2008-mercurial-vapor-iv-legend-3af6eccd362a49429e7496f620c40708) by NIKE (https://sketchfab.com/nike) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

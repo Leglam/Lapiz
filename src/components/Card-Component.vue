@@ -333,8 +333,8 @@ onBeforeMount(() => {
 }
 
 .color-option {
-  width: 1.10vw;
-  height: 1.10vw;
+  width: 1.05vw;
+  height: 1.05vw;
   border-radius: 50%;
   padding: 0.1vw;
   border: 0.06vw solid transparent;
@@ -346,19 +346,22 @@ onBeforeMount(() => {
 }
 
 .color-option:hover {
-  outline: 1px solid black;
+  border-color: #4338ca;
+  outline: 1px solid #4338ca;
 }
 
 .color-option.color-selected {
   border-color: #4338ca;
   outline: 1px solid #4338ca;
+  box-shadow: 0 0 4px #4338ca; /* เพิ่มเงาสีม่วงอ่อน */
+  transition: all 0.2s ease-in-out; /* ทำให้เอฟเฟกต์ดูนุ่มนวล */
 }
 
 .color-inner {
-  width: 0.9vw;
-  height: 0.9vw;
+  width: 0.92vw;
+  height: 0.92vw;
   border-radius: 50%;
-  border: 0.06vw solid #e5e5e5;
+  border: 0.06vw solid #4338ca;
 }
 
 .add-to-cart-button {

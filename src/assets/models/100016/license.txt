@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nike Running Shoe
+* source:	https://sketchfab.com/3d-models/nike-running-shoe-5cd1cb05a4ae432a8c4fb650ab3a8d72
+* author:	Ambel3D (https://sketchfab.com/Ambel3D)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nike Running Shoe" (https://sketchfab.com/3d-models/nike-running-shoe-5cd1cb05a4ae432a8c4fb650ab3a8d72) by Ambel3D (https://sketchfab.com/Ambel3D) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

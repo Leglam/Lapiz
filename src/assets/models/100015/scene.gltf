@@ -1,0 +1,244 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 32852,
+      "max": [
+        15.396499633789063,
+        5.0081000328063965,
+        11.875900268554688
+      ],
+      "min": [
+        -14.938899993896484,
+        -5.234000205993652,
+        -0.03009999915957451
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 394224,
+      "componentType": 5126,
+      "count": 32852,
+      "max": [
+        0.9998393654823303,
+        0.999971866607666,
+        0.9999903440475464
+      ],
+      "min": [
+        -0.9993737936019897,
+        -0.9999967813491821,
+        -0.9999810457229614
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 32852,
+      "max": [
+        0.9982147812843323,
+        0.9979686737060547,
+        0.9999077320098877,
+        1.0
+      ],
+      "min": [
+        -0.9999918341636658,
+        -0.9999728202819824,
+        -0.9999986886978149,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 32852,
+      "max": [
+        0.9980000257492065,
+        0.9980000257492065
+      ],
+      "min": [
+        0.12409999966621399,
+        0.0020000000949949026
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 191376,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "NIKE (https://sketchfab.com/nike)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/2008-mercurial-vapor-iv-legend-3af6eccd362a49429e7496f620c40708",
+      "title": "2008 - Mercurial Vapor IV Legend"
+    },
+    "generator": "Sketchfab-12.67.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 765504,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 262816,
+      "byteOffset": 765504,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 788448,
+      "byteOffset": 1028320,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 525632,
+      "byteOffset": 1816768,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 2342400,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/Scan_2008_Shoe_Zoom_Mercurial_VaporIV_Legend_baseColor.jpeg"
+    },
+    {
+      "uri": "textures/Scan_2008_Shoe_Zoom_Mercurial_VaporIV_Legend_emissive.jpeg"
+    },
+    {
+      "uri": "textures/Scan_2008_Shoe_Zoom_Mercurial_VaporIV_Legend_normal.jpeg"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "emissiveTexture": {
+        "index": 1
+      },
+      "name": "Scan_2008_Shoe_Zoom_Mercurial_VaporIV_Legend",
+      "normalTexture": {
+        "index": 2,
+        "scale": 0.47
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.2
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "2008 - Mercurial Vapor IV Legend.obj.cleaner.materialmerger.gles"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_2"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}
