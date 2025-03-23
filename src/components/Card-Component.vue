@@ -50,7 +50,7 @@
                 @change="handleCheckbox"
                 :disabled="isDisable"
               />
-              <span>เปรียบเทียบ A</span>
+              <span>เปรียบเทียบ</span>
             </label>
 
             <a
