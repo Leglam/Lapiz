@@ -1,0 +1,11 @@
+Model Information:
+* title:	Shoe 91 - 1999 - Air Zoom Citizen - 15110
+* source:	https://sketchfab.com/3d-models/shoe-91-1999-air-zoom-citizen-15110-28d887381e324b669b2293aac509ddb1
+* author:	NIKE (https://sketchfab.com/nike)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Shoe 91 - 1999 - Air Zoom Citizen - 15110" (https://sketchfab.com/3d-models/shoe-91-1999-air-zoom-citizen-15110-28d887381e324b669b2293aac509ddb1) by NIKE (https://sketchfab.com/nike) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

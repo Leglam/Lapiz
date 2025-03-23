@@ -33,47 +33,34 @@ const HEIGHT = 600;
 // กำหนดค่า config เฉพาะของแต่ละโมเดล
 const modelConfigs = {
   "100001": {
-    rotatable: true,
-    cameraDistance: 0.3,
-    lightIntensity: 2,
     initialRotation: { x: 0, y: 0.3, z: 0 },
-    initialPosition: { x: 0, y: 0, z: 0 },  // **เพิ่มตำแหน่งเริ่มต้น**
-    autoRotate: false,
-    rotationSpeed: 0.01,
-    useOrbitControls: true,
   },
   "100002": {
-    rotatable: true,
-    cameraDistance: 0.3,
-    lightIntensity: 2,
     initialRotation: { x: 0, y: -1.5, z: 0 },
     initialPosition: { x: 0, y: -0.06, z: 0 },
-    autoRotate: false,
-    rotationSpeed: 0.01,
-    useOrbitControls: true,
   },
   "100005": {
-    rotatable: true,
-    cameraDistance: 0.3,
-    lightIntensity: 2,
     initialRotation: { x: 0, y: 3.1, z: 0 },
     initialPosition: { x: 0, y: -0.06, z: 0 },
-    autoRotate: false,
-    rotationSpeed: 0.01,
-    useOrbitControls: true,
   },
   "100006": {
-    rotatable: true,
-    cameraDistance: 0.3,
-    lightIntensity: 2,
     initialRotation: { x: 0, y: 1.5, z: 0 },
-    autoRotate: false,
-    rotationSpeed: 0.01,
-    useOrbitControls: true,
+  },
+  "100008": {
+    initialRotation: { x: 0, y: 3.2, z: 0 },
+    initialPosition: { x: 0, y: -0.06, z: 0 },
+  },
+  "100010": {
+    cameraDistance: -2,
+  },
+  "100013": {
+    initialRotation: { x: 0, y: 0, z: 0 },
+    initialPosition: { x: 0, y: -6, z: 0 },
+    cameraDistance: -30,
   },
 };
 
-// ฟังก์ชั่นเพื่อรับค่า config ของแต่ละ model โดยอ้างอิงจาก default + override ด้วยค่าที่กำหนดเฉพาะ
+// ฟังก์ชั่นรับค่า config ของแต่ละ model โดยอ้างอิงจาก default + override ด้วยค่าที่กำหนดเฉพาะ
 const getModelConfig = () => {
   // ค่า config เริ่มต้นสำหรับ model ทั่วไป
   const defaultConfig = {
