@@ -36,7 +36,7 @@
             <div class="size-header">
               <h4 class="size-title">ขนาด (UK)</h4>
               <div class="size-chart">
-                <h5 @click="pushPage('size-chart')" class="size-chart-link">ตารางไซส์</h5>
+                <h5 @click="pushPage('size-chart')" class="size-chart-link">ตารางไซส์ A</h5>
               </div>
             </div>
             <div class="size-grid">
