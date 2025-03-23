@@ -1,6 +1,10 @@
 <template>
   <!-- Product Main Section -->
   <div class="product-content">
+    <div class="edit-info-navigation">
+        <img src='@/assets/images/icon-back.svg' alt="BackIcon" class="back-icon" />
+        <span @click="pushPage('men')" class="back-link">ย้อนกลับ</span>
+    </div>
     <div class="product-layout">
       <!-- Header with Navigation and Image -->
       <div class="product-header">
@@ -32,7 +36,7 @@
             <div class="size-header">
               <h4 class="size-title">ขนาด (UK)</h4>
               <div class="size-chart">
-                <h5 class="size-chart-link">ตารางไซส์</h5>
+                <h5 @click="pushPage('size-chart')" class="size-chart-link">ตารางไซส์</h5>
               </div>
             </div>
             <div class="size-grid">
@@ -178,6 +182,10 @@ const productStore = useProductStore();
 const productId = computed(() => route.params.id);
 const product = ref();
 const wishlistProduct = computed(() => productStore.wishlistProduct);
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const sizeGroups = ref([
   ["5", "5.5", "6", "6.5", "7", "7.5"],
@@ -365,6 +373,7 @@ onBeforeMount(() => {
 
 <style scoped>
 @import "@/styles/size-button.scss";
+@import "@/styles/back-link.scss";
 
 .product-content {
   display: flex;
@@ -418,8 +427,8 @@ onBeforeMount(() => {
 }
 
 .back-icon {
-  width: 24px;
-  height: 24px;
+  width: 8px;
+  height: 12px;
 }
 
 .product-image {
@@ -507,8 +516,8 @@ onBeforeMount(() => {
 }
 
 .color-option {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 1px solid transparent;
   cursor: pointer;
@@ -516,17 +525,23 @@ onBeforeMount(() => {
   align-items: center;
   justify-content: center;
   margin-bottom: 0.5rem;
+  border-color: #9B9B9B;
+}
+
+.color-option:hover {
+  outline: 1px solid black;
 }
 
 .color-option.color-selected {
   border-color: #4338ca;
+  outline: 1px solid #4338ca;
 }
 
 .color-inner {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E0DEDD;
 }
 
 .action-buttons {
@@ -580,14 +595,12 @@ onBeforeMount(() => {
 
 /* Active/Selected state styles */
 .favorite-button--active {
-  background-color: #bebebe;
-  /* border-color: #ff4040; */
+  background-color: #f0f0f0;
 }
 
 /* Combined states animate หลังกด fav แล้ว*/
 .favorite-button--active.favorite-button--hovered {
   background-color: #f0f0f0;
-  /* border-color: #ff2020; */
 }
 
 .favorite-icon {
@@ -694,6 +707,14 @@ onBeforeMount(() => {
 .description-text {
   font-size: 16px;
   line-height: 1.875;
+}
+
+.edit-info-navigation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  
 }
 
 @media (max-width: 1050px) {

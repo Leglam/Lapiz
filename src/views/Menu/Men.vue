@@ -14,7 +14,7 @@
     <div class="product-wrapper">
       <div class="dropdown" @click="toggleDropdown">
         <div class="dropdown-header">
-          <span>สินค้าขายดี</span>
+          <span>เลือกประเภทสินค้า</span>
           <span
             class="arrow"
             :class="{

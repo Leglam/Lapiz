@@ -342,10 +342,16 @@ onBeforeMount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-color: #9B9B9B;
+}
+
+.color-option:hover {
+  outline: 1px solid black;
 }
 
 .color-option.color-selected {
   border-color: #4338ca;
+  outline: 1px solid #4338ca;
 }
 
 .color-inner {
