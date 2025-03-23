@@ -1,149 +1,169 @@
 <template>
   <!-- Product Main Section -->
   <div class="product-content">
-    <div class="edit-info-navigation">
-        <img src='@/assets/images/icon-back.svg' alt="BackIcon" class="back-icon" />
-        <span @click="pushPage('men')" class="back-link">ย้อนกลับ</span>
-    </div>
-    <div class="product-layout">
-      <!-- Header with Navigation and Image -->
-      <div class="product-header">
-        <div class="product-header-img">
-          <ThreeJsScene
-            v-if="!isModelError"
-            :objToRender="selectedColor"
-            :modelPath="modelPaths"
-            @model:error="handleModelError"
-          />
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        max-width: 1073px;
+        align-items: center;
+      "
+    >
+      <div style="width: 100%;display: flex; justify-content: start; align-items: start">
+        <div class="edit-info-navigation">
           <img
-            v-else
-            :src="getProductImage"
-            :alt="product.pdName"
-            class="product-image"
+            src="@/assets/images/icon-back.svg"
+            alt="BackIcon"
+            class="back-icon"
           />
+          <span @click="pushPage('men')" class="back-link">ย้อนกลับ</span>
         </div>
       </div>
 
-      <!-- Product Information -->
-      <div class="product-info">
-        <h2 class="product-title">{{ product.pdName }}</h2>
-        <h3 class="product-price">{{ formatPrice(product.pdPrice) }}</h3>
-        <div class="divider"></div>
-
-        <!-- Size Selection -->
-        <div class="product-options">
-          <div class="size-section">
-            <div class="size-header">
-              <h4 class="size-title">ขนาด (UK)</h4>
-              <div class="size-chart">
-                <h5 @click="pushPage('size-chart')" class="size-chart-link">ตารางไซส์</h5>
-              </div>
-            </div>
-            <div class="size-grid">
-              <div
-                v-for="(sizeGroup, index) in sizeGroups"
-                :key="index"
-                class="size-row"
-              >
-                <button
-                  v-for="size in sizeGroup"
-                  :key="size"
-                  class="size-button"
-                  :class="{ 'size-button--active': selectedSize === size }"
-                  @click="selectSize(size)"
-                >
-                  {{ size }}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Color Selection -->
-          <h6 class="color-title">สี</h6>
-          <div class="product-colors">
-            <div
-              v-for="color in product.pdColor"
-              :key="color.pdCode"
-              class="color-option"
-              :class="{ 'color-selected': color.isSelected }"
-              @click="selectColor(color.pdCode)"
-            >
-              <div
-                class="color-inner"
-                :style="{ backgroundColor: `var(--${color.pdColor})` }"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-          <div class="divider"></div>
-          <div class="button-group">
-            <button class="add-to-cart-button" @click="addToCart">
-              เพิ่มเข้าตะกร้าสินค้า
-            </button>
-            <button
-              class="favorite-button"
-              @click="toggleFavorite"
-              @mouseenter="isHovered = true"
-              @mouseleave="isHovered = false"
-              :class="{
-                'favorite-button--hovered': isHovered,
-                'favorite-button--active': isFavorite,
-              }"
-            >
-              <img
-                :src="currentFavoriteIcon"
-                alt="Favorite"
-                class="favorite-icon"
-              />
-            </button>
-          </div>
-          <button class="buy-now-button" @click="buyNow">ซื้อเลย</button>
-        </div>
-
-        <!-- Social Share -->
-        <div class="social-share">
-          <div class="social-icons">
+      <div class="product-layout">
+        <!-- Header with Navigation and Image -->
+        <div class="product-header">
+          <div class="product-header-img">
+            <ThreeJsScene
+              v-if="!isModelError"
+              :objToRender="selectedColor"
+              :modelPath="modelPaths"
+              @model:error="handleModelError"
+            />
             <img
-              v-for="(social, index) in socialIcons"
-              :key="index"
-              :src="social.icon"
-              :alt="social.name"
-              class="social-icon"
+              v-else
+              :src="getProductImage"
+              :alt="product.pdName"
+              class="product-image"
             />
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Product Details Tabs -->
-    <div class="product-details">
-      <div class="container">
-        <div class="tabs-section">
-          <div class="tabs">
-            <button
-              v-for="tab in tabs"
-              :key="tab.id"
-              class="tab-button"
-              :class="{ 'tab-button--active': activeTab === tab.id }"
-              @click="setActiveTab(tab.id)"
-            >
-              {{ tab.label }}
-            </button>
+        <!-- Product Information -->
+        <div class="product-info">
+          <h2 class="product-title">{{ product.pdName }}</h2>
+          <h3 class="product-price">{{ formatPrice(product.pdPrice) }}</h3>
+          <div class="divider"></div>
+
+          <!-- Size Selection -->
+          <div class="product-options">
+            <div class="size-section">
+              <div class="size-header">
+                <h4 class="size-title">ขนาด (UK)</h4>
+                <div class="size-chart">
+                  <h5 @click="pushPage('size-chart')" class="size-chart-link">
+                    ตารางไซส์
+                  </h5>
+                </div>
+              </div>
+              <div class="size-grid">
+                <div
+                  v-for="(sizeGroup, index) in sizeGroups"
+                  :key="index"
+                  class="size-row"
+                >
+                  <button
+                    v-for="size in sizeGroup"
+                    :key="size"
+                    class="size-button"
+                    :class="{ 'size-button--active': selectedSize === size }"
+                    @click="selectSize(size)"
+                  >
+                    {{ size }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Color Selection -->
+            <h6 class="color-title">สี</h6>
+            <div class="product-colors">
+              <div
+                v-for="color in product.pdColor"
+                :key="color.pdCode"
+                class="color-option"
+                :class="{ 'color-selected': color.isSelected }"
+                @click="selectColor(color.pdCode)"
+              >
+                <div
+                  class="color-inner"
+                  :style="{ backgroundColor: `var(--${color.pdColor})` }"
+                ></div>
+              </div>
+            </div>
           </div>
-          <div class="tab-content">
-            <div v-if="activeTab === 'description'" class="tab-panel">
-              <p class="description-text">
-                {{ product.pdDesc }}
-              </p>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <div class="divider"></div>
+            <div class="button-group">
+              <button class="add-to-cart-button" @click="addToCart">
+                เพิ่มเข้าตะกร้าสินค้า
+              </button>
+              <button
+                class="favorite-button"
+                @click="toggleFavorite"
+                @mouseenter="isHovered = true"
+                @mouseleave="isHovered = false"
+                :class="{
+                  'favorite-button--hovered': isHovered,
+                  'favorite-button--active': isFavorite,
+                }"
+              >
+                <img
+                  :src="currentFavoriteIcon"
+                  alt="Favorite"
+                  class="favorite-icon"
+                />
+              </button>
             </div>
-            <div v-else-if="activeTab === 'features'" class="tab-panel">
-              <span>คุณสมบัติ content</span>
+            <button class="buy-now-button" @click="buyNow">ซื้อเลย</button>
+          </div>
+
+          <!-- Social Share -->
+          <div class="social-share">
+            <div class="social-icons">
+              <img
+                v-for="(social, index) in socialIcons"
+                :key="index"
+                :src="social.icon"
+                :alt="social.name"
+                class="social-icon"
+              />
             </div>
-            <div v-else-if="activeTab === 'reviews'" class="tab-panel">
-              <span>รีวิว content</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Details Tabs -->
+      <div style="width: 100%;">
+        <div class="product-details">
+          <div class="container">
+            <div class="tabs-section">
+              <div class="tabs">
+                <button
+                  v-for="tab in tabs"
+                  :key="tab.id"
+                  class="tab-button"
+                  :class="{ 'tab-button--active': activeTab === tab.id }"
+                  @click="setActiveTab(tab.id)"
+                >
+                  {{ tab.label }}
+                </button>
+              </div>
+              <div class="tab-content">
+                <div v-if="activeTab === 'description'" class="tab-panel">
+                  <p class="description-text">
+                    {{ product.pdDesc }}
+                  </p>
+                </div>
+                <div v-else-if="activeTab === 'features'" class="tab-panel">
+                  <span>คุณสมบัติ content</span>
+                </div>
+                <div v-else-if="activeTab === 'reviews'" class="tab-panel">
+                  <span>รีวิว content</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -382,16 +402,16 @@ onBeforeMount(() => {
   align-items: center;
   min-height: 100vh;
   overflow: hidden;
+  padding: 80px;
 }
 
 .product-layout {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start; /* ให้บรรจุรูปไปที่ขอบซ้าย */
+  justify-content: center; /* ให้บรรจุรูปไปที่ขอบซ้าย */
   align-items: center; /* จัดกลางในแนวตั้ง (บน-ล่าง) */
   gap: 49px;
-  padding: 80px 300px 20px 300px;
-  /* max-width: 1200px; */
+  width: fit-content;
 }
 
 .product-header {
@@ -412,7 +432,6 @@ onBeforeMount(() => {
   display: flex;
   justify-content: start;
   width: 100%;
-  padding: 0px 10%;
   box-sizing: border-box;
 }
 
@@ -525,7 +544,7 @@ onBeforeMount(() => {
   align-items: center;
   justify-content: center;
   margin-bottom: 0.5rem;
-  border-color: #9B9B9B;
+  border-color: #9b9b9b;
 }
 
 .color-option:hover {
@@ -541,7 +560,7 @@ onBeforeMount(() => {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid #E0DEDD;
+  border: 1px solid #e0dedd;
 }
 
 .action-buttons {
@@ -714,7 +733,6 @@ onBeforeMount(() => {
   flex-direction: row;
   align-items: center;
   gap: 1rem;
-  
 }
 
 @media (max-width: 1050px) {
