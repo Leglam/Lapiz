@@ -64,10 +64,18 @@ const modelConfigs = {
     cameraDistance: -30,
   },
   "100016": {
-    initialRotation: { x: 0, y: 0, z: 0 },
-    initialPosition: { x: 0, y: -6, z: 0 },
-    lightIntensity: 0.5,
-    cameraDistance: -30,
+    lightIntensity: -2,
+    initialRotation: { x: 0, y: 3.2, z: 0 },
+    initialPosition: { x: 1, y: -1, z: 0 },
+    cameraDistance: -25,
+    rotationSpeed: 2,
+  },
+  "100017": {
+    initialPosition: { x: -0.01, y: -0.05, z: 0 },
+  },
+  "100021": {
+    initialRotation: { x: 0, y: 3.2, z: 0 },
+    cameraDistance: -2,
   },
 };
 

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nike Air Max 90 Premium
+* source:	https://sketchfab.com/3d-models/nike-air-max-90-premium-4b2280c16b67481cba0fe7ffacd77011
+* author:	mercurio22 (https://sketchfab.com/mercurio22)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nike Air Max 90 Premium" (https://sketchfab.com/3d-models/nike-air-max-90-premium-4b2280c16b67481cba0fe7ffacd77011) by mercurio22 (https://sketchfab.com/mercurio22) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
