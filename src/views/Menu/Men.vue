@@ -79,7 +79,7 @@
 import ProductFilter from "@/components/ProductFilter.vue";
 import CardComponent from "@/components/CardComponent.vue";
 import { useProductStore } from "@/stores/productStore";
-import { computed, ref, watch, nextTick } from "vue";
+import { computed, ref, watch, nextTick, onMounted, onBeforeUnmount} from "vue";
 import CompareBar from "@/components/CompareBar.vue";
 import arrowIcon from '@/assets/images/arrow-down-dropdown.svg'
 
