@@ -85,7 +85,7 @@
               alt="BackIcon"
               class="back-icon"
             />
-            <span class="back-icon">กลับไปที่ตะกร้าสินค้า</span>
+            <span @click="pushPage('cart')" class="back-icon">กลับไปที่ตะกร้าสินค้า</span>
           </a>
           <button @click="buyProduct" class="submit-button">
             สั่งซื้อเสร็จสมบูรณ์

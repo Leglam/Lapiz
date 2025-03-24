@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <footer v-if="route.name !== 'transaction'" class="footer">
     <div class="container">
       <div class="footer-grid">
         <!-- สินค้า -->
@@ -74,8 +74,9 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
+const route = useRoute();
 const router = useRouter();
 
 const pushPage = (name) => {

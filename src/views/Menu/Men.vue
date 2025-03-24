@@ -1,7 +1,7 @@
 <template>
   <div class="topic-wrapper">
     <div class="line"></div>
-    <div class="men-text">
+    <div class="men-text" ref="menTextRef">
       {{ productStore.searchValue !== "" ? productStore.searchValue : "Men" }}
     </div>
     <div class="line"></div>
@@ -57,11 +57,15 @@
 import ProductFilter from "@/components/ProductFilter.vue";
 import CardComponent from "@/components/Card-Component.vue";
 import { useProductStore } from "@/stores/productStore";
-import { computed, ref } from "vue";
+import { computed, ref, watch, nextTick } from "vue";
 import CompareBar from "@/components/compareBar.vue";
+
+const menTextRef = ref(null); // reference to the men-text element
 
 const productStore = useProductStore();
 const isDropdownOpen = ref(false);
+
+const customScrollOffset = 140; // เลื่อนลงมาจากด้านบน 100px
 
 const products = computed(() => {
   return productStore.filteredProduct;
@@ -104,6 +108,25 @@ const handleRemoveCompareProduct = (product) => {
     compareProductList.value.splice(index, 1);
   }
 };
+
+watch(
+  () => productStore.searchValue,
+  async (newValue) => {
+    if (newValue !== "") {
+      // ใช้ nextTick เพื่อให้มั่นใจว่า DOM ถูกอัปเดตก่อนที่จะเลื่อน
+      await nextTick(() => {
+        if (menTextRef.value) {
+          // ลองใช้ window.scrollTo เพื่อให้เลื่อนไปยังตำแหน่งของ menTextRef
+          window.scrollTo({
+            top: menTextRef.value.offsetTop - customScrollOffset, // ใช้ offsetTop เพื่อเลื่อนไปยังตำแหน่งของ element
+            behavior: 'smooth', // เลื่อนแบบราบรื่น
+          });
+        }
+      });
+    }
+  }
+);
+
 </script>
 
 <style scoped lang="scss">
@@ -130,6 +153,7 @@ const handleRemoveCompareProduct = (product) => {
 .wrapper {
   display: flex;
   margin: 3vh 3vw 3vh 3vw;
+
 
   .filter-container {
     width: 20.14vw;
