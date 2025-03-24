@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nike Air Max 95 Animal
+* source:	https://sketchfab.com/3d-models/nike-air-max-95-animal-638fc15fedce42c2ac85f1feed724eb0
+* author:	arnelubbers (https://sketchfab.com/arnelubbers)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nike Air Max 95 Animal" (https://sketchfab.com/3d-models/nike-air-max-95-animal-638fc15fedce42c2ac85f1feed724eb0) by arnelubbers (https://sketchfab.com/arnelubbers) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
