@@ -14,21 +14,43 @@
     <div class="product-wrapper">
       <div class="dropdown" @click="toggleDropdown">
         <div class="dropdown-header">
-          <span>สินค้าที่เกี่ยวข้อง</span>
-          <span
-            class="arrow"
+          <span>{{ selectedDropdownItem }}</span>
+          <img
+            :src="arrowIcon"  
+            alt="arrow"
             :class="{
               'arrow-up': isDropdownOpen,
               'arrow-down': !isDropdownOpen,
             }"
-          ></span>
+            class="dropdown-arrow"
+          />
         </div>
         <div v-if="isDropdownOpen" class="dropdown-content">
-          <p class="dropdown-style">สินค้าที่เกี่ยวข้อง</p>
-          <p class="dropdown-style">สินค้าขายดี</p>
-          <p class="dropdown-style">สินค้าใหม่</p>
-          <p class="dropdown-style">ราคา : จากน้อยไปมาก</p>
-          <p class="dropdown-style">ราคา : จากมากไปน้อย</p>
+          <p
+            class="dropdown-style"
+            @click="selectDropdownItem('สินค้าที่เกี่ยวข้อง')"
+            :class="{ 'disabled': selectedDropdownItem === 'สินค้าที่เกี่ยวข้อง' }"
+          >สินค้าที่เกี่ยวข้อง</p>
+          <p
+            class="dropdown-style"
+            @click="selectDropdownItem('สินค้าขายดี')"
+            :class="{ 'disabled': selectedDropdownItem === 'สินค้าขายดี' }"
+          >สินค้าขายดี</p>
+          <p
+            class="dropdown-style"
+            @click="selectDropdownItem('สินค้าใหม่')"
+            :class="{ 'disabled': selectedDropdownItem === 'สินค้าใหม่' }"
+          >สินค้าใหม่</p>
+          <p
+            class="dropdown-style"
+            @click="selectDropdownItem('ราคา : จากน้อยไปมาก')"
+            :class="{ 'disabled': selectedDropdownItem === 'ราคา : จากน้อยไปมาก' }"
+          >ราคา : จากน้อยไปมาก</p>
+          <p
+            class="dropdown-style"
+            @click="selectDropdownItem('ราคา : จากมากไปน้อย')"
+            :class="{ 'disabled': selectedDropdownItem === 'ราคา : จากมากไปน้อย' }"
+          >ราคา : จากมากไปน้อย</p>
         </div>
       </div>
       <div class="card-container">
@@ -59,13 +81,16 @@ import CardComponent from "@/components/CardComponent.vue";
 import { useProductStore } from "@/stores/productStore";
 import { computed, ref, watch, nextTick } from "vue";
 import CompareBar from "@/components/CompareBar.vue";
+import arrowIcon from '@/assets/images/arrow-down-dropdown.svg'
 
 const menTextRef = ref(null); // reference to the men-text element
 
 const productStore = useProductStore();
-const isDropdownOpen = ref(false);
 
-const customScrollOffset = 140; // เลื่อนลงมาจากด้านบน 100px
+const isDropdownOpen = ref(false);
+const selectedDropdownItem = ref('สินค้าที่เกี่ยวข้อง');
+
+const customScrollOffset = 140;
 
 const products = computed(() => {
   return productStore.filteredProduct;
@@ -93,6 +118,20 @@ const selectColor = (colorId) => {
 
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const selectDropdownItem = (item) => {
+  if (item !== selectedDropdownItem.value) {
+    selectedDropdownItem.value = item; 
+    // isDropdownOpen.value = false;
+  }
+};
+
+const closeDropdownIfClickedOutside = (event) => {
+  const dropdown = document.querySelector('.dropdown');
+  if (dropdown && !dropdown.contains(event.target)) {
+    isDropdownOpen.value = false;
+  }
 };
 
 const isProductInCompareList = (product) => {
@@ -127,9 +166,18 @@ watch(
   }
 );
 
+onMounted(() => {
+  document.addEventListener('click', closeDropdownIfClickedOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', closeDropdownIfClickedOutside);
+});
+
 </script>
 
 <style scoped lang="scss">
+
 .topic-wrapper {
   display: flex;
   justify-content: center;
@@ -186,22 +234,18 @@ watch(
       align-items: center;
     }
 
-    .arrow {
-      display: inline-block;
-      width: 0;
-      height: 0;
-      margin-left: 10px;
-      vertical-align: middle;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
+    .dropdown-arrow {
+      width: 16px; /* ขนาดของลูกศร */
+      height: 16px; /* ขนาดของลูกศร */
+      transition: transform 0.3s ease;
     }
 
-    .arrow-up {
-      border-bottom: 5px solid #000;
+    .dropdown-arrow.arrow-up {
+      transform: rotate(180deg); /* หมุนลูกศรขึ้น */
     }
 
-    .arrow-down {
-      border-top: 5px solid #000;
+    .dropdown-arrow.arrow-down {
+      transform: rotate(0deg); /* ลูกศรลง */
     }
 
     .dropdown-content {
@@ -227,6 +271,12 @@ watch(
       transition: 0.1s;
       font-weight: 600;
       
+    }
+
+    .dropdown-style.disabled {
+      background-color: #ececec;
+      color: #000000;
+      cursor: not-allowed;
     }
 
     .card-container {
