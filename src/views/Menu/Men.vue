@@ -55,10 +55,10 @@
 
 <script setup>
 import ProductFilter from "@/components/ProductFilter.vue";
-import CardComponent from "@/components/Card-Component.vue";
+import CardComponent from "@/components/CardComponent.vue";
 import { useProductStore } from "@/stores/productStore";
 import { computed, ref, watch, nextTick } from "vue";
-import CompareBar from "@/components/compareBar.vue";
+import CompareBar from "@/components/CompareBar.vue";
 
 const menTextRef = ref(null); // reference to the men-text element
 

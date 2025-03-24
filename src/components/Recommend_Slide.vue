@@ -28,7 +28,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import CardComponent from "./Card-Component.vue";
+import CardComponent from "./CardComponent.vue";
 
 const currentSlide = ref(0);
 const displayCount = 5;

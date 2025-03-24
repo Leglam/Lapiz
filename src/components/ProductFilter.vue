@@ -246,6 +246,7 @@ const emit = defineEmits([
 
 .filter-detail-container {
   width: 20.4vw;
+  // height: 96.3vw;
   height: calc(100vh - 69px);
   background: #FBFBFB;
   padding: 20px;

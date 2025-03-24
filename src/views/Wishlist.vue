@@ -31,7 +31,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
-import WishlistCardComponent from "@/components/Wishlist-Card-Component.vue";
+import WishlistCardComponent from "@/components/WishlistCardComponent.vue";
 import {
   getWishlistProducts,
   removeWishlistProduct,

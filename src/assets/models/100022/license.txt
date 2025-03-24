@@ -1,0 +1,11 @@
+Model Information:
+* title:	Nike Air Zoom Structure 24
+* source:	https://sketchfab.com/3d-models/nike-air-zoom-structure-24-50a84345bf54497f8d3b7173246abd63
+* author:	stevetalkowski (https://sketchfab.com/stevetalkowski)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Nike Air Zoom Structure 24" (https://sketchfab.com/3d-models/nike-air-zoom-structure-24-50a84345bf54497f8d3b7173246abd63) by stevetalkowski (https://sketchfab.com/stevetalkowski) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)

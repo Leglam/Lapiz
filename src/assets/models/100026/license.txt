@@ -1,0 +1,11 @@
+Model Information:
+* title:	Adidas Sense 4
+* source:	https://sketchfab.com/3d-models/adidas-sense-4-1258f26c2fad4e249daca9bebc83632a
+* author:	Lassi Kaukonen (https://sketchfab.com/thesidekick)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Adidas Sense 4" (https://sketchfab.com/3d-models/adidas-sense-4-1258f26c2fad4e249daca9bebc83632a) by Lassi Kaukonen (https://sketchfab.com/thesidekick) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -77,6 +77,9 @@ const modelConfigs = {
     initialRotation: { x: 0, y: 3.2, z: 0 },
     cameraDistance: -2,
   },
+  "100022": {
+    cameraDistance: -2,
+  },
 };
 
 // ฟังก์ชั่นรับค่า config ของแต่ละ model โดยอ้างอิงจาก default + override ด้วยค่าที่กำหนดเฉพาะ
