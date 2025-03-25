@@ -51,7 +51,6 @@ const categories = [
   { name: "รองเท้าส้นเตี้ย", image: Flats },
   { name: "รองเท้าบูท", image: Boot },
   { name: "รองเท้าหนัง", image: Leather },
-  { name: "รองเท้าวิ่ง", image: Boot },
 ];
 
 // สร้าง circular array สำหรับการแสดงผลแบบวนซ้ำ

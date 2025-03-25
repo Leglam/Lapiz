@@ -2,7 +2,7 @@
   <div class="topic-wrapper">
     <div class="line"></div>
     <div class="men-text" ref="menTextRef">
-      {{ productStore.searchValue !== "" ? productStore.searchValue : "Men" }}
+      {{ productStore.searchValue !== "" ? productStore.searchValue : "ผู้ชาย" }}
     </div>
     <div class="line"></div>
   </div>

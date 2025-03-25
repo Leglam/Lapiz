@@ -1,13 +1,5 @@
 <template>
   <div class="order-page">
-    <div class="order-logo">
-      <img
-        src="@/assets/images/img_header_logo.png"
-        alt="Logo Image"
-        class="logo"
-      />
-    </div>
-
     <div class="order-container">
       <!-- Left Column -->
       <div class="order-details">
@@ -207,21 +199,6 @@ const backToHome = () => {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-.order-logo {
-  display: flex;
-  padding: 0.375rem 2.875rem;
-  background-color: #ecefbb;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
-}
-
-.logo {
-  height: 48px;
-  width: 108px;
-  object-fit: contain;
-  margin-left: 80px;
 }
 
 /* ปรับให้ container แบ่งเป็น 50:50 */
@@ -452,28 +429,7 @@ const backToHome = () => {
   font-weight: bold;
 }
 
-@media (max-width: 1024px) {
-  .order-logo {
-    padding: 0.5rem 1rem;
-  }
-
-  .logo {
-    height: 40px;
-    width: 90px;
-    max-width: 90%;
-  }
-}
-
 @media (max-width: 768px) {
-  .order-logo {
-    justify-content: center;
-    padding: 0.5rem;
-  }
-
-  .logo {
-    height: 35px;
-    width: 80px;
-  }
   .order-container {
     flex-direction: column;
   }
