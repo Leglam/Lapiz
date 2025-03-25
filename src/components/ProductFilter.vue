@@ -246,15 +246,13 @@ const emit = defineEmits([
 
 .filter-detail-container {
   width: 20.4vw;
-  // height: 96.3vw;
-  height: calc(100vh - 69px);
-  background: #FBFBFB;
+  height: 84vw; /* ให้ความสูงปรับตามเนื้อหา */
+  align-self: flex-start; /* เพิ่ม align-self เพื่อให้ยึดติดกับด้านบน */
+  // height: calc(100vh - 69px);
+  //min-height: 100vh; ให้ container มีความสูงขั้นต่ำเท่ากับความสูงหน้าจอ
   padding: 20px;
   overflow-x: hidden;
   box-sizing: border-box;
-  border: 1px solid #E0E0E0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  min-height: 100vh; /* ให้ container มีความสูงขั้นต่ำเท่ากับความสูงหน้าจอ */
 }
 
 .filter-content {
@@ -268,7 +266,6 @@ const emit = defineEmits([
 .filter-section {
   display: flex;
   flex-direction: column;
-
   // gap: 16px;
 }
 

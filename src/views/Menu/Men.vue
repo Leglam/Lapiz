@@ -202,12 +202,13 @@ onBeforeUnmount(() => {
   display: flex;
   margin: 3vh 3vw 3vh 3vw;
 
-
   .filter-container {
-    width: 20.14vw;
-    height: 100vh;
-    // padding: 20px;
-    background-color: #00000025;
+    //position: sticky;
+    top: 80px;/* ปรับตามความสูงของ header หรือ navigation bar ถ้ามี */
+    background: #FBFBFB;
+    border: 1px solid #ccc;
+    border: 1px solid #E0E0E0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
 
   .product-wrapper {
@@ -280,6 +281,7 @@ onBeforeUnmount(() => {
     }
 
     .card-container {
+      flex: 1; //ให้ container ของ products เป็น flex: 1 เพื่อขยายพื้นที่ตามที่มี
       margin-top: 30px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);

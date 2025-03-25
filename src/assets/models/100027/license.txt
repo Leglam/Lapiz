@@ -1,0 +1,11 @@
+Model Information:
+* title:	Adidas lightboost scanned with polymuse
+* source:	https://sketchfab.com/3d-models/adidas-lightboost-scanned-with-polymuse-0bc7f34eb54d49a3957adb49edca1f5c
+* author:	Polymuse (https://sketchfab.com/polymuse)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Adidas lightboost scanned with polymuse" (https://sketchfab.com/3d-models/adidas-lightboost-scanned-with-polymuse-0bc7f34eb54d49a3957adb49edca1f5c) by Polymuse (https://sketchfab.com/polymuse) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

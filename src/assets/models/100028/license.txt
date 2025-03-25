@@ -1,0 +1,11 @@
+Model Information:
+* title:	Converse — FREE
+* source:	https://sketchfab.com/3d-models/converse-free-bc791439d26f4dd9974819c168e12385
+* author:	Yaroslav Karas (https://sketchfab.com/yakaras)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Converse — FREE" (https://sketchfab.com/3d-models/converse-free-bc791439d26f4dd9974819c168e12385) by Yaroslav Karas (https://sketchfab.com/yakaras) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

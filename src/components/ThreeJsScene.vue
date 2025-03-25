@@ -80,6 +80,26 @@ const modelConfigs = {
   "100022": {
     cameraDistance: -2,
   },
+  "100024": {
+    initialRotation: { x: 0, y: 3.2, z: 0 },
+    initialPosition: { x: -0.1, y: -1, z: 0 },
+    cameraDistance: -3.5,
+  },
+  "100026": {
+    initialRotation: { x: 0, y: 0.1, z: 0 },
+    initialPosition: { x: 0.05, y: 0, z: 0 },
+    cameraDistance: 0.6,
+  },
+  "100027": {
+    initialRotation: { x: 0, y: 0.1, z: 0 },
+    initialPosition: { x: 0.01, y: -0.06, z: 0 },
+    lightIntensity: 1,
+  },
+  "100028": {
+    initialRotation: { x: 0, y: 3.2, z: 0 },
+    initialPosition: { x: 0, y: -8, z: 0 },
+    cameraDistance: 3,
+  },
 };
 
 // ฟังก์ชั่นรับค่า config ของแต่ละ model โดยอ้างอิงจาก default + override ด้วยค่าที่กำหนดเฉพาะ
