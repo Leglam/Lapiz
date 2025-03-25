@@ -529,7 +529,7 @@ const emit = defineEmits([
 .checkbox-label {
   display: flex;
   align-items: center;
-  width: 40%;
+  width: 60%;
   gap: 8px;
   cursor: pointer;
   font-size: 14px;

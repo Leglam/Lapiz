@@ -114,7 +114,7 @@ const wishlistProduct = computed(() => productStore.wishlistProduct);
 
 const getProductImage = computed(() => {
   if (!props.product?.pdColor) return shoe1;
-
+  
   const matchedColor = props.product.pdColor.find(
     (color) => color.pdCode === props.pdImgNumber
   );
