@@ -74,6 +74,7 @@ onBeforeMount(async () => {
   localStorage.removeItem("token");
   await fetchProducts();
   await changeProductFormat();
+  console.log(productStore.filteredProduct);
 });
 </script>
 

@@ -31,8 +31,8 @@
               class="color-input"
             />
             <div class="color-button">
-              <div 
-                :style="{ backgroundColor: color }" 
+              <div
+                :style="{ backgroundColor: `var(--${color})` }"
                 class="color-box"
               ></div>
             </div>
@@ -48,8 +48,8 @@
         <div class="price-range">
           <div class="price-input-group">
             <div class="price-input-container">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 v-model="minPriceInput"
                 @blur="handleMinPriceInput"
                 class="price-text-input"
@@ -59,8 +59,8 @@
             </div>
             <span class="price-separator">-</span>
             <div class="price-input-container">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 v-model="maxPriceInput"
                 @blur="handleMaxPriceInput"
                 class="price-text-input"
@@ -69,21 +69,21 @@
               <span class="price-currency">THB</span>
             </div>
           </div>
-          
+
           <div class="range-slider-container">
-            <input 
-              type="range" 
-              :min="0" 
-              :max="maxPriceLimit" 
+            <input
+              type="range"
+              :min="0"
+              :max="maxPriceLimit"
               :step="100"
               v-model.number="minPrice"
               class="price-slider min-price-slider"
               @input="updateMinPriceInput"
             />
-            <input 
-              type="range" 
-              :min="0" 
-              :max="maxPriceLimit" 
+            <input
+              type="range"
+              :min="0"
+              :max="maxPriceLimit"
               :step="100"
               v-model.number="maxPrice"
               class="price-slider max-price-slider"
@@ -118,11 +118,7 @@
         <h6 class="filter-title">แบรนด์</h6>
         <div class="brand-options">
           <label v-for="brand in brands" :key="brand" class="checkbox-label">
-            <input
-              type="checkbox"
-              :value="brand"
-              v-model="selectedBrands"
-            />
+            <input type="checkbox" :value="brand" v-model="selectedBrands" />
             <span>{{ brand }}</span>
           </label>
         </div>
@@ -132,118 +128,155 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from "vue";
 
-const sizes = ['3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12']
-const colors = [
-  '#D3D3D3', '#B87070', '#FFFFFF', '#0000FF',
-  '#8B4513', '#008B8B', '#006400', '#9ACD32',
-  '#0000CD', '#FFD700', '#FF69B4', 'rainbow',
-  '#FFE4C4', '#800080', '#90EE90', '#E6E6FA',
-  '#A9A9A9', '#FF0000', '#DDA0DD', '#FFFF00'
-]
-const brands = ['Keds', 'Converse', 'Nike', 'Adidas', 'Reebok', 'Lacoste', 'Puma']
+const props = defineProps({
+  product: {
+    type: Array,
+    required: true,
+  },
+});
 
-const selectedSizes = ref([])
-const selectedColors = ref([])
-const selectedGenders = ref([])
-const selectedBrands = ref([])
+const sizes = [
+  "3.5",
+  "4",
+  "4.5",
+  "5",
+  "5.5",
+  "6",
+  "6.5",
+  "7",
+  "7.5",
+  "8",
+  "8.5",
+  "9",
+  "9.5",
+  "10",
+  "10.5",
+  "11",
+  "11.5",
+  "12",
+];
+
+const colors = computed(() => {
+  return [
+    ...new Set(
+      props.product.flatMap((product) =>
+        product.pdColor.map((color) => color.pdColor)
+      )
+    ),
+  ];
+});
+
+const brands = [
+  "Keds",
+  "Converse",
+  "Nike",
+  "Adidas",
+  "Reebok",
+  "Lacoste",
+  "Puma",
+];
+
+const selectedSizes = ref([]);
+const selectedColors = ref([]);
+const selectedGenders = ref([]);
+const selectedBrands = ref([]);
 
 // ตั้งค่าราคาขั้นต่ำและสูงสุด
-const maxPriceLimit = 6000
-const minPrice = ref(0)
-const maxPrice = ref(maxPriceLimit)
-const minPriceInput = ref('0')
-const maxPriceInput = ref(maxPriceLimit.toString())
+const maxPriceLimit = 6000;
+const minPrice = ref(0);
+const maxPrice = ref(maxPriceLimit);
+const minPriceInput = ref("0");
+const maxPriceInput = ref(maxPriceLimit.toString());
 
 // ฟังก์ชันอัพเดทค่าที่แสดงในช่องข้อความ
 const updateMinPriceInput = () => {
-  minPriceInput.value = minPrice.value.toString()
-  validatePriceRange()
-}
+  minPriceInput.value = minPrice.value.toString();
+  validatePriceRange();
+};
 
 const updateMaxPriceInput = () => {
-  maxPriceInput.value = maxPrice.value.toString()
-  validatePriceRange()
-}
+  maxPriceInput.value = maxPrice.value.toString();
+  validatePriceRange();
+};
 
 // ฟังก์ชันจัดการค่าที่ผู้ใช้กรอกในช่องข้อความ
 const handleMinPriceInput = () => {
-  let value = parseInt(minPriceInput.value.replace(/[^0-9]/g, ''))
-  
+  let value = parseInt(minPriceInput.value.replace(/[^0-9]/g, ""));
+
   if (isNaN(value)) {
-    value = 0
+    value = 0;
   }
-  
+
   // ตรวจสอบขอบเขต
-  if (value < 0) value = 0
-  if (value > maxPriceLimit) value = maxPriceLimit
-  
-  minPrice.value = value
-  minPriceInput.value = value.toString()
-  validatePriceRange()
-}
+  if (value < 0) value = 0;
+  if (value > maxPriceLimit) value = maxPriceLimit;
+
+  minPrice.value = value;
+  minPriceInput.value = value.toString();
+  validatePriceRange();
+};
 
 const handleMaxPriceInput = () => {
-  let value = parseInt(maxPriceInput.value.replace(/[^0-9]/g, ''))
-  
+  let value = parseInt(maxPriceInput.value.replace(/[^0-9]/g, ""));
+
   if (isNaN(value)) {
-    value = maxPriceLimit
+    value = maxPriceLimit;
   }
-  
+
   // ตรวจสอบขอบเขต
-  if (value < 0) value = 0
-  if (value > maxPriceLimit) value = maxPriceLimit
-  
-  maxPrice.value = value
-  maxPriceInput.value = value.toString()
-  validatePriceRange()
-}
+  if (value < 0) value = 0;
+  if (value > maxPriceLimit) value = maxPriceLimit;
+
+  maxPrice.value = value;
+  maxPriceInput.value = value.toString();
+  validatePriceRange();
+};
 
 // ฟังก์ชันตรวจสอบช่วงราคา
 const validatePriceRange = () => {
   if (parseInt(minPrice.value) > parseInt(maxPrice.value)) {
-    minPrice.value = maxPrice.value
-    minPriceInput.value = maxPrice.value.toString()
+    minPrice.value = maxPrice.value;
+    minPriceInput.value = maxPrice.value.toString();
   }
-}
+};
 
 // ส่งค่าช่วงราคาที่เปลี่ยนแปลงออกไป
 watch([minPrice, maxPrice], () => {
-  emit('update:priceRange', {
+  emit("update:priceRange", {
     min: minPrice.value,
-    max: maxPrice.value
-  })
-})
+    max: maxPrice.value,
+  });
+});
 
 // Watchers อื่นๆ
 watch(selectedSizes, (newVal) => {
-  emit('update:sizes', newVal)
-})
+  emit("update:sizes", newVal);
+});
 
 watch(selectedColors, (newVal) => {
-  emit('update:colors', newVal)
-})
+  emit("update:colors", newVal);
+});
 
 watch(selectedGenders, (newVal) => {
-  emit('update:genders', newVal)
-})
+  emit("update:genders", newVal);
+});
 
 watch(selectedBrands, (newVal) => {
-  emit('update:brands', newVal)
-})
+  emit("update:brands", newVal);
+});
 
 const emit = defineEmits([
-  'update:sizes',
-  'update:colors',
-  'update:genders',
-  'update:brands',
-  'update:priceRange'
-])
+  "update:sizes",
+  "update:colors",
+  "update:genders",
+  "update:brands",
+  "update:priceRange",
+]);
 </script>
 
 <style scoped lang="scss">
-
 .filter-detail-container {
   width: 20.4vw;
   height: 84vw; /* ให้ความสูงปรับตามเนื้อหา */
@@ -298,7 +331,7 @@ const emit = defineEmits([
   width: 40px;
   height: 30px;
   background: white;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
   border-radius: 10px;
   cursor: pointer;
   padding: 0;
@@ -336,12 +369,12 @@ const emit = defineEmits([
 }
 
 .size-input:checked ~ .size-chip {
-  border-color: #FF0000;
+  border-color: #ff0000;
 }
 
 /* Active/Selected state */
 .size-chip:has(.size-input:checked) {
-  border-color: #FF0000;
+  border-color: #ff0000;
 }
 
 .size-input:active + .size-label,
@@ -426,7 +459,6 @@ const emit = defineEmits([
   pointer-events: none;
 }
 
-
 .price-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 20px;
@@ -463,7 +495,7 @@ const emit = defineEmits([
 .price-text-input {
   width: 100%;
   padding: 8px 40px 8px 8px;
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
@@ -490,7 +522,7 @@ const emit = defineEmits([
 }
 
 /* ระยะห่างตัวเลื่อนราคา */
-.range-slider-container { 
+.range-slider-container {
   position: relative;
   height: 30px;
   margin-top: 10px;
@@ -503,7 +535,7 @@ const emit = defineEmits([
   width: 100%;
   height: 8px;
   border-radius: 20px;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   z-index: 1;
 }
 
@@ -544,14 +576,14 @@ const emit = defineEmits([
   border-radius: 2px;
   cursor: pointer;
   appearance: none; /* ลบสไตล์เริ่มต้น */
-  border: 1px solid #000000; 
+  border: 1px solid #000000;
   border-radius: 3px;
-  background-color: white; 
+  background-color: white;
   position: relative;
 }
 
 .checkbox-label input[type="checkbox"]:checked::after {
-  content: ''; /* สร้างเนื้อหาใหม่ */
+  content: ""; /* สร้างเนื้อหาใหม่ */
   position: absolute;
   top: 1px;
   left: 5px;

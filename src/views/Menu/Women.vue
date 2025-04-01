@@ -3,7 +3,7 @@
     <div class="line"></div>
     <div class="men-text" ref="menTextRef">
       {{
-        productStore.searchValue !== "" ? productStore.searchValue : "ผู้ชาย"
+        productStore.searchValue !== "" ? productStore.searchValue : "ผู้หญิง"
       }}
     </div>
     <div class="line"></div>
@@ -123,7 +123,7 @@ const customScrollOffset = 140;
 const colorToFilter = ref([]);
 
 const products = computed(() => {
-  return productStore.filteredProduct.filter((p) => p.pdGender === "Male");
+  return productStore.filteredProduct.filter((p) => p.pdGender === "Female");
 });
 
 const filteredProduct = computed(() => {
