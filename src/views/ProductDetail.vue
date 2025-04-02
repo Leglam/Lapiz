@@ -9,7 +9,14 @@
         align-items: center;
       "
     >
-      <div style="width: 100%;display: flex; justify-content: start; align-items: start">
+      <div
+        style="
+          width: 100%;
+          display: flex;
+          justify-content: start;
+          align-items: start;
+        "
+      >
         <div class="edit-info-navigation">
           <img
             src="@/assets/images/icon-back.svg"
@@ -136,7 +143,7 @@
       </div>
 
       <!-- Product Details Tabs -->
-      <div style="width: 100%;">
+      <div style="width: 100%">
         <div class="product-details">
           <div class="container">
             <div class="tabs-section">
@@ -316,6 +323,7 @@ const fetchProductInBasket = async () => {
     productStore.setBasketProductCount(totalQuantity);
   } else {
     productStore.setBasketProductCount(0);
+    return null;
   }
 };
 
@@ -326,12 +334,15 @@ const setActiveTab = (tabId) => {
 const addToCart = async () => {
   if (!selectedColor) {
     console.warn("No color selected!");
-    return; // Exit function if no color is selected
+    return;
   }
 
-  // Use the selected color's pdCode
-  await updateBasketProducts(selectedColor.value, 1);
-  await fetchProductInBasket();
+  const updateResponse = await updateBasketProducts(selectedColor.value, 1);
+  const fetchResponse = await fetchProductInBasket();
+
+  if (updateResponse === null && fetchResponse === null) {
+    return null;
+  }
 };
 
 const removeProductFromWishlist = async (pdCode) => {
@@ -365,8 +376,9 @@ const toggleFavorite = async () => {
 };
 
 const buyNow = async () => {
-  await addToCart();
-  router.push({ name: "cart" });
+  const responseStatus = await addToCart();
+
+  if (responseStatus !== null) router.push({ name: "cart" });
 };
 
 watch(selectedColor, (newValue) => {

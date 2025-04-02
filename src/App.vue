@@ -1,5 +1,10 @@
 <template>
   <div>
+    <Popup
+      v-if="errorStore.errorMessage"
+      :message="errorStore.errorMessage"
+      @close="closePopup"
+    />
     <TopHeader />
     <Header />
 
@@ -11,7 +16,7 @@
 </template>
 
 <script setup>
-// import Popup from "./components/Popup.vue";
+import Popup from "./components/Popup.vue";
 import TopHeader from "./components/TopHeader.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";

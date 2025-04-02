@@ -2,6 +2,12 @@
   <Teleport to="body">
     <div class="popup-overlay">
       <div class="popup">
+        <button
+          @click="handleCloseMessage"
+          style="position: absolute; top: 0; right: 0; margin: 8px 20px"
+        >
+          X
+        </button>
         <p>{{ message }}</p>
         <button @click="$emit('close')">Close</button>
       </div>
@@ -10,9 +16,17 @@
 </template>
 
 <script setup>
+import { useErrorStore } from "../stores/errorStore";
+
 defineProps({
   message: String,
 });
+
+const errorStore = useErrorStore();
+
+const handleCloseMessage = () => {
+  errorStore.clearError();
+};
 </script>
 
 <style>
@@ -30,6 +44,7 @@ defineProps({
 }
 
 .popup {
+  position: relative;
   background: white;
   padding: 20px;
   border-radius: 8px;
