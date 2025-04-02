@@ -12,11 +12,15 @@ export const useProductStore = defineStore("product", () => {
       );
     }
   });
+
   const compareProduct = ref([]);
   const wishlistProduct = ref([]);
   const basketProduct = ref([]);
   const basketProductCount = ref(0);
   const searchValue = ref("");
+
+  const showFilteredProduct = ref([]);
+  const showSearchValue = ref("");
 
   const setProduct = (newProduct) => {
     product.value = newProduct;
@@ -42,6 +46,13 @@ export const useProductStore = defineStore("product", () => {
     searchValue.value = newValue;
   };
 
+  const setShowFilteredProduct = () => {
+    showFilteredProduct.value = filteredProduct.value;
+  };
+
+  const setShowSearchValue = () => {
+    showSearchValue.value = searchValue.value;
+  };
   return {
     product,
     filteredProduct,
@@ -50,11 +61,15 @@ export const useProductStore = defineStore("product", () => {
     basketProduct,
     basketProductCount,
     searchValue,
+    showFilteredProduct,
+    showSearchValue,
     setProduct,
     setCompareProduct,
     setWishlistProduct,
     setBasketProduct,
     setBasketProductCount,
     setSearchValue,
+    setShowFilteredProduct,
+    setShowSearchValue,
   };
 });

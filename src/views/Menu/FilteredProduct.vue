@@ -1,7 +1,9 @@
 <template>
   <div class="topic-wrapper">
     <div class="line"></div>
-    <div class="men-text" ref="menTextRef">ผู้หญิง</div>
+    <div class="men-text" ref="menTextRef">
+      {{ productStore.showSearchValue }}
+    </div>
     <div class="line"></div>
   </div>
 
@@ -119,7 +121,7 @@ const customScrollOffset = 140;
 const colorToFilter = ref([]);
 
 const products = computed(() => {
-  return productStore.product.filter((p) => p.pdGender === "Female");
+  return productStore.showFilteredProduct;
 });
 
 const filteredProduct = computed(() => {
