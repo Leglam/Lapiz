@@ -121,7 +121,7 @@ const customScrollOffset = 140;
 const colorToFilter = ref([]);
 
 const products = computed(() => {
-  return productStore.filteredProduct.filter((p) => p.pdGender === "Men");
+  return productStore.product.filter((p) => p.pdGender === "Men");
 });
 
 const filteredProduct = computed(() => {
