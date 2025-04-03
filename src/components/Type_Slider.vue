@@ -30,6 +30,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useRoute, useRouter } from "vue-router";
 import Sneaker from '@/assets/shoes/type_sneaker.png';
 import FlipFlop from '@/assets/shoes/type_flip-flops.png';
 import Trainer from '@/assets/shoes/type_trainers.png';
@@ -38,19 +39,25 @@ import Flats from '@/assets/shoes/type_flats.png';
 import Boot from '@/assets/shoes/type_boots.png';
 import Leather from '@/assets/shoes/type_leather.png';
 
+const router = useRouter();
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
+
 const currentSlide = ref(0);
 const displayCount = 6;
 const itemGap = 40; // เพิ่มระยะห่างเป็น 40px
 const itemWidth = 177 + itemGap; // 177px (ขนาดของ item) + 40px (gap)
 
 const categories = [
-  { name: "รองเท้าผ้าใบ", image: Sneaker },
-  { name: "รองเท้าแตะ", image: FlipFlop },
-  { name: "รองเท้ากีฬา", image: Trainer },
-  { name: "รองเท้าส้นสูง", image: HighHeel },
-  { name: "รองเท้าส้นเตี้ย", image: Flats },
-  { name: "รองเท้าบูท", image: Boot },
-  { name: "รองเท้าหนัง", image: Leather },
+  { name: "รองเท้าผ้าใบ", image: Sneaker, route: "/sneakers" },
+  { name: "รองเท้าแตะ", image: FlipFlop, route: "/flip-flops" },
+  { name: "รองเท้ากีฬา", image: Trainer, route: "/sports" },
+  { name: "รองเท้าส้นสูง", image: HighHeel, route: "/high-heels" },
+  { name: "รองเท้าส้นเตี้ย", image: Flats, route: "/flats" },
+  { name: "รองเท้าบูท", image: Boot, route: "/boots" },
+  { name: "รองเท้าหนัง", image: Leather, route: "/leather" },
 ];
 
 // สร้าง circular array สำหรับการแสดงผลแบบวนซ้ำ
@@ -88,8 +95,9 @@ const slideNext = () => {
 
 // ฟังก์ชันเมื่อคลิกที่หมวดหมู่
 const selectCategory = (category) => {
-  // TODO: เพิ่มการจัดการเมื่อคลิกที่หมวดหมู่
-  console.log('Selected category:', category.name);
+  if (category.route) {
+    router.push(category.route);
+  }
 };
 </script>
 

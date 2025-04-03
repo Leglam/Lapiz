@@ -19,9 +19,39 @@ const router = createRouter({
       component: () => import("../views/Menu/Women.vue"),
     },
     {
-      path: "/filter",
-      name: "filter",
-      component: () => import("../views/Menu/FilteredProduct.vue"),
+      path: "/sneakers",
+      name: "sneakers",
+      component: () => import("../views/Menu/Sneaker.vue"),
+    },
+    {
+      path: "/flip-flops",
+      name: "flip-flops",
+      component: () => import("../views/Menu/FlipFlop.vue"),
+    },
+    {
+      path: "/sports",
+      name: "sports",
+      component: () => import("../views/Menu/Sport.vue"),
+    },
+    {
+      path: "/high-heels",
+      name: "high-heels",
+      component: () => import("../views/Menu/HighHeel.vue"),
+    },
+    {
+      path: "/flats",
+      name: "flats",
+      component: () => import("../views/Menu/Flat.vue"),
+    },
+    {
+      path: "/boots",
+      name: "boots",
+      component: () => import("../views/Menu/Boot.vue"),
+    },
+    {
+      path: "/leather",
+      name: "leather",
+      component: () => import("../views/Menu/Leather.vue"),
     },
     {
       path: "/register",
