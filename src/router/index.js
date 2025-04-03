@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import("../views/Menu/Women.vue"),
     },
     {
+      path: "/filter",
+      name: "filter",
+      component: () => import("../views/Menu/FilteredProduct.vue"),
+    },
+    {
       path: "/register",
       name: "register",
       component: () => import("../views/Register.vue"),

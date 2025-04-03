@@ -30,12 +30,9 @@
               class="search-input"
               @input="handleSearch"
             />
-            <button
-              v-if="searchBarValue"
-              @click="clearSearch"
-              class="clear-button"
-            >
+            <button v-if="searchBarValue" class="clear-button">
               <img
+                @click="handleSearchButton"
                 src="@/assets/images/searching_box.svg"
                 alt="searching"
                 class="searching-button"
@@ -47,6 +44,21 @@
               alt="search"
               class="search-icon"
             />
+            <div
+              v-if="productStore.searchValue"
+              class="search-results-container"
+            >
+              <div class="search-results">
+                <div
+                  v-for="product in productStore.filteredProduct"
+                  :key="product.pdColor[0].pdCode"
+                  class="search-product"
+                  @click="goToProduct(product.pdColor[0].pdCode)"
+                >
+                  {{ product.pdName }}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="right-utilities">
@@ -119,6 +131,24 @@ const pushPage = (pageName) => {
 
 const handleSearch = () => {
   productStore.setSearchValue(searchBarValue.value);
+};
+
+const handleSearchButton = () => {
+  productStore.setShowFilteredProduct();
+  productStore.setShowSearchValue();
+  clearSearch();
+  productStore.setSearchValue("");
+  pushPage("filter");
+};
+
+const goToProduct = (pdCode) => {
+  clearSearch();
+  productStore.setSearchValue("");
+  productStore.setShowSearchValue();
+  router.push({
+    name: "product-detail",
+    params: { id: pdCode },
+  });
 };
 
 const basketCountDisplay = computed(() => {
@@ -332,6 +362,32 @@ const currentFavoriteIcon = computed(() => {
 .favorite-button:active .favorite-icon,
 .cart-icon:active {
   transform: scale(0.95);
+}
+
+.search-product {
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.search-product:hover {
+  background: #e4e4e4;
+}
+
+.search-results {
+  display: flex; 
+  flex-direction: column;
+}
+
+.search-results-container {
+  width: 100%;
+  top: 100%;
+  position: absolute;
+  background: #fff;
+  max-height: 360px; /* กำหนดความสูงสูงสุด */
+  margin-top: 5px;
+  box-shadow: 0px 4px 10px rgba(100, 100, 100, 0.2);
+  border-radius: 8px;
+  overflow-y: auto; /* เปิดการเลื่อนในแนวตั้ง */
 }
 
 .basket-count {
