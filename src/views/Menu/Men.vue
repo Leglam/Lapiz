@@ -12,8 +12,8 @@
       <ProductFilter
         :product="products"
         @update:colors="(value) => (colorToFilter = value)"
-        @update:genders="(value) => (selectedGenders = value)"
         @update:brands="(value) => (selectedBrands = value)"
+        @update:types="(value) => (selectedTypes = value)"
         @update:priceRange="(value) => (priceRange = value)"
       />
     </div>
@@ -124,8 +124,8 @@ const customScrollOffset = 140;
 const colorToFilter = ref([]);
 const priceRange = ref({ min: 0, max: 6000 });
 
-const selectedGenders = ref([]);
 const selectedBrands = ref([]);
+const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter((p) => p.pdGender === "Men");
@@ -138,21 +138,21 @@ const filteredProduct = computed(() => {
       colorToFilter.value.length === 0 ||
       p.pdColor.some((color) => colorToFilter.value.includes(color.pdColor));
 
-    // กรองตามเพศ
-    const genderMatch =
-      selectedGenders.value.length === 0 ||
-      selectedGenders.value.includes(p.pdGender);
-
     // กรองตามแบรนด์
     const brandMatch =
       selectedBrands.value.length === 0 ||
       selectedBrands.value.includes(p.pdBrand);
 
+    // กรองตามประเภท
+    const typeMatch =
+      selectedTypes.value.length === 0 ||
+      selectedTypes.value.includes(p.pdType);
+
     // กรองตามช่วงราคา
     const priceMatch =
       p.pdPrice >= priceRange.value.min && p.pdPrice <= priceRange.value.max;
 
-    return colorMatch && genderMatch && brandMatch && priceMatch;
+    return colorMatch && brandMatch && priceMatch && typeMatch;
   });
 });
 

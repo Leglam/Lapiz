@@ -96,17 +96,13 @@
 
       <div class="filter-divider"></div>
 
-      <!-- Gender Section -->
+      <!-- Type Section -->
       <div class="filter-section">
-        <h5 class="filter-title">เพศ</h5>
-        <div class="gender-options">
-          <label class="checkbox-label">
-            <input type="checkbox" v-model="selectedGenders" value="Male" />
-            <span>ผู้ชาย</span>
-          </label>
-          <label class="checkbox-label">
-            <input type="checkbox" v-model="selectedGenders" value="Female" />
-            <span>ผู้หญิง</span>
+        <h6 class="filter-title">ประเภท</h6>
+        <div class="type-options">
+          <label v-for="type in shoesTypes" :key="type" class="checkbox-label">
+            <input type="checkbox" :value="type" v-model="selectedTypes" />
+            <span>{{ type }}</span>
           </label>
         </div>
       </div>
@@ -168,6 +164,16 @@ const colors = computed(() => {
   ];
 });
 
+const shoesTypes = [
+  "Boots",
+  "Flats",
+  "Flip-Flops",
+  "High-Heels",
+  "Leather",
+  "Sneakers",
+  "Trainers",
+];
+
 const brands = [
   "Keds",
   "Converse",
@@ -182,6 +188,7 @@ const selectedSizes = ref([]);
 const selectedColors = ref([]);
 const selectedGenders = ref([]);
 const selectedBrands = ref([]);
+const selectedTypes = ref([]);
 
 // ตั้งค่าราคาขั้นต่ำและสูงสุด
 const maxPriceLimit = 6000;
@@ -255,11 +262,16 @@ watch(selectedBrands, (newVal) => {
   emit("update:brands", newVal);
 });
 
+watch(selectedTypes, (newVal) => {
+  emit("update:types", newVal);
+});
+
 const emit = defineEmits([
   "update:sizes",
   "update:colors",
   "update:genders",
   "update:brands",
+  "update:types",
   "update:priceRange",
 ]);
 </script>
