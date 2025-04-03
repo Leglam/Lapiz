@@ -165,7 +165,46 @@
                   </p>
                 </div>
                 <div v-else-if="activeTab === 'features'" class="tab-panel">
-                  <span>คุณสมบัติ content</span>
+                  <div class="product-tab-details">
+                    <div class="detail-row">
+                      <div class="detail-label">SKU</div>
+                      <div class="detail-value">SSSSS</div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">ประเภทสินค้า</div>
+                      <div class="detail-value">{{ product.pdType }}</div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">วัสดุ</div>
+                      <div class="detail-value">{{ product.pdMaterial }}</div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">พื้นรองเท้า</div>
+                      <div class="detail-value">SSSSSSS</div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">แบรนด์</div>
+                      <div class="detail-value">{{ product.pdBrand }}</div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">รุ่น</div>
+                      <div class="detail-value">{{ product.pdModel }}</div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">เพศ</div>
+                      <div class="detail-value">{{ product.pdGender }}</div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">ขนาด</div>
+                      <div class="detail-value">9</div>
+                    </div>
+                    <div class="detail-row">
+                      <div class="detail-label">คำอธิบาย</div>
+                      <div class="detail-value description">
+                        {{ product.pdDesc }}
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div v-else-if="activeTab === 'reviews'" class="tab-panel">
                   <span>รีวิว content</span>
@@ -447,6 +486,35 @@ onBeforeMount(() => {
   box-sizing: border-box;
 }
 
+.product-tab-details {
+  width: 100%;
+  /* border: 1px solid #e0e0e0; */
+  border-radius: 8px;
+  margin: 16px 0px;
+  flex-grow: 1; /* ทำให้ขยายเต็มที่และเท่ากัน */
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 15px;
+  gap: 40px;
+}
+
+.detail-label {
+  width: 100px;
+  font-weight: bold;
+}
+
+.detail-value {
+  flex: 1;
+}
+
+.description {
+  white-space: pre-line;
+}
+
 .container {
   width: 100%;
 }
@@ -711,28 +779,30 @@ onBeforeMount(() => {
 
 .tabs {
   display: flex;
-  gap: 16px;
-  border-bottom: 1px solid #000;
 }
 
 .tab-button {
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 600;
-  background: none;
-  border: none;
+  border: 1px solid rgba(183, 183, 183, 0.6);
   cursor: pointer;
+  background-color: #ffffff;
+  transition: 0.2s;
 }
 
 .tab-button--active {
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  background-color: #914242;
+  border: 1px solid rgba(183, 183, 183, 0.8);
+  color: #fff;
   border-bottom: none;
   position: relative;
 }
 
 .tab-content {
   padding: 48px 24px;
+  border: 1px solid rgba(183, 183, 183, 0.4);
+  border-radius: 0px 6px 6px 6px;
 }
 
 .description-text {

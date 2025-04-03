@@ -9,7 +9,7 @@
           X
         </button>
         <p>{{ message }}</p>
-        <button @click="$emit('close')">Close</button>
+        <button class="close-button" @click="$emit('close')">เข้าสู่ระบบ</button>
       </div>
     </div>
   </Teleport>
@@ -49,5 +49,14 @@ const handleCloseMessage = () => {
   padding: 20px;
   border-radius: 8px;
   text-align: center;
+}
+
+.close-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>

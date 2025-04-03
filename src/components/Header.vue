@@ -46,18 +46,9 @@
             />
             <div
               v-if="productStore.searchValue"
-              style="
-                width: 100%;
-                top: 100%;
-                position: absolute;
-                background: #fff;
-                max-height: 360px;
-                margin-top: 5px;
-                box-shadow: 0px 4px 10px rgba(100, 100, 100, 0.2);
-                border-radius: 8px;
-              "
+              class="search-results-container"
             >
-              <div style="display: flex; flex-direction: column">
+              <div class="search-results">
                 <div
                   v-for="product in productStore.filteredProduct"
                   :key="product.pdColor[0].pdCode"
@@ -380,6 +371,23 @@ const currentFavoriteIcon = computed(() => {
 
 .search-product:hover {
   background: #e4e4e4;
+}
+
+.search-results {
+  display: flex; 
+  flex-direction: column;
+}
+
+.search-results-container {
+  width: 100%;
+  top: 100%;
+  position: absolute;
+  background: #fff;
+  max-height: 360px; /* กำหนดความสูงสูงสุด */
+  margin-top: 5px;
+  box-shadow: 0px 4px 10px rgba(100, 100, 100, 0.2);
+  border-radius: 8px;
+  overflow-y: auto; /* เปิดการเลื่อนในแนวตั้ง */
 }
 
 .basket-count {
