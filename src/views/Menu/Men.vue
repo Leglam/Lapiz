@@ -14,6 +14,7 @@
         @update:colors="(value) => (colorToFilter = value)"
         @update:genders="(value) => (selectedGenders = value)"
         @update:brands="(value) => (selectedBrands = value)"
+        @update:priceRange="(value) => (priceRange = value)"
       />
     </div>
     <div class="product-wrapper">
@@ -108,7 +109,7 @@ import {
   onMounted,
   onBeforeUnmount,
 } from "vue";
-import CompareBar from "@/components/CompareBar.vue";
+import CompareBar from "@/components/compareBar.vue";
 import arrowIcon from "@/assets/images/arrow-down-dropdown.svg";
 
 const menTextRef = ref(null); // reference to the men-text element
@@ -121,6 +122,7 @@ const selectedDropdownItem = ref("สินค้าที่เกี่ยว�
 const customScrollOffset = 140;
 
 const colorToFilter = ref([]);
+const priceRange = ref({ min: 0, max: 6000 });
 
 const selectedGenders = ref([]);
 const selectedBrands = ref([]);
@@ -146,7 +148,11 @@ const filteredProduct = computed(() => {
       selectedBrands.value.length === 0 ||
       selectedBrands.value.includes(p.pdBrand);
 
-    return colorMatch && genderMatch && brandMatch;
+    // กรองตามช่วงราคา
+    const priceMatch =
+      p.pdPrice >= priceRange.value.min && p.pdPrice <= priceRange.value.max;
+
+    return colorMatch && genderMatch && brandMatch && priceMatch;
   });
 });
 

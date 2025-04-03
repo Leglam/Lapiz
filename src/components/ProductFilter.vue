@@ -204,15 +204,9 @@ const updateMaxPriceInput = () => {
 // ฟังก์ชันจัดการค่าที่ผู้ใช้กรอกในช่องข้อความ
 const handleMinPriceInput = () => {
   let value = parseInt(minPriceInput.value.replace(/[^0-9]/g, ""));
-
-  if (isNaN(value)) {
-    value = 0;
-  }
-
-  // ตรวจสอบขอบเขต
+  if (isNaN(value)) value = 0;
   if (value < 0) value = 0;
   if (value > maxPriceLimit) value = maxPriceLimit;
-
   minPrice.value = value;
   minPriceInput.value = value.toString();
   validatePriceRange();
@@ -220,15 +214,9 @@ const handleMinPriceInput = () => {
 
 const handleMaxPriceInput = () => {
   let value = parseInt(maxPriceInput.value.replace(/[^0-9]/g, ""));
-
-  if (isNaN(value)) {
-    value = maxPriceLimit;
-  }
-
-  // ตรวจสอบขอบเขต
+  if (isNaN(value)) value = maxPriceLimit;
   if (value < 0) value = 0;
   if (value > maxPriceLimit) value = maxPriceLimit;
-
   maxPrice.value = value;
   maxPriceInput.value = value.toString();
   validatePriceRange();
