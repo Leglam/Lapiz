@@ -126,7 +126,7 @@ const selectedGenders = ref([]);
 const selectedBrands = ref([]);
 
 const products = computed(() => {
-  return productStore.product.filter((p) => p.pdGender === "Male");
+  return productStore.product.filter((p) => p.pdGender === "Men");
 });
 
 const filteredProduct = computed(() => {
