@@ -109,7 +109,7 @@ import {
   onMounted,
   onBeforeUnmount,
 } from "vue";
-import CompareBar from "@/components/compareBar.vue";
+import CompareBar from "@/components/CompareBar.vue";
 import arrowIcon from "@/assets/images/arrow-down-dropdown.svg";
 
 const menTextRef = ref(null); // reference to the men-text element
