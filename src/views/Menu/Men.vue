@@ -12,6 +12,8 @@
       <ProductFilter
         :product="products"
         @update:colors="(value) => (colorToFilter = value)"
+        @update:genders="(value) => (selectedGenders = value)"
+        @update:brands="(value) => (selectedBrands = value)"
       />
     </div>
     <div class="product-wrapper">
@@ -120,19 +122,31 @@ const customScrollOffset = 140;
 
 const colorToFilter = ref([]);
 
+const selectedGenders = ref([]);
+const selectedBrands = ref([]);
+
 const products = computed(() => {
   return productStore.product.filter((p) => p.pdGender === "Male");
 });
 
 const filteredProduct = computed(() => {
   return products.value.filter((p) => {
-    if (colorToFilter.value.length > 0) {
-      return p.pdColor.some((color) =>
-        colorToFilter.value.includes(color.pdColor)
-      );
-    }
+    // กรองตามสี
+    const colorMatch =
+      colorToFilter.value.length === 0 ||
+      p.pdColor.some((color) => colorToFilter.value.includes(color.pdColor));
 
-    return true;
+    // กรองตามเพศ
+    const genderMatch =
+      selectedGenders.value.length === 0 ||
+      selectedGenders.value.includes(p.pdGender);
+
+    // กรองตามแบรนด์
+    const brandMatch =
+      selectedBrands.value.length === 0 ||
+      selectedBrands.value.includes(p.pdBrand);
+
+    return colorMatch && genderMatch && brandMatch;
   });
 });
 

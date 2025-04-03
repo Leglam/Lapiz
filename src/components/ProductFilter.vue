@@ -101,11 +101,11 @@
         <h5 class="filter-title">เพศ</h5>
         <div class="gender-options">
           <label class="checkbox-label">
-            <input type="checkbox" v-model="selectedGenders" value="male" />
+            <input type="checkbox" v-model="selectedGenders" value="Male" />
             <span>ผู้ชาย</span>
           </label>
           <label class="checkbox-label">
-            <input type="checkbox" v-model="selectedGenders" value="female" />
+            <input type="checkbox" v-model="selectedGenders" value="Female" />
             <span>ผู้หญิง</span>
           </label>
         </div>
