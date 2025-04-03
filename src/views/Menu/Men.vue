@@ -132,7 +132,8 @@ const products = computed(() => {
 });
 
 const filteredProduct = computed(() => {
-  return products.value.filter((p) => {
+  // กรองสินค้า
+  let filtered = products.value.filter((p) => {
     // กรองตามสี
     const colorMatch =
       colorToFilter.value.length === 0 ||
@@ -152,8 +153,17 @@ const filteredProduct = computed(() => {
     const priceMatch =
       p.pdPrice >= priceRange.value.min && p.pdPrice <= priceRange.value.max;
 
-    return colorMatch && brandMatch && priceMatch && typeMatch;
+    return colorMatch && brandMatch && typeMatch && priceMatch;
   });
+
+  // เรียงลำดับสินค้า
+  if (selectedDropdownItem.value === "ราคา : จากน้อยไปมาก") {
+    filtered.sort((a, b) => a.pdPrice - b.pdPrice); // เรียงจากน้อยไปมาก
+  } else if (selectedDropdownItem.value === "ราคา : จากมากไปน้อย") {
+    filtered.sort((a, b) => b.pdPrice - a.pdPrice); // เรียงจากมากไปน้อย
+  }
+
+  return filtered;
 });
 
 const selectedProduct = ref("");
