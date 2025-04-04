@@ -100,9 +100,12 @@
       <div class="filter-section">
         <h6 class="filter-title">ประเภท</h6>
         <div class="type-options">
-          <label v-for="type in shoesTypes" :key="type" class="checkbox-label">
-            <input type="checkbox" :value="type" v-model="selectedTypes" />
-            <span>{{ type }}</span>
+          <label v-for="type in shoesTypes" 
+                 :key="type.value" 
+                 class="checkbox-label">
+
+            <input type="checkbox" :value="type.value" v-model="selectedTypes" />
+            <span>{{ type.label }}</span>
           </label>
         </div>
       </div>
@@ -165,13 +168,13 @@ const colors = computed(() => {
 });
 
 const shoesTypes = [
-  "Boots",
-  "Flats",
-  "Flip-Flops",
-  "High-Heels",
-  "Leather",
-  "Sneakers",
-  "Trainers",
+  { value: "Sneaker", label: "รองเท้าผ้าใบ" },
+  { value: "FlipFlop", label: "รองเท้าแตะ" },
+  { value: "Trainer", label: "รองเท้ากีฬา" },
+  { value: "HighHeel", label: "รองเท้าส้นสูง" },
+  { value: "Flat", label: "รองเท้าส้นเตี้ย" },
+  { value: "Boot", label: "รองเท้าบูท" },
+  { value: "Leather", label: "รองเท้าหนัง" },
 ];
 
 const brands = [
