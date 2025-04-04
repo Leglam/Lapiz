@@ -32,7 +32,7 @@
           </div>
           <div class="detail-row">
             <div class="detail-label">SKU</div>
-            <div class="detail-value">SSSSS</div>
+            <div class="detail-value">{{ product.pdName }}</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">ประเภทสินค้า</div>
@@ -41,10 +41,6 @@
           <div class="detail-row">
             <div class="detail-label">วัสดุ</div>
             <div class="detail-value">{{ product.pdMaterial }}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label">พื้นรองเท้า</div>
-            <div class="detail-value">SSSSSSS</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">แบรนด์</div>
