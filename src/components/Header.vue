@@ -41,6 +41,7 @@
             <img
               v-else
               src="@/assets/images/search_box.svg"
+              @click="handleSearchButton"
               alt="search"
               class="search-icon"
             />
