@@ -80,22 +80,6 @@
           <!-- <button class="nav-arrow prev" @click="scrollProducts('new', 'left')">&lt;</button> -->
           <div class="product-list" ref="newList">
             <NewItem_Slide />
-
-            <!-- <div v-for="(product, index) in newProducts" :key="index" class="product-card">
-              <img :src="product.image" :alt="product.name" class="product-image">
-              <div class="product-info">
-                <h3 class="product-name">{{ product.name }}</h3>
-                <p class="product-price">{{ product.price }} THB</p>
-                <div class="color-options">
-                  <span 
-                    v-for="(color, colorIndex) in product.colors" 
-                    :key="colorIndex" 
-                    class="color-dot"
-                    :style="{ backgroundColor: color }"
-                  ></span>
-                </div>
-              </div>
-            </div> -->
           </div>
           <!-- <button class="nav-arrow next" @click="scrollProducts('new', 'right')">&gt;</button> -->
         </div>
@@ -122,68 +106,6 @@ const mainBanners = [
   { image: Banner, alt: "Banner 1" },
   { image: Banner1, alt: "Banner 2" },
   { image: Banner2, alt: "Banner 3" },
-];
-
-const recommendedProducts = [
-  {
-    name: "รองเท้าผ้าใบรุ่นพรีเมี่ยมสุด (รุ่น T-Grip Soft)",
-    price: "3,990.00",
-    image: "/products/tgrip-soft.jpg",
-    colors: ["#000080", "#FFFFFF", "#808080"],
-  },
-  // Add more recommended products...
-];
-
-const newProducts = [
-  {
-    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
-    price: "2,250.00",
-    image: "/products/champion-toe.jpg",
-    colors: ["#000080", "#FFFFFF", "#808080"],
-  },
-
-  {
-    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
-    price: "2,250.00",
-    image: "/products/champion-toe.jpg",
-    colors: ["#000080", "#FFFFFF", "#808080"],
-  },
-
-  {
-    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
-    price: "2,250.00",
-    image: "/products/champion-toe.jpg",
-    colors: ["#000080", "#FFFFFF", "#808080"],
-  },
-
-  {
-    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
-    price: "2,250.00",
-    image: "/products/champion-toe.jpg",
-    colors: ["#000080", "#FFFFFF", "#808080"],
-  },
-
-  {
-    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
-    price: "2,250.00",
-    image: "/products/champion-toe.jpg",
-    colors: ["#000080", "#FFFFFF", "#808080"],
-  },
-
-  {
-    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
-    price: "2,250.00",
-    image: "/products/champion-toe.jpg",
-    colors: ["#000080", "#FFFFFF", "#808080"],
-  },
-
-  {
-    name: "รองเท้าผ้าใบ Champion Toe Cap Canvas",
-    price: "2,250.00",
-    image: "/products/champion-toe.jpg",
-    colors: ["#000080", "#FFFFFF", "#808080"],
-  },
-  // Add more new products...
 ];
 
 const goToSlide = (index) => {

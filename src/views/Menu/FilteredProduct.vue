@@ -2,7 +2,7 @@
     <div class="topic-wrapper">
       <div class="line"></div>
       <div class="men-text" ref="menTextRef">
-        {{ productStore.showSearchValue }}
+        ผลลัพธ์การค้นหา {{ productStore.showSearchValue }}
       </div>
       <div class="line"></div>
     </div>

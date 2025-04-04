@@ -29,59 +29,22 @@
 <script setup>
 import { ref, computed } from "vue";
 import CardComponent from "./CardComponent.vue";
+import { useProductStore } from "@/stores/productStore";
+
+const productStore = useProductStore();
 
 const currentSlide = ref(0);
 const displayCount = 5;
 const itemGap = 150; // เพิ่มระยะห่างเป็น 40px
 const itemWidth = 16.46 * (window.innerWidth / 100) + itemGap; // 177px (ขนาดของ item) + 40px (gap)
 
-const recommendedProducts = [
-  {
-    pdName: "รองเท้าผ้าใบ",
-    pdPrice: 1000,
-    pdColor: [{ pdColor: "red", isSelected: false }],
-    pdCode: 1,
-  },
-  {
-    pdName: "รองเท้าแตะ",
-    pdPrice: 800,
-    pdColor: [{ pdColor: "blue", isSelected: false }],
-    pdCode: 2,
-  },
-  {
-    pdName: "รองเท้ากีฬา",
-    pdPrice: 1500,
-    pdColor: [{ pdColor: "green", isSelected: false }],
-    pdCode: 3,
-  },
-  {
-    pdName: "รองเท้าส้นสูง",
-    pdPrice: 2000,
-    pdColor: [{ pdColor: "black", isSelected: false }],
-    pdCode: 4,
-  },
-  {
-    pdName: "รองเท้าส้นเตี้ย",
-    pdPrice: 1200,
-    pdColor: [{ pdColor: "yellow", isSelected: false }],
-    pdCode: 5,
-  },
-  {
-    pdName: "รองเท้าบูท",
-    pdPrice: 1800,
-    pdColor: [{ pdColor: "purple", isSelected: false }],
-    pdCode: 6,
-  },
-  {
-    pdName: "รองเท้าหนัง",
-    pdPrice: 2200,
-    pdColor: [{ pdColor: "white", isSelected: false }],
-    pdCode: 7,
-  },
-];
+const newProducts = computed(() => {
+  // กรองสินค้าใหม่ที่ pdGender = "Men_New"
+  return productStore.product.filter((p) => p.pdGender === "Men_New" || p.pdGender === "Wome_New");
+});
 
 const displayItems = computed(() => {
-  const items = [...recommendedProducts];
+  const items = [...newProducts.value];
   const duplicateCount = displayCount - 1;
   return [...items, ...items.slice(0, duplicateCount)];
 });
@@ -93,15 +56,17 @@ const sliderStyle = computed(() => ({
 
 const slidePrev = () => {
   if (currentSlide.value <= 0) {
-    currentSlide.value = recommendedProducts.length - displayCount;
+    // หยุดเลื่อนเมื่อถึงจุดเริ่มต้น
+    currentSlide.value = 0;
   } else {
     currentSlide.value--;
   }
 };
 
 const slideNext = () => {
-  if (currentSlide.value >= recommendedProducts.length - displayCount) {
-    currentSlide.value = 0;
+  if (currentSlide.value >= newProducts.value.length - displayCount) {
+    // หยุดเลื่อนเมื่อถึงจุดสิ้นสุด
+    currentSlide.value = newProducts.value.length - displayCount;
   } else {
     currentSlide.value++;
   }

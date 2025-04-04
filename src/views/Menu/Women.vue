@@ -1,7 +1,9 @@
 <template>
   <div class="topic-wrapper">
     <div class="line"></div>
-    <div class="men-text" ref="menTextRef">ผู้หญิง</div>
+    <div class="men-text" ref="menTextRef">
+      ผู้หญิง
+    </div>
     <div class="line"></div>
   </div>
 
@@ -10,6 +12,9 @@
       <ProductFilter
         :product="products"
         @update:colors="(value) => (colorToFilter = value)"
+        @update:brands="(value) => (selectedBrands = value)"
+        @update:types="(value) => (selectedTypes = value)"
+        @update:priceRange="(value) => (priceRange = value)"
       />
     </div>
     <div class="product-wrapper">
@@ -104,7 +109,7 @@ import {
   onMounted,
   onBeforeUnmount,
 } from "vue";
-import CompareBar from "@/components/compareBar.vue";
+import CompareBar from "@/components/CompareBar.vue";
 import arrowIcon from "@/assets/images/arrow-down-dropdown.svg";
 
 const menTextRef = ref(null); // reference to the men-text element
@@ -117,21 +122,60 @@ const selectedDropdownItem = ref("สินค้าที่เกี่ยว�
 const customScrollOffset = 140;
 
 const colorToFilter = ref([]);
+const priceRange = ref({ min: 0, max: 10000 });
+
+const selectedBrands = ref([]);
+const selectedTypes = ref([]);
 
 const products = computed(() => {
-  return productStore.product.filter((p) => p.pdGender === "Women");
+  return productStore.product.filter(
+    (p) => p.pdGender === "Women" || p.pdGender === "Women_Best" || p.pdGender === "Women_New"
+  );
 });
 
 const filteredProduct = computed(() => {
-  return products.value.filter((p) => {
-    if (colorToFilter.value.length > 0) {
-      return p.pdColor.some((color) =>
-        colorToFilter.value.includes(color.pdColor)
-      );
-    }
+  // กรองสินค้า
+  let filtered = products.value.filter((p) => {
+    // กรองตามสี
+    const colorMatch =
+      colorToFilter.value.length === 0 ||
+      p.pdColor.some((color) => colorToFilter.value.includes(color.pdColor));
 
-    return true;
+    // กรองตามแบรนด์
+    const brandMatch =
+      selectedBrands.value.length === 0 ||
+      selectedBrands.value.includes(p.pdBrand);
+
+    // กรองตามประเภท
+    const typeMatch =
+      selectedTypes.value.length === 0 ||
+      selectedTypes.value.includes(p.pdType);
+
+    // กรองตามช่วงราคา
+    const priceMatch =
+      p.pdPrice >= priceRange.value.min && p.pdPrice <= priceRange.value.max;
+
+    return colorMatch && brandMatch && typeMatch && priceMatch;
   });
+
+  // กรองเฉพาะสินค้าขายดี
+  if (selectedDropdownItem.value === "สินค้าขายดี") {
+    filtered = filtered.filter((p) => p.pdGender === "Women_Best");
+  }
+
+  // กรองเฉพาะสินค้าใหม่
+  if (selectedDropdownItem.value === "สินค้าใหม่") {
+    filtered = filtered.filter((p) => p.pdGender === "Women_New");
+  }
+
+  // เรียงลำดับสินค้า
+  if (selectedDropdownItem.value === "ราคา : จากน้อยไปมาก") {
+    filtered.sort((a, b) => a.pdPrice - b.pdPrice); // เรียงจากน้อยไปมาก
+  } else if (selectedDropdownItem.value === "ราคา : จากมากไปน้อย") {
+    filtered.sort((a, b) => b.pdPrice - a.pdPrice); // เรียงจากมากไปน้อย
+  }
+
+  return filtered;
 });
 
 const selectedProduct = ref("");
