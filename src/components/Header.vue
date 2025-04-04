@@ -29,6 +29,7 @@
               placeholder="ค้นหา"
               class="search-input"
               @input="handleSearch"
+              @keyup.enter="redirectToSearch"
             />
             <button v-if="searchBarValue" class="clear-button">
               <img
@@ -132,6 +133,12 @@ const pushPage = (pageName) => {
 
 const handleSearch = () => {
   productStore.setSearchValue(searchBarValue.value);
+};
+
+const redirectToSearch = () => {
+  if (searchBarValue.value.trim() !== "") {
+    handleSearchButton();
+  }
 };
 
 const handleSearchButton = () => {
