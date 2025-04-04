@@ -194,7 +194,7 @@ const selectedBrands = ref([]);
 const selectedTypes = ref([]);
 
 // ตั้งค่าราคาขั้นต่ำและสูงสุด
-const maxPriceLimit = 6000;
+const maxPriceLimit = 10000;
 const minPrice = ref(0);
 const maxPrice = ref(maxPriceLimit);
 const minPriceInput = ref("0");
@@ -287,7 +287,7 @@ const emit = defineEmits([
   // height: calc(100vh - 69px);
   //min-height: 100vh; ให้ container มีความสูงขั้นต่ำเท่ากับความสูงหน้าจอ
   padding: 20px;
-  overflow-x: hidden;
+  // overflow-x: hidden;
   box-sizing: border-box;
 }
 
@@ -608,6 +608,7 @@ const emit = defineEmits([
 }
 
 .gender-options,
+.type-options,
 .brand-options {
   display: flex;
   flex-direction: column;

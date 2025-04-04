@@ -122,7 +122,7 @@ const selectedDropdownItem = ref("สินค้าที่เกี่ยว�
 const customScrollOffset = 140;
 
 const colorToFilter = ref([]);
-const priceRange = ref({ min: 0, max: 6000 });
+const priceRange = ref({ min: 0, max: 10000 });
 
 const selectedBrands = ref([]);
 const selectedTypes = ref([]);
