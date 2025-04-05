@@ -17,7 +17,8 @@
           <li><a @click="pushPage('women')" class="nav-link">ผู้หญิง</a></li>
           <li><a class="nav-link">เด็ก</a></li>
           <li><a class="nav-link">กีฬา</a></li>
-          <li><a class="nav-link">สินค้าขายดี</a></li>
+          <li><a class="nav-link">สินค้าใหม่</a></li>
+          <!-- <li><a class="nav-link">สินค้าขายดี</a></li> -->
         </ul>
 
         <!-- Search and utilities -->
