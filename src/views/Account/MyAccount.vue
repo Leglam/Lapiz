@@ -7,6 +7,17 @@
         <button class="logout-button" @click="handleLogout">ออกจากระบบ</button>
       </div>
 
+      <!-- Confirmation Dialog -->
+      <div v-if="showLogoutDialog" class="logout-dialog-overlay">
+        <div class="logout-dialog">
+          <p>คุณต้องการออกจากระบบใช่หรือไม่?</p>
+          <div class="dialog-buttons">
+            <button class="confirm-button" @click="confirmLogout">ใช่</button>
+            <button class="cancel-button" @click="cancelLogout">ไม่</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Profile Information Section -->
       <div class="profile-content">
         <div class="profile-columns">
@@ -172,7 +183,7 @@
 <script setup>
 import date from "@/date.vue";
 import { useRouter } from "vue-router";
-import { computed, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useLoginStore } from "@/stores/loginStore";
 import { useProductStore } from "@/stores/productStore";
 
@@ -181,6 +192,8 @@ const router = useRouter();
 const loginStore = useLoginStore();
 
 const productStore = useProductStore();
+
+const showLogoutDialog = ref(false);
 
 const pushPage = (pageName) => {
   router.push({ name: pageName });
@@ -211,11 +224,28 @@ const orders = reactive([
   },
 ]);
 
+// const handleLogout = () => {
+//   localStorage.removeItem("token");
+//   router.push({ name: "login" });
+//   productStore.setBasketProductCount(0);
+//   loginStore.setIsLogin(false);
+// };
+
 const handleLogout = () => {
+  showLogoutDialog.value = true; // แสดง dialog เมื่อกดปุ่มออกจากระบบ
+};
+
+const confirmLogout = () => {
+  // ดำเนินการออกจากระบบ
   localStorage.removeItem("token");
   router.push({ name: "login" });
   productStore.setBasketProductCount(0);
   loginStore.setIsLogin(false);
+  showLogoutDialog.value = false; // ซ่อน dialog
+};
+
+const cancelLogout = () => {
+  showLogoutDialog.value = false; // ซ่อน dialog โดยไม่ออกจากระบบ
 };
 
 const viewOrderDetails = (orderId) => {
@@ -237,6 +267,66 @@ const viewOrderDetails = (orderId) => {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 30px;
+
+
+    // Logout Dialog 
+    .logout-dialog-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .logout-dialog {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center;
+
+      p {
+        margin-bottom: 20px;
+        font-size: 18px;
+        color: #333;
+      }
+
+      .dialog-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+
+        button {
+          padding: 10px 20px;
+          border-radius: 4px;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &.confirm-button {
+            background-color: #ff0000; // Red for confirm
+            color: #fff;
+
+            &:hover {
+              background-color: #cc0000; // Darker red on hover
+            }
+          }
+
+          &.cancel-button {
+            background-color: #007bff; // Blue for cancel
+            color: #fff;
+
+            &:hover {
+              background-color: #0056b3; // Darker blue on hover
+            }
+          }
+        }
+      }
+    }
 
     // Page Header
     .page-header {
