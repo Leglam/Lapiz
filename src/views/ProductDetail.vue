@@ -23,7 +23,7 @@
             alt="BackIcon"
             class="back-icon"
           />
-          <span @click="pushPage('men')" class="back-link">ย้อนกลับ</span>
+          <span @click="goBack" class="back-link">ย้อนกลับ</span>
         </div>
       </div>
 
@@ -247,6 +247,10 @@ const wishlistProduct = computed(() => productStore.wishlistProduct);
 
 const pushPage = (pageName) => {
   router.push({ name: pageName });
+};
+
+const goBack = () => {
+  router.go(-1);
 };
 
 const sizeGroups = ref([

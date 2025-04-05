@@ -57,7 +57,7 @@ const sliderStyle = computed(() => ({
 const slidePrev = () => {
   if (currentSlide.value <= 0) {
     // หยุดเลื่อนเมื่อถึงจุดเริ่มต้น
-    currentSlide.value = 0;
+    currentSlide.value = newProducts.value.length - displayCount;
   } else {
     currentSlide.value--;
   }
@@ -66,7 +66,7 @@ const slidePrev = () => {
 const slideNext = () => {
   if (currentSlide.value >= newProducts.value.length - displayCount) {
     // หยุดเลื่อนเมื่อถึงจุดสิ้นสุด
-    currentSlide.value = newProducts.value.length - displayCount;
+    currentSlide.value = 0;
   } else {
     currentSlide.value++;
   }

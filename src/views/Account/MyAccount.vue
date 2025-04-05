@@ -174,10 +174,13 @@ import date from "@/date.vue";
 import { useRouter } from "vue-router";
 import { computed, reactive } from "vue";
 import { useLoginStore } from "@/stores/loginStore";
+import { useProductStore } from "@/stores/productStore";
 
 const router = useRouter();
 
 const loginStore = useLoginStore();
+
+const productStore = useProductStore();
 
 const pushPage = (pageName) => {
   router.push({ name: pageName });
@@ -209,13 +212,14 @@ const orders = reactive([
 ]);
 
 const handleLogout = () => {
-  console.log("Logging out...");
-  // Implement actual logout logic
+  localStorage.removeItem("token");
+  router.push({ name: "login" });
+  productStore.setBasketProductCount(0);
+  loginStore.setIsLogin(false);
 };
 
 const viewOrderDetails = (orderId) => {
   console.log(`Viewing details for order ${orderId}`);
-  // Implement order details viewing logic
 };
 </script>
 

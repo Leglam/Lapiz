@@ -287,7 +287,7 @@ const emit = defineEmits([
   // height: calc(100vh - 69px);
   //min-height: 100vh; ให้ container มีความสูงขั้นต่ำเท่ากับความสูงหน้าจอ
   padding: 20px;
-  // overflow-x: hidden;
+  overflow-x: hidden;
   box-sizing: border-box;
 }
 

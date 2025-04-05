@@ -21,14 +21,16 @@ import TopHeader from "./components/TopHeader.vue";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 import { RouterView, useRoute, useRouter } from "vue-router";
-import { getAllProducts } from "@/api/productService";
-import { onBeforeMount, ref } from "vue";
+import { getAllProducts, getBasketProducts, getWishlistProducts } from "@/api/productService";
+import { onBeforeMount, onMounted, ref } from "vue";
 import { useProductStore } from "./stores/productStore";
 import { useErrorStore } from "./stores/errorStore";
+import { useLoginStore } from "./stores/loginStore";
 
 const router = useRouter();
 const route = useRoute();
 const productStore = useProductStore();
+const loginStore = useLoginStore();
 const fetchedData = ref([]);
 const products = ref([]);
 const errorStore = useErrorStore();
@@ -76,11 +78,56 @@ const closePopup = () => {
 };
 
 onBeforeMount(async () => {
-  localStorage.removeItem("token");
+  // localStorage.removeItem("token");
+
   await fetchProducts();
   await changeProductFormat();
   console.log(productStore.filteredProduct);
 });
+
+const fetchProductInBasket = async () => {
+  const response = await getBasketProducts();
+
+  if (response !== null) {
+    const totalQuantity = response.reduce(
+      (sum, product) => sum + product.quantity,
+      0
+    );
+    productStore.setBasketProductCount(totalQuantity);
+  } else {
+    productStore.setBasketProductCount(0);
+  }
+};
+
+const fetchProductInWishlist = async () => {
+  const response = await getWishlistProducts();
+
+  if (response !== null) {
+    productStore.setWishlistProduct(response);
+  } else {
+    productStore.setWishlistProduct([]);
+  }
+};
+
+onMounted(async () => {
+  if (localStorage.getItem("token")) {
+    await fetchProductInBasket();
+    await fetchProductInWishlist();
+    loginStore.setIsLogin(true);
+  }
+});
+
+// onBeforeMount(async () => {
+//   // localStorage.removeItem("token");
+//   if(localStorage.getItem("token") !== null) {
+//     getUserName();
+//     loginStore.setIsLogin(true);
+//   }
+  
+//   await fetchProducts();
+//   await changeProductFormat();
+//   console.log(productStore.filteredProduct);
+// });
 </script>
 
 <style scoped lang="scss">

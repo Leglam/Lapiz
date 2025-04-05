@@ -105,7 +105,7 @@ const sliderStyle = computed(() => ({
 const slidePrev = () => {
   if (currentSlide.value <= 0) {
     // หยุดเลื่อนเมื่อถึงจุดเริ่มต้น
-    currentSlide.value = 0;
+    currentSlide.value = RecommendProducts.value.length - displayCount;
   } else {
     currentSlide.value--;
   }
@@ -114,7 +114,7 @@ const slidePrev = () => {
 const slideNext = () => {
   if (currentSlide.value >= RecommendProducts.value.length - displayCount) {
     // หยุดเลื่อนเมื่อถึงจุดสิ้นสุด
-    currentSlide.value = RecommendProducts.value.length - displayCount;
+    currentSlide.value = 0;
   } else {
     currentSlide.value++;
   }
@@ -163,55 +163,7 @@ const slideNext = () => {
 
 .category-item:hover {
   transform: translateY(-5px);
-}
-
-/* ขนาดรูป */
-.category-image {
-  width: 177px;
-  height: 176px;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f5f5f5;
-}
-
-.category-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.category-item:hover .category-image img {
-  transform: scale(1.05);
-}
-
-.category-name-wrapper {
-  position: relative;
-  height: 35px;
-  margin-top: -17px; /* Move the white box up to overlap with the image */
-}
-
-.category-name {
-  position: absolute;
-  left: 0;
-  right: 0;
-  background: white;
-  height: 33px;
-  width: 177px;
-  margin: 0 auto;
-  font-size: 16px;
-  color: rgb(0, 0, 0);
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 0 0 8px 8px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  /* transform: scale(1.05); */
 }
 
 .slider-button {
