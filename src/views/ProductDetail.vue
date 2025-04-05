@@ -168,7 +168,7 @@
                   <div class="product-tab-details">
                     <div class="detail-row">
                       <div class="detail-label">SKU</div>
-                      <div class="detail-value">{{ product.pdName }}</div>
+                      <div class="detail-value">{{ product.pdColor[0].pdCode }}</div>
                     </div>
                     <div class="detail-row">
                       <div class="detail-label">ประเภทสินค้า</div>
@@ -188,7 +188,7 @@
                     </div>
                     <div class="detail-row">
                       <div class="detail-label">เพศ</div>
-                      <div class="detail-value">{{ product.pdGender }}</div>
+                      <div class="detail-value">{{ product.pdGender.split("_")[0] }}</div>
                     </div>
                     <div class="detail-row">
                       <div class="detail-label">ขนาด</div>
