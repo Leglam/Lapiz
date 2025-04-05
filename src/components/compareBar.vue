@@ -119,7 +119,8 @@ watch(
 
 .product-image-container {
   position: relative;
-  border: 1px solid #e0e0e0;
+  //border: 1px solid #e0e0e0;
+  transform: scale(1.5);
   width: 120px;
   height: 120px;
   display: flex;
@@ -130,17 +131,17 @@ watch(
 }
 
 .product-image {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
 .remove-button {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 24px;
-  height: 24px;
+  top: 24px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
   background-color: red;
   color: white;
   border: none;
@@ -166,7 +167,9 @@ watch(
 }
 
 .compare-button {
-  padding: 10px 20px;
+  width: 200px;
+  height: 60px;
+  font-size: 18px;
   background-color: #0039ff;
   color: white;
   border: none;
@@ -192,7 +195,9 @@ watch(
 }
 
 .reset-button {
-  padding: 10px 20px;
+  width: 200px;
+  height: 60px;
+  font-size: 18px;
   background-color: white;
   color: black;
   border: 1px solid #e0e0e0;

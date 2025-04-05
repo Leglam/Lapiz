@@ -1,7 +1,7 @@
 <template>
   <div class="topic-wrapper">
     <div class="line"></div>
-    <div class="men-text" ref="menTextRef">
+    <div class="sport-text" ref="menTextRef">
       รองเท้ากีฬา
     </div>
     <div class="line"></div>
@@ -12,64 +12,84 @@
       <ProductFilter
         :product="products"
         @update:colors="(value) => (colorToFilter = value)"
+        @update:brands="(value) => (selectedBrands = value)"
+        @update:types="(value) => (selectedTypes = value)"
+        @update:priceRange="(value) => (priceRange = value)"
       />
     </div>
     <div class="product-wrapper">
-      <div class="dropdown" @click="toggleDropdown">
-        <div class="dropdown-header">
-          <span>{{ selectedDropdownItem }}</span>
-          <img
-            :src="arrowIcon"
-            alt="arrow"
-            :class="{
-              'arrow-up': isDropdownOpen,
-              'arrow-down': !isDropdownOpen,
-            }"
-            class="dropdown-arrow"
-          />
-        </div>
-        <div v-if="isDropdownOpen" class="dropdown-content">
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('สินค้าที่เกี่ยวข้อง')"
-            :class="{
-              disabled: selectedDropdownItem === 'สินค้าที่เกี่ยวข้อง',
-            }"
-          >
-            สินค้าที่เกี่ยวข้อง
-          </p>
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('สินค้าขายดี')"
-            :class="{ disabled: selectedDropdownItem === 'สินค้าขายดี' }"
-          >
-            สินค้าขายดี
-          </p>
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('สินค้าใหม่')"
-            :class="{ disabled: selectedDropdownItem === 'สินค้าใหม่' }"
-          >
-            สินค้าใหม่
-          </p>
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('ราคา : จากน้อยไปมาก')"
-            :class="{
-              disabled: selectedDropdownItem === 'ราคา : จากน้อยไปมาก',
-            }"
-          >
-            ราคา : จากน้อยไปมาก
-          </p>
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('ราคา : จากมากไปน้อย')"
-            :class="{
-              disabled: selectedDropdownItem === 'ราคา : จากมากไปน้อย',
-            }"
-          >
-            ราคา : จากมากไปน้อย
-          </p>
+      <div class="dropdown-wrapper">
+        <div class="sort-text">เรียงตาม</div>
+        <div class="dropdown" @click="toggleDropdown">
+          <div class="dropdown-header">
+            <span>{{ selectedDropdownItem }}</span>
+            <img
+              :src="arrowIcon"
+              alt="arrow"
+              :class="{
+                'arrow-up': isDropdownOpen,
+                'arrow-down': !isDropdownOpen,
+              }"
+              class="dropdown-arrow"
+            />
+          </div>
+          <div v-if="isDropdownOpen" class="dropdown-content">
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('สินค้าที่เกี่ยวข้อง')"
+              :class="{
+                disabled: selectedDropdownItem === 'สินค้าที่เกี่ยวข้อง',
+              }"
+            >
+              สินค้าที่เกี่ยวข้อง
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('สินค้าขายดี')"
+              :class="{ disabled: selectedDropdownItem === 'สินค้าขายดี' }"
+            >
+              สินค้าขายดี
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('สินค้าใหม่')"
+              :class="{ disabled: selectedDropdownItem === 'สินค้าใหม่' }"
+            >
+              สินค้าใหม่
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('ราคา : จากน้อยไปมาก')"
+              :class="{
+                disabled: selectedDropdownItem === 'ราคา : จากน้อยไปมาก',
+              }"
+            >
+              ราคา : จากน้อยไปมาก
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('ราคา : จากมากไปน้อย')"
+              :class="{
+                disabled: selectedDropdownItem === 'ราคา : จากมากไปน้อย',
+              }"
+            >
+              ราคา : จากมากไปน้อย
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('ชื่อสินค้า (A ~ Z)')"
+              :class="{ disabled: selectedDropdownItem === 'ชื่อสินค้า (A ~ Z)' }"
+            >
+              ชื่อสินค้า (A ~ Z)
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('ชื่อสินค้า (Z ~ A)')"
+              :class="{ disabled: selectedDropdownItem === 'ชื่อสินค้า (Z ~ A)' }"
+            >
+              ชื่อสินค้า (Z ~ A)
+            </p>
+          </div>
         </div>
       </div>
       <div class="card-container">
@@ -109,7 +129,7 @@ import {
 import CompareBar from "@/components/CompareBar.vue";
 import arrowIcon from "@/assets/images/arrow-down-dropdown.svg";
 
-const menTextRef = ref(null); // reference to the men-text element
+const menTextRef = ref(null);
 
 const productStore = useProductStore();
 
@@ -119,21 +139,64 @@ const selectedDropdownItem = ref("สินค้าที่เกี่ยว�
 const customScrollOffset = 140;
 
 const colorToFilter = ref([]);
+const priceRange = ref({ min: 0, max: 10000 });
+
+const selectedBrands = ref([]);
+const selectedTypes = ref([]);
 
 const products = computed(() => {
-  return productStore.product.filter((p) => p.pdType === "Sport");
+  return productStore.product.filter(
+    (p) => p.pdType === "Sport" || p.pdType === "Sport_Best" || p.pdType === "Sport_New"
+  );
 });
 
 const filteredProduct = computed(() => {
-  return products.value.filter((p) => {
-    if (colorToFilter.value.length > 0) {
-      return p.pdColor.some((color) =>
-        colorToFilter.value.includes(color.pdColor)
-      );
-    }
+  // กรองสินค้า
+  let filtered = products.value.filter((p) => {
+    // กรองตามสี
+    const colorMatch =
+      colorToFilter.value.length === 0 ||
+      p.pdColor.some((color) => colorToFilter.value.includes(color.pdColor));
 
-    return true;
+    // กรองตามแบรนด์
+    const brandMatch =
+      selectedBrands.value.length === 0 ||
+      selectedBrands.value.includes(p.pdBrand);
+
+    // กรองตามประเภท
+    const typeMatch =
+      selectedTypes.value.length === 0 ||
+      selectedTypes.value.includes(p.pdType);
+
+    // กรองตามช่วงราคา
+    const priceMatch =
+      p.pdPrice >= priceRange.value.min && p.pdPrice <= priceRange.value.max;
+
+    return colorMatch && brandMatch && typeMatch && priceMatch;
   });
+
+  // กรองเฉพาะสินค้าขายดี
+  if (selectedDropdownItem.value === "สินค้าขายดี") {
+    filtered = filtered.filter((p) => p.pdType === "Sport_Best");
+  }
+
+  // กรองเฉพาะสินค้าใหม่
+  if (selectedDropdownItem.value === "สินค้าใหม่") {
+    filtered = filtered.filter((p) => p.pdType === "Sport_New");
+  }
+
+  // เรียงลำดับสินค้า
+  if (selectedDropdownItem.value === "ราคา : จากน้อยไปมาก") {
+    filtered.sort((a, b) => a.pdPrice - b.pdPrice); // เรียงจากน้อยไปมาก
+  } else if (selectedDropdownItem.value === "ราคา : จากมากไปน้อย") {
+    filtered.sort((a, b) => b.pdPrice - a.pdPrice); // เรียงจากมากไปน้อย
+  } else if (selectedDropdownItem.value === "ชื่อสินค้า (A ~ Z)") {
+    filtered.sort((a, b) => a.pdName.localeCompare(b.pdName)); // เรียงตามตัวอักษร A ไป Z
+  } else if (selectedDropdownItem.value === "ชื่อสินค้า (Z ~ A)") {
+    filtered.sort((a, b) => b.pdName.localeCompare(a.pdName)); // เรียงตามตัวอักษร Z ไป A
+  }
+
+  return filtered;
 });
 
 const selectedProduct = ref("");
@@ -231,7 +294,7 @@ onBeforeUnmount(() => {
   }
 }
 
-.men-text {
+.sport-text {
   font-size: 24px;
   font-weight: bold;
 }
@@ -265,6 +328,20 @@ onBeforeUnmount(() => {
       background-color: #fff;
       width: 12vw;
       box-sizing: border-box;
+    }
+
+    .dropdown-wrapper {
+      display: flex;
+      align-items: center;
+      gap : 10px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .sort-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #000000;
     }
 
     .dropdown-header {

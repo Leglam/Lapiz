@@ -15,9 +15,9 @@
         <ul class="nav-menu">
           <li><a @click="pushPage('men')" class="nav-link">ผู้ชาย</a></li>
           <li><a @click="pushPage('women')" class="nav-link">ผู้หญิง</a></li>
-          <li><a class="nav-link">เด็ก</a></li>
-          <li><a class="nav-link">กีฬา</a></li>
-          <li><a class="nav-link">สินค้าใหม่</a></li>
+          <li><a @click="pushPage('kid')" class="nav-link">เด็ก</a></li>
+          <li><a @click="pushPage('sport')" class="nav-link">กีฬา</a></li>
+          <li><a @click="pushPage('new-product')" class="nav-link">สินค้าใหม่</a></li>
           <!-- <li><a class="nav-link">สินค้าขายดี</a></li> -->
         </ul>
 

@@ -1,8 +1,8 @@
 <template>
   <div class="topic-wrapper">
     <div class="line"></div>
-    <div class="men-text" ref="menTextRef">
-      ผู้ชาย
+    <div class="kid-text" ref="menTextRef">
+      เด็ก
     </div>
     <div class="line"></div>
   </div>
@@ -146,7 +146,7 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdGender === "Men" || p.pdGender === "Men_Best" || p.pdGender === "Men_New"
+    (p) => p.pdType === "Kid" || p.pdType === "Kid_Best" || p.pdType === "Kid_New"
   );
 });
 
@@ -177,12 +177,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdGender === "Men_Best");
+    filtered = filtered.filter((p) => p.pdType === "Kid_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdGender === "Men_New");
+    filtered = filtered.filter((p) => p.pdType === "Kid_New");
   }
 
   // เรียงลำดับสินค้า
@@ -294,7 +294,7 @@ onBeforeUnmount(() => {
   }
 }
 
-.men-text {
+.kid-text {
   font-size: 24px;
   font-weight: bold;
 }

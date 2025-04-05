@@ -18,61 +18,78 @@
       />
     </div>
     <div class="product-wrapper">
-      <div class="dropdown" @click="toggleDropdown">
-        <div class="dropdown-header">
-          <span>{{ selectedDropdownItem }}</span>
-          <img
-            :src="arrowIcon"
-            alt="arrow"
-            :class="{
-              'arrow-up': isDropdownOpen,
-              'arrow-down': !isDropdownOpen,
-            }"
-            class="dropdown-arrow"
-          />
-        </div>
-        <div v-if="isDropdownOpen" class="dropdown-content">
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('สินค้าที่เกี่ยวข้อง')"
-            :class="{
-              disabled: selectedDropdownItem === 'สินค้าที่เกี่ยวข้อง',
-            }"
-          >
-            สินค้าที่เกี่ยวข้อง
-          </p>
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('สินค้าขายดี')"
-            :class="{ disabled: selectedDropdownItem === 'สินค้าขายดี' }"
-          >
-            สินค้าขายดี
-          </p>
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('สินค้าใหม่')"
-            :class="{ disabled: selectedDropdownItem === 'สินค้าใหม่' }"
-          >
-            สินค้าใหม่
-          </p>
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('ราคา : จากน้อยไปมาก')"
-            :class="{
-              disabled: selectedDropdownItem === 'ราคา : จากน้อยไปมาก',
-            }"
-          >
-            ราคา : จากน้อยไปมาก
-          </p>
-          <p
-            class="dropdown-style"
-            @click="selectDropdownItem('ราคา : จากมากไปน้อย')"
-            :class="{
-              disabled: selectedDropdownItem === 'ราคา : จากมากไปน้อย',
-            }"
-          >
-            ราคา : จากมากไปน้อย
-          </p>
+      <div class="dropdown-wrapper">
+        <div class="sort-text">เรียงตาม</div>
+        <div class="dropdown" @click="toggleDropdown">
+          <div class="dropdown-header">
+            <span>{{ selectedDropdownItem }}</span>
+            <img
+              :src="arrowIcon"
+              alt="arrow"
+              :class="{
+                'arrow-up': isDropdownOpen,
+                'arrow-down': !isDropdownOpen,
+              }"
+              class="dropdown-arrow"
+            />
+          </div>
+          <div v-if="isDropdownOpen" class="dropdown-content">
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('สินค้าที่เกี่ยวข้อง')"
+              :class="{
+                disabled: selectedDropdownItem === 'สินค้าที่เกี่ยวข้อง',
+              }"
+            >
+              สินค้าที่เกี่ยวข้อง
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('สินค้าขายดี')"
+              :class="{ disabled: selectedDropdownItem === 'สินค้าขายดี' }"
+            >
+              สินค้าขายดี
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('สินค้าใหม่')"
+              :class="{ disabled: selectedDropdownItem === 'สินค้าใหม่' }"
+            >
+              สินค้าใหม่
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('ชื่อสินค้า (A ~ Z)')"
+              :class="{ disabled: selectedDropdownItem === 'ชื่อสินค้า (A ~ Z)' }"
+            >
+              ชื่อสินค้า (A ~ Z)
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('ชื่อสินค้า (Z ~ A)')"
+              :class="{ disabled: selectedDropdownItem === 'ชื่อสินค้า (Z ~ A)' }"
+            >
+              ชื่อสินค้า (Z ~ A)
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('ราคา : จากน้อยไปมาก')"
+              :class="{
+                disabled: selectedDropdownItem === 'ราคา : จากน้อยไปมาก',
+              }"
+            >
+              ราคา : จากน้อยไปมาก
+            </p>
+            <p
+              class="dropdown-style"
+              @click="selectDropdownItem('ราคา : จากมากไปน้อย')"
+              :class="{
+                disabled: selectedDropdownItem === 'ราคา : จากมากไปน้อย',
+              }"
+            >
+              ราคา : จากมากไปน้อย
+            </p>
+          </div>
         </div>
       </div>
       <div class="card-container">
@@ -173,6 +190,10 @@ const filteredProduct = computed(() => {
     filtered.sort((a, b) => a.pdPrice - b.pdPrice); // เรียงจากน้อยไปมาก
   } else if (selectedDropdownItem.value === "ราคา : จากมากไปน้อย") {
     filtered.sort((a, b) => b.pdPrice - a.pdPrice); // เรียงจากมากไปน้อย
+  } else if (selectedDropdownItem.value === "ชื่อสินค้า (A ~ Z)") {
+    filtered.sort((a, b) => a.pdName.localeCompare(b.pdName)); // เรียงตามตัวอักษร A ไป Z
+  } else if (selectedDropdownItem.value === "ชื่อสินค้า (Z ~ A)") {
+    filtered.sort((a, b) => b.pdName.localeCompare(a.pdName)); // เรียงตามตัวอักษร Z ไป A
   }
 
   return filtered;
@@ -307,6 +328,20 @@ onBeforeUnmount(() => {
       background-color: #fff;
       width: 12vw;
       box-sizing: border-box;
+    }
+
+    .dropdown-wrapper {
+      display: flex;
+      align-items: center;
+      gap : 10px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .sort-text {
+      font-size: 16px;
+      font-weight: bold;
+      color: #000000;
     }
 
     .dropdown-header {

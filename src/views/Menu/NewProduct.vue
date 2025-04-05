@@ -1,8 +1,8 @@
 <template>
   <div class="topic-wrapper">
     <div class="line"></div>
-    <div class="men-text" ref="menTextRef">
-      ผู้ชาย
+    <div class="new-product-text" ref="menTextRef">
+      สินค้าใหม่
     </div>
     <div class="line"></div>
   </div>
@@ -42,20 +42,6 @@
               }"
             >
               สินค้าที่เกี่ยวข้อง
-            </p>
-            <p
-              class="dropdown-style"
-              @click="selectDropdownItem('สินค้าขายดี')"
-              :class="{ disabled: selectedDropdownItem === 'สินค้าขายดี' }"
-            >
-              สินค้าขายดี
-            </p>
-            <p
-              class="dropdown-style"
-              @click="selectDropdownItem('สินค้าใหม่')"
-              :class="{ disabled: selectedDropdownItem === 'สินค้าใหม่' }"
-            >
-              สินค้าใหม่
             </p>
             <p
               class="dropdown-style"
@@ -129,7 +115,7 @@ import {
 import CompareBar from "@/components/CompareBar.vue";
 import arrowIcon from "@/assets/images/arrow-down-dropdown.svg";
 
-const menTextRef = ref(null); // reference to the men-text element
+const menTextRef = ref(null); // reference to the new-product-text element
 
 const productStore = useProductStore();
 
@@ -294,7 +280,7 @@ onBeforeUnmount(() => {
   }
 }
 
-.men-text {
+.new-product-text {
   font-size: 24px;
   font-weight: bold;
 }
