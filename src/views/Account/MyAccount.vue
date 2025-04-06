@@ -28,13 +28,13 @@
                 <div class="form-field">
                   <label>ชื่อจริง</label>
                   <div class="box-display">
-                    {{ firstName }}
+                    {{ userProfile.firstName }}
                   </div>
                 </div>
                 <div class="form-field">
                   <label>นามสกุล</label>
                   <div class="box-display">
-                    {{ lastName }}
+                    {{ userProfile.lastName }}
                   </div>
                 </div>
               </div>
@@ -50,7 +50,7 @@
                 <div class="form-field">
                   <label>อีเมล</label>
                   <div class="box-display">
-                    {{ email }}
+                    {{ userProfile.email }}
                   </div>
                 </div>
               </div>
@@ -59,7 +59,7 @@
                 <div class="form-field">
                   <label>หมายเลขโทรศัพท์</label>
                   <div class="box-display">
-                    {{ phoneNumber }}
+                    {{ userProfile.phoneNumber }}
                   </div>
                 </div>
                 <div class="form-field">
@@ -73,7 +73,7 @@
                 <div class="form-field">
                   <label>รหัสผ่าน</label>
                   <div class="box-display">
-                    {{ password }}
+                    {{ userProfile.password }}
                   </div>
                 </div>
               </div>
@@ -83,7 +83,9 @@
             <div class="edit-links">
               <a @click="pushPage('edit-info')" class="edit-link">แก้ไข</a>
               <span>|</span>
-              <a @click="pushPage('edit-info')" class="change-password-link">เปลี่ยนรหัสผ่าน</a>
+              <a @click="pushPage('edit-info')" class="change-password-link"
+                >เปลี่ยนรหัสผ่าน</a
+              >
             </div>
           </div>
 
@@ -108,7 +110,9 @@
 
             <!-- Add Edit link at the bottom right of the right column -->
             <div class="edit-address-links">
-              <a @click="pushPage('edit-address')" class="edit-address-link">แก้ไข</a>
+              <a @click="pushPage('edit-address')" class="edit-address-link"
+                >แก้ไข</a
+              >
             </div>
           </div>
         </div>
@@ -163,11 +167,12 @@
 
 <script setup>
 import date from "@/date.vue";
-import { useRouter } from "vue-router";
-import { ref, reactive, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { ref, reactive, computed, onMounted } from "vue";
 import { useLoginStore } from "@/stores/loginStore";
 import { useProductStore } from "@/stores/productStore";
 
+const route = useRoute();
 const router = useRouter();
 
 const loginStore = useLoginStore();
@@ -177,6 +182,16 @@ const productStore = useProductStore();
 const showLogoutDialog = ref(false);
 
 const pushPage = (pageName) => {
+  if (pageName === "edit-info") {
+    router.push({
+      name: pageName,
+      query: {
+        userProfile: JSON.stringify(userProfile),
+      },
+    });
+    return;
+  }
+
   router.push({ name: pageName });
 };
 
@@ -184,20 +199,8 @@ const userName = computed(() => {
   return loginStore.username;
 });
 
-const firstName = computed(() => {
-  return loginStore.firstName;
-});
-
-const lastName = computed(() => {
-  return loginStore.lastName;
-});
-
-const email = computed(() => {
-  return loginStore.email;
-});
-
 const userProfile = reactive({
-  firstName: "ธนาทร",
+  firstName: "วุฒินันท์",
   lastName: "เกริกกวิน",
   username: "Thanathorn",
   email: "naithanathorn46@gmail.com",
@@ -237,6 +240,16 @@ const cancelLogout = () => {
 const viewOrderDetails = (orderId) => {
   console.log(`Viewing details for order ${orderId}`);
 };
+
+onMounted(() => {
+  if (route.query.userProfile) {
+    const queryUserProfile = JSON.parse(route.query.userProfile);
+    userProfile.firstName = queryUserProfile.firstName;
+    userProfile.lastName = queryUserProfile.lastName;
+    userProfile.username = queryUserProfile.username;
+    userProfile.email = queryUserProfile.email;
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -254,8 +267,7 @@ const viewOrderDetails = (orderId) => {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 30px;
 
-
-    // Logout Dialog 
+    // Logout Dialog
     .logout-dialog-overlay {
       position: fixed;
       top: 0;
@@ -357,16 +369,15 @@ const viewOrderDetails = (orderId) => {
 
         .column {
           flex: 1;
-          
 
           .box-display {
-              flex: 1;
-              min-height: 18px;
-              padding: 10px;
-              border: 1px solid black;
-              border-radius: 4px;
-              font-size: 16px;
-            }
+            flex: 1;
+            min-height: 18px;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: 4px;
+            font-size: 16px;
+          }
 
           // .form-field {
           //   margin-bottom: 15px;
