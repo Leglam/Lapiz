@@ -185,6 +185,8 @@ const brands = [
   "Reebok",
   "Lacoste",
   "Puma",
+  "C&K",
+  "LYN",
 ];
 
 const selectedSizes = ref([]);
