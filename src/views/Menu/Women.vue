@@ -146,7 +146,7 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdGender === "Women" || p.pdGender === "Women_Best" || p.pdGender === "Women_New"
+    (p) => p.pdGender === "Women" || p.pdGender === "Women_Best" || p.pdGender === "Women_New" || p.pdGender === "Women_Flat_New" || p.pdGender === "Women_Flat_Best"
   );
 });
 
@@ -177,12 +177,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdGender === "Women_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Women_Best" || p.pdGender === "Women_Flat_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdGender === "Women_New");
+    filtered = filtered.filter((p) => p.pdGender === "Women_New" || p.pdGender === "Women_Flat_New");
   }
 
   // เรียงลำดับสินค้า

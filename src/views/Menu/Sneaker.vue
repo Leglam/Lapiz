@@ -146,7 +146,8 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdGender === "Sneaker" || p.pdGender === "Sneaker_Best" || p.pdGender === "Sneaker_New"
+    (p) => p.pdGender === "Sneaker" || p.pdGender === "Men_Sneaker_Best" || p.pdGender === "Men_Sneaker_New" 
+                                    || p.pdGender === "Women_Sneaker_Best" || p.pdGender === "Women_Sneaker_New"
   );
 });
 
@@ -177,12 +178,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdType === "Sneaker_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Sneaker_Best" || p.pdGender === "Women_Sneaker_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdType === "Sneaker_New");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Sneaker_New" || p.pdGender === "Women_Sneaker_New");
   }
 
   // เรียงลำดับสินค้า

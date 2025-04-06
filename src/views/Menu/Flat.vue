@@ -146,7 +146,7 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdType === "Flat" || p.pdType === "Flat_Best" || p.pdType === "Flat_New"
+    (p) => p.pdType === "Flat" || p.pdGender === "Women_Flat_Best" || p.pdGender === "Women_Flat_New"
   );
 });
 
@@ -177,12 +177,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdType === "Flat_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Women_Flat_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdType === "Flat_New");
+    filtered = filtered.filter((p) => p.pdGender === "Women_Flat_New");
   }
 
   // เรียงลำดับสินค้า

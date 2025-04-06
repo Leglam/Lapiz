@@ -132,7 +132,14 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdGender === "Men" || p.pdGender === "Men_Best" || p.pdGender === "Men_New"
+    (p) => p.pdGender === "Men" || p.pdGender === "Women" 
+        || p.pdGender === "Men_Sneaker_New" || p.pdGender === "Women_Sneaker_New"
+        || p.pdGender === "Men_FlipFlop_New" || p.pdGender === "Women_FlipFlop_New"
+        || p.pdGender === "Men_Sport_New" || p.pdGender === "Women_Sport_New"
+        || p.pdGender === "Men_HighHeel_New" || p.pdGender === "Women_HighHeel_New"
+        || p.pdGender === "Men_Flat_New" || p.pdGender === "Women_Flat_New"
+        || p.pdGender === "Men_Boot_New" || p.pdGender === "Women_Boot_New"
+        || p.pdGender === "Men_Leather_New" || p.pdGender === "Women_Leather_New"
   );
 });
 

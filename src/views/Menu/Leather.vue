@@ -146,7 +146,8 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdType === "Leather" || p.pdType === "Leather_Best" || p.pdType === "Leather_New"
+    (p) => p.pdType === "Leather" || p.pdGender === "Men_Leather_Best" || p.pdGender === "Men_Leather_New" 
+                                  || p.pdGender === "Women_Leather_Best" || p.pdGender === "Women_Leather_New"
   );
 });
 
@@ -177,12 +178,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdType === "Leather_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Leather_Best" || p.pdGender === "Women_Leather_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdType === "Leather_New");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Leather_New" || p.pdGender === "Women_Leather_New");
   }
 
   // เรียงลำดับสินค้า

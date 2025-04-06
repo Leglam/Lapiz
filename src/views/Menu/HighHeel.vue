@@ -146,7 +146,7 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdType === "HighHeel" || p.pdType === "HighHeel_Best" || p.pdType === "HighHeel_New"
+    (p) => p.pdType === "HighHeel" || p.pdGender === "Women_HighHeel_Best" || p.pdGender === "Women_HighHeel_New"
   );
 });
 
@@ -177,12 +177,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdType === "HighHeel_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Women_HighHeel_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdType === "HighHeel_New");
+    filtered = filtered.filter((p) => p.pdGender === "Women_HighHeel_New");
   }
 
   // เรียงลำดับสินค้า

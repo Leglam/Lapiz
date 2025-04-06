@@ -170,7 +170,7 @@ const colors = computed(() => {
 const shoesTypes = [
   { value: "Sneaker", label: "รองเท้าผ้าใบ" },
   { value: "FlipFlop", label: "รองเท้าแตะ" },
-  { value: "Trainer", label: "รองเท้ากีฬา" },
+  { value: "Sport", label: "รองเท้ากีฬา" },
   { value: "HighHeel", label: "รองเท้าส้นสูง" },
   { value: "Flat", label: "รองเท้าส้นเตี้ย" },
   { value: "Boot", label: "รองเท้าบูท" },

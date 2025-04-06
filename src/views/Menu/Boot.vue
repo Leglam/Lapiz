@@ -146,7 +146,8 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdType === "Boot" || p.pdType === "Boot_Best" || p.pdType === "Boot_New"
+    (p) => p.pdType === "Boot" || p.pdGender === "Men_Boot_Best" || p.pdGender === "Men_Boot_New"
+                               || p.pdGender === "Women_Boot_Best" || p.pdGender === "Women_Boot_New"
   );
 });
 
@@ -177,12 +178,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdType === "Boot_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Boot_Best" || p.pdGender === "Women_Boot_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdType === "Boot_New");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Boot_New" || p.pdGender === "Women_Boot_New");
   }
 
   // เรียงลำดับสินค้า

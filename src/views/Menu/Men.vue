@@ -146,7 +146,7 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdGender === "Men" || p.pdGender === "Men_Best" || p.pdGender === "Men_New"
+    (p) => p.pdGender === "Men" || p.pdGender === "Men_Best" || p.pdGender === "Men_New" || p.pdGender === "Men_Sport_New" || p.pdGender === "Men_Sport_Best"
   );
 });
 
@@ -177,12 +177,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdGender === "Men_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Best" || p.pdGender === "Men_Sport_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdGender === "Men_New");
+    filtered = filtered.filter((p) => p.pdGender === "Men_New" || p.pdGender === "Men_Sport_New");
   }
 
   // เรียงลำดับสินค้า

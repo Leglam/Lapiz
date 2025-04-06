@@ -146,7 +146,8 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdType === "FlipFlop" || p.pdType === "FlipFlop_Best" || p.pdType === "FlipFlop_New"
+    (p) => p.pdType === "FlipFlop" || p.pdGender === "Men_FlipFlop_Best" || p.pdGender === "Men_FlipFlop_New"
+                                   || p.pdGender === "Women_FlipFlop_Best" || p.pdGender === "Women_FlipFlop_New"
   );
 });
 
@@ -177,12 +178,12 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdType === "FlipFlop_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Men_FlipFlop_Best" || p.pdGender === "Women_FlipFlop_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdType === "FlipFlop_New");
+    filtered = filtered.filter((p) => p.pdGender === "Men_FlipFlop_New" || p.pdGender === "Women_FlipFlop_New");
   }
 
   // เรียงลำดับสินค้า
