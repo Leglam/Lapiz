@@ -1,7 +1,9 @@
 <template>
   <div class="comparison-container">
     <div class="comparison-header">
-      <h2 class="comparison-title">เปรียบเทียบสินค้า</h2>
+      <h2 class="comparison-title">เปรียบเทียบสินค้า
+        <span class="compare-count">({{ compareProductList.length }}/2)</span>
+      </h2>
 
       <div class="product-cards">
         <div
@@ -105,6 +107,13 @@ watch(
   font-weight: bold;
   text-align: left;
   margin: 0;
+}
+
+.compare-count {
+  font-size: 20px;
+  font-weight: bold;
+  color: #666;
+  margin-left: 10px;
 }
 
 .product-cards {
