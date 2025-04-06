@@ -58,6 +58,9 @@
                   class="search-product"
                   @click="goToProduct(product.pdColor[0].pdCode)"
                 >
+                  <div class="search-product-image">
+                    <img src="@/assets/images/search_detail.svg" alt="search" />
+                  </div>
                   {{ product.pdName }}
                 </div>
               </div>
@@ -374,12 +377,27 @@ const currentFavoriteIcon = computed(() => {
 }
 
 .search-product {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
   padding: 8px 15px;
   cursor: pointer;
 }
 
 .search-product:hover {
   background: #e4e4e4;
+}
+
+.search-product-image {
+  width: 16px;
+  height: 16px;
+}
+.search-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  align-self: center;
 }
 
 .search-results {

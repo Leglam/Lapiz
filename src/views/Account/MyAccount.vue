@@ -27,19 +27,15 @@
               <div class="name-group">
                 <div class="form-field">
                   <label>ชื่อจริง</label>
-                  <input
-                    v-model="userProfile.firstName"
-                    type="text"
-                    placeholder="ธนาทร"
-                  />
+                  <div class="box-display">
+                    {{ firstName }}
+                  </div>
                 </div>
                 <div class="form-field">
                   <label>นามสกุล</label>
-                  <input
-                    v-model="userProfile.lastName"
-                    type="text"
-                    placeholder="เกริกกวิน"
-                  />
+                  <div class="box-display">
+                    {{ lastName }}
+                  </div>
                 </div>
               </div>
 
@@ -47,37 +43,24 @@
                 <div class="form-field">
                   <label>ชื่อผู้ใช้</label>
                   <!-- <input v-model="username" type="text" disabled /> -->
-                  <div
-                    style="
-                      flex: 1;
-                      min-height: 18px;
-                      padding: 10px;
-                      border: 1px solid black;
-                      border-radius: 4px;
-                      font-size: 16px;
-                    "
-                  >
+                  <div class="box-display">
                     {{ userName }}
                   </div>
                 </div>
                 <div class="form-field">
                   <label>อีเมล</label>
-                  <input
-                    v-model="userProfile.email"
-                    type="text"
-                    placeholder="naithanathorn46@gmail.com"
-                  />
+                  <div class="box-display">
+                    {{ email }}
+                  </div>
                 </div>
               </div>
 
               <div class="phone-birthday-group">
                 <div class="form-field">
                   <label>หมายเลขโทรศัพท์</label>
-                  <input
-                    v-model="userProfile.phone"
-                    type="text"
-                    placeholder="080-123-4567"
-                  />
+                  <div class="box-display">
+                    {{ phoneNumber }}
+                  </div>
                 </div>
                 <div class="form-field">
                   <label>วันเกิด</label>
@@ -89,11 +72,9 @@
               <div class="password-section">
                 <div class="form-field">
                   <label>รหัสผ่าน</label>
-                  <input
-                    v-model="userProfile.password"
-                    type="password"
-                    placeholder="**************************"
-                  />
+                  <div class="box-display">
+                    {{ password }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -203,6 +184,18 @@ const userName = computed(() => {
   return loginStore.username;
 });
 
+const firstName = computed(() => {
+  return loginStore.firstName;
+});
+
+const lastName = computed(() => {
+  return loginStore.lastName;
+});
+
+const email = computed(() => {
+  return loginStore.email;
+});
+
 const userProfile = reactive({
   firstName: "ธนาทร",
   lastName: "เกริกกวิน",
@@ -223,13 +216,6 @@ const orders = reactive([
     total: "4,300.00 THB",
   },
 ]);
-
-// const handleLogout = () => {
-//   localStorage.removeItem("token");
-//   router.push({ name: "login" });
-//   productStore.setBasketProductCount(0);
-//   loginStore.setIsLogin(false);
-// };
 
 const handleLogout = () => {
   showLogoutDialog.value = true; // แสดง dialog เมื่อกดปุ่มออกจากระบบ
@@ -357,6 +343,12 @@ const viewOrderDetails = (orderId) => {
       }
     }
 
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     // Profile Content
     .profile-content {
       .profile-columns {
@@ -365,41 +357,51 @@ const viewOrderDetails = (orderId) => {
 
         .column {
           flex: 1;
+          
 
-          .form-field {
-            margin-bottom: 15px;
-
-            label {
-              display: block;
-              margin-bottom: 5px;
-              font-weight: 600;
-              color: #000;
-              font-size: 18px;
-            }
-
-            input,
-            textarea {
-              width: 100%;
+          .box-display {
+              flex: 1;
+              min-height: 18px;
               padding: 10px;
-              border: 1px solid #000;
+              border: 1px solid black;
               border-radius: 4px;
-              background-color: #ffffff;
-              transition: border-color 0.3s ease;
-              box-sizing: border-box;
               font-size: 16px;
-
-              &:focus {
-                outline: none;
-                border-color: #000;
-              }
             }
 
-            textarea {
-              height: 120px;
-              resize: vertical;
-              overflow: hidden; // Prevent textarea content from overflowing
-            }
-          }
+          // .form-field {
+          //   margin-bottom: 15px;
+
+          //   label {
+          //     display: block;
+          //     margin-bottom: 5px;
+          //     font-weight: 600;
+          //     color: #000;
+          //     font-size: 18px;
+          //   }
+
+          //   input,
+          //   textarea {
+          //     width: 100%;
+          //     padding: 10px;
+          //     border: 1px solid #000;
+          //     border-radius: 4px;
+          //     background-color: #ffffff;
+          //     transition: border-color 0.3s ease;
+          //     box-sizing: border-box;
+          //     font-size: 16px;
+
+          //     &:focus {
+          //       outline: none;
+          //       border-color: #000;
+          //     }
+          //   }
+
+          //   textarea {
+          //     height: 120px;
+          //     resize: vertical;
+          //     overflow: hidden; // Prevent textarea content from overflowing
+          //   }
+          // }
         }
 
         .right-column {
