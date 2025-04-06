@@ -147,7 +147,7 @@
                 <td>
                   <button
                     class="view-order-btn"
-                    @click="viewOrderDetails(order.id)"
+                    @click="pushPage('purchaseOrder')"
                   >
                     ดูคำสั่งซื้อ
                   </button>

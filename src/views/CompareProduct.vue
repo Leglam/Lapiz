@@ -1,6 +1,12 @@
 <template>
   <div class="compare-page">
     <div class="nav-back">
+      <img
+            src="@/assets/images/icon-back.svg"
+            alt="BackIcon"
+            class="back-icon"
+      />
+
       <div style="cursor: pointer" @click="backTo" class="back-link">
         ย้อนกลับ
       </div>
@@ -119,6 +125,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@import "@/styles/back-link.scss";
+
 .comparison-container {
   display: flex;
   gap: 138px; /* gap 40px = ชิดกันเลย + อีก 98 ตามระยะห่าง design ใน figma */
@@ -155,17 +163,14 @@ onUnmounted(() => {
 }
 
 .nav-back {
-  margin-bottom: 20px;
-}
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  color: #333;
+  cursor: pointer;
+  margin-bottom: 16px;
 
-.back-link {
-  color: #002fff;
-  text-decoration: none;
-}
-
-.back-link:hover {
-  color: #002fff;
-  text-decoration: underline;
 }
 
 .page-title {

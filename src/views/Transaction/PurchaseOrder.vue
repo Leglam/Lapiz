@@ -4,8 +4,12 @@
       <!-- Header Section -->
       <div class="order-header">
         <div class="back-button">
-          <span class="back-arrow">‹</span>
-          <span class="back-text">ย้อนกลับ</span>
+          <img
+            src="@/assets/images/icon-back.svg"
+            alt="BackIcon"
+            class="back-icon"
+          />
+          <span class="back-link" @click="pushPage('my-account')">ย้อนกลับ</span>
         </div>
         <h1 class="order-title">คำสั่งซื้อ #KE1600008502</h1>
         <p class="order-date">Order placed on 28 สิงหาคม 2024</p>
@@ -106,6 +110,13 @@
 import { ref } from "vue";
 import Shoes1 from "@/assets/shoes/shoe1.png";
 import Shoes2 from "@/assets/shoes/shoe1.png";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const orderItems = ref([
   {
@@ -149,6 +160,8 @@ const billingAddress = ref({
 </script>
 
 <style scoped>
+@import "@/styles/back-link.scss";
+
 @font-face {
   font-family: "Mitr";
   src: url("@/assets/fonts/Mitr-Regular.ttf") format("truetype");
@@ -172,6 +185,8 @@ th.total-header {
   max-width: 1200px;
   margin: 0 auto;
   font-family: "Mitr";
+  padding-top: 80px;
+
 }
 
 .order-container {
@@ -186,11 +201,13 @@ th.total-header {
 
 .back-button {
   display: flex;
+  flex-direction: row;
+  gap: 1rem;
   align-items: center;
-  gap: 4px;
   color: #333;
   cursor: pointer;
   margin-bottom: 16px;
+
 }
 
 .back-arrow {
