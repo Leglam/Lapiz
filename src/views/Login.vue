@@ -153,7 +153,7 @@ const handleSubmit = async () => {
     await fetchProductInWishlist();
     const loginStore = useLoginStore();
     loginStore.setIsLogin(true);
-    router.push({ name: "men" });
+    router.push({ name: "homepage" });
   } else {
     usernameError.value = true;
     passwordError.value = true;

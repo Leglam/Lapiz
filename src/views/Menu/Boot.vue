@@ -2,7 +2,7 @@
   <div class="topic-wrapper">
     <div class="line"></div>
     <div class="boot-text" ref="menTextRef">
-      รองเท้าส้นเตี้ย
+      รองเท้าบูท
     </div>
     <div class="line"></div>
   </div>
