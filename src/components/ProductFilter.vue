@@ -419,11 +419,13 @@ const emit = defineEmits([
   border-radius: 4px;
   cursor: pointer;
   background: white;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.color-button:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+.color-input:hover + .color-button {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* เพิ่มเงาสวยๆ */
+  transform: scale(1.05); /* ขยายขนาดเล็กน้อย */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .color-box {

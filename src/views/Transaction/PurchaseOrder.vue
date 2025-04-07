@@ -12,7 +12,7 @@
           <span @click="goBack" class="back-link">ย้อนกลับ</span>
         </div>
         <h1 class="order-title">คำสั่งซื้อ #KE1600008502</h1>
-        <p class="order-date">Order placed on 28 สิงหาคม 2024</p>
+        <p class="order-date">Order placed on 9 เมษายน 2025</p>
       </div>
 
       <!-- Order Items Table -->
@@ -253,7 +253,7 @@ th.total-header {
   width: 102px; /* กำหนดขนาดที่แน่นอน */
   height: 90px;
   padding: 0px;
-  /* border: 1px solid #eee; */
+  border: 1px solid #ececec;
   background: white;
 }
 

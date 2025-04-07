@@ -13,12 +13,51 @@
       <div v-if="route.name !== 'transaction'" class="header-content">
         <!-- Navigation menu -->
         <ul class="nav-menu">
-          <li><a @click="pushPage('men')" class="nav-link">ผู้ชาย</a></li>
-          <li><a @click="pushPage('women')" class="nav-link">ผู้หญิง</a></li>
-          <li><a @click="pushPage('kid')" class="nav-link">เด็ก</a></li>
-          <li><a @click="pushPage('sport')" class="nav-link">กีฬา</a></li>
-          <li><a @click="pushPage('new-product')" class="nav-link">สินค้าใหม่</a></li>
-          <!-- <li><a class="nav-link">สินค้าขายดี</a></li> -->
+          <li>
+            <a
+              @click="pushPage('men')"
+              class="nav-link"
+              :class="{ active: route.name === 'men' }"
+            >
+              ผู้ชาย
+            </a>
+          </li>
+          <li>
+            <a
+              @click="pushPage('women')"
+              class="nav-link"
+              :class="{ active: route.name === 'women' }"
+            >
+              ผู้หญิง
+            </a>
+          </li>
+          <li>
+            <a
+              @click="pushPage('kid')"
+              class="nav-link"
+              :class="{ active: route.name === 'kid' }"
+            >
+              เด็ก
+            </a>
+          </li>
+          <li>
+            <a
+              @click="pushPage('sport')"
+              class="nav-link"
+              :class="{ active: route.name === 'sport' }"
+            >
+              กีฬา
+            </a>
+          </li>
+          <li>
+            <a
+              @click="pushPage('new-product')"
+              class="nav-link"
+              :class="{ active: route.name === 'new-product' }"
+            >
+              สินค้าใหม่
+            </a>
+          </li>
         </ul>
 
         <!-- Search and utilities -->
@@ -248,14 +287,27 @@ const currentFavoriteIcon = computed(() => {
   color: #000000;
   text-decoration: none;
   cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
-.nav-link:hover {
-  font-size: 18px;
-  font-weight: 700;
+.nav-link:hover{
   color: #b72121;
-  text-decoration: none;
-  cursor: pointer;
+}
+
+.nav-link.active {
+  color: #b72121;
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #b72121;
+  animation: slideIn 0.3s ease forwards;
 }
 
 .utilities-section {
@@ -477,6 +529,34 @@ const currentFavoriteIcon = computed(() => {
 
   .nav-menu {
     justify-content: center;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.nav-link:active {
+  animation: clickEffect 0.3s ease;
+}
+
+@keyframes clickEffect {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 </style>

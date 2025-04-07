@@ -226,7 +226,7 @@ const billingAddress = reactive({
 const orders = reactive([
   {
     id: "KE1600008502",
-    date: "28/08/24",
+    date: "09/04/25",
     paymentStatus: "รอดำเนินการ",
     fulfillmentStatus: "ไม่สำเร็จ",
     total: "4,300.00 THB",
@@ -391,6 +391,12 @@ onMounted(() => {
       gap: 10px;
     }
 
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
     .address-section {
       display: flex;
       flex-direction: column;
@@ -423,7 +429,7 @@ onMounted(() => {
           
           .box-display {
             flex: 1;
-            min-height:90px;
+            min-height:98px;
             padding: 10px;
             border: 1px solid black;
             border-radius: 4px;
