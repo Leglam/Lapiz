@@ -160,7 +160,7 @@
               </div>
               <div class="tab-content">
                 <div v-if="activeTab === 'description'" class="tab-panel">
-                  <p class="description-text">
+                  <p class="product-tab-description">
                     {{ product.pdDesc }}
                   </p>
                 </div>
@@ -308,7 +308,7 @@ const modelPaths = computed(() => {
 const tabs = ref([
   { id: "description", label: "รายละเอียด" },
   { id: "features", label: "คุณสมบัติ" },
-  { id: "reviews", label: "รีวิว" },
+  // { id: "reviews", label: "รีวิว" },
 ]);
 const activeTab = ref("description");
 
@@ -486,12 +486,24 @@ onBeforeMount(() => {
   box-sizing: border-box;
 }
 
+.product-tab-description {
+  padding: 1rem 20px 150px 2rem;
+  font-size: 16px;
+  line-height: 1.875;
+}
+
 .product-tab-details {
   width: 100%;
   /* border: 1px solid #e0e0e0; */
+  padding: 2rem 20px 20px 2rem;
   border-radius: 8px;
-  margin: 16px 0px;
+  gap: 4px;
   flex-grow: 1; /* ทำให้ขยายเต็มที่และเท่ากัน */
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-panel {
   display: flex;
   flex-direction: column;
 }
@@ -786,28 +798,24 @@ onBeforeMount(() => {
   font-size: 14px;
   font-weight: 600;
   border: 1px solid rgba(183, 183, 183, 0.6);
+  border-radius: 5px 5px 0px 0px; /* บนซ้าย, บนขวา, ล่างขวา, ล่างซ้าย */
   cursor: pointer;
   background-color: #ffffff;
   transition: 0.2s;
 }
 
 .tab-button--active {
-  background-color: #914242;
-  border: 1px solid rgba(183, 183, 183, 0.8);
+  background-color: #692F2F;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  border-radius: 5px 5px 0px 0px; /* บนซ้าย, บนขวา, ล่างขวา, ล่างซ้าย */
   color: #fff;
   border-bottom: none;
   position: relative;
 }
 
 .tab-content {
-  padding: 48px 24px;
   border: 1px solid rgba(183, 183, 183, 0.4);
   border-radius: 0px 6px 6px 6px;
-}
-
-.description-text {
-  font-size: 16px;
-  line-height: 1.875;
 }
 
 .edit-info-navigation {
