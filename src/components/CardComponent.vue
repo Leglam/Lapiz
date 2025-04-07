@@ -215,7 +215,7 @@ onBeforeMount(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @import "@/styles/remove-button-icon.scss";
 
 .product-card {
@@ -312,6 +312,13 @@ onBeforeMount(() => {
   text-decoration: none;
   line-height: 1.4;
   text-align: left;
+  height: 2.7vw; /* กำหนดความสูงคงที่ประมาณ 2 บรรทัด */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* จำกัดแค่ 2 บรรทัด */
+  line-clamp: 2; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis; /* เพิ่มจุดไข่ปลา ... ถ้าข้อความยาวเกิน */
 }
 
 .product-details {

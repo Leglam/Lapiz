@@ -41,85 +41,91 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import CardComponent from "./CardComponent.vue";
-import { useProductStore } from "@/stores/productStore";
-import CompareBar from "@/components/CompareBar.vue";
+  import { ref, computed } from "vue";
+  import CardComponent from "./CardComponent.vue";
+  import { useProductStore } from "@/stores/productStore";
+  import CompareBar from "@/components/CompareBar.vue";
 
-const productStore = useProductStore();
+  const productStore = useProductStore();
 
-const currentSlide = ref(0);
-const displayCount = 5;
-const itemGap = 150; // เพิ่มระยะห่างเป็น 40px
-const itemWidth = 16.46 * (window.innerWidth / 100) + itemGap; // 177px (ขนาดของ item) + 40px (gap)
+  const currentSlide = ref(0);
+  const displayCount = 5;
+  const itemGap = 150; // เพิ่มระยะห่างเป็น 40px
+  const itemWidth = 16.46 * (window.innerWidth / 100) + itemGap; // 177px (ขนาดของ item) + 40px (gap)
 
-const compareProductList = ref([]);
-const selectedProduct = ref("");
+  const compareProductList = ref([]);
+  const selectedProduct = ref("");
 
-const handleCompareProduct = (value) => {
-  compareProductList.value.push(value);
-};
+  const handleCompareProduct = (value) => {
+    compareProductList.value.push(value);
+  };
 
-const selectColor = (colorId) => {
-  products.value.map((product) => {
-    product.pdColor = product.pdColor.map((color) => {
-      color.isSelected = color.pdCode === colorId;
-      return color;
+  const selectColor = (colorId) => {
+    RecommendProducts.value.map((product) => {
+      product.pdColor = product.pdColor.map((color) => {
+        color.isSelected = color.pdCode === colorId;
+        return color;
+      });
+      return product;
     });
-    return product;
+
+    selectedProduct.value = colorId;
+  };
+
+  const isProductInCompareList = (product) => {
+    return compareProductList.value.some((p) => p.pdModel === product.pdModel);
+  };
+
+  const handleRemoveCompareProduct = (product) => {
+    const index = compareProductList.value.findIndex(
+      (p) => p.pdModel === product.pdModel
+    );
+
+    if (index !== -1) {
+      compareProductList.value.splice(index, 1);
+    }
+  };
+
+  const RecommendProducts = computed(() => {
+    // กรองสินค้าใหม่ที่ pdGender = "Men_New"
+    return productStore.product.filter((p) => p.pdGender === "Men_Sneaker_Best" || p.pdGender === "Women_Sneaker_Best"
+        || p.pdGender === "Men_FlipFlop_Best" || p.pdGender === "Women_FlipFlop_Best"
+        || p.pdGender === "Men_Sport_Best" || p.pdGender === "Women_Sport_Best"
+        || p.pdGender === "Men_HighHeel_Best" || p.pdGender === "Women_HighHeel_Best"
+        || p.pdGender === "Men_Flat_Best" || p.pdGender === "Women_Flat_Best"
+        || p.pdGender === "Men_Boot_Best" || p.pdGender === "Women_Boot_Best"
+        || p.pdGender === "Men_Leather_Best" || p.pdGender === "Women_Leather_Best"
+        || p.pdGender === "Men_Kid_Best" || p.pdGender === "Women_Kid_Best");
   });
 
-  selectedProduct.value = colorId;
-};
+  const displayItems = computed(() => {
+    const items = [...RecommendProducts.value];
+    const duplicateCount = displayCount - 1;
+    return [...items, ...items.slice(0, duplicateCount)];
+  });
 
-const isProductInCompareList = (product) => {
-  return compareProductList.value.some((p) => p.pdModel === product.pdModel);
-};
+  const sliderStyle = computed(() => ({
+    transform: `translateX(-${currentSlide.value * itemWidth}px)`,
+    transition: "transform 0.3s ease-in-out",
+  }));
 
-const handleRemoveCompareProduct = (product) => {
-  const index = compareProductList.value.findIndex(
-    (p) => p.pdModel === product.pdModel
-  );
+  const slidePrev = () => {
+    if (currentSlide.value <= 0) {
+      // หยุดเลื่อนเมื่อถึงจุดเริ่มต้น
+      currentSlide.value = RecommendProducts.value.length - displayCount;
+    } else {
+      currentSlide.value--;
+    }
+  };
 
-  if (index !== -1) {
-    compareProductList.value.splice(index, 1);
-  }
-};
-
-const RecommendProducts = computed(() => {
-  // กรองสินค้าใหม่ที่ pdGender = "Men_New"
-  return productStore.product.filter((p) => p.pdGender === "Men_Best" || p.pdGender === "Women_Best");
-});
-
-const displayItems = computed(() => {
-  const items = [...RecommendProducts.value];
-  const duplicateCount = displayCount - 1;
-  return [...items, ...items.slice(0, duplicateCount)];
-});
-
-const sliderStyle = computed(() => ({
-  transform: `translateX(-${currentSlide.value * itemWidth}px)`,
-  transition: "transform 0.3s ease-in-out",
-}));
-
-const slidePrev = () => {
-  if (currentSlide.value <= 0) {
-    // หยุดเลื่อนเมื่อถึงจุดเริ่มต้น
-    currentSlide.value = RecommendProducts.value.length - displayCount;
-  } else {
-    currentSlide.value--;
-  }
-};
-
-const slideNext = () => {
-  if (currentSlide.value >= RecommendProducts.value.length - displayCount) {
-    // หยุดเลื่อนเมื่อถึงจุดสิ้นสุด
-    currentSlide.value = 0;
-  } else {
-    currentSlide.value++;
-  }
-};
-
+  const slideNext = () => {
+    if (currentSlide.value >= RecommendProducts.value.length - displayCount) {
+      // หยุดเลื่อนเมื่อถึงจุดสิ้นสุด
+      currentSlide.value = 0;
+    } else {
+      currentSlide.value++;
+    }
+  };
 </script>
 
 <style scoped>

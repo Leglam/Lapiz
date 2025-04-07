@@ -26,6 +26,7 @@ import { onBeforeMount, onMounted, ref } from "vue";
 import { useProductStore } from "./stores/productStore";
 import { useErrorStore } from "./stores/errorStore";
 import { useLoginStore } from "./stores/loginStore";
+import './styles/main.scss';
 
 const router = useRouter();
 const route = useRoute();

@@ -40,7 +40,14 @@ const itemWidth = 16.46 * (window.innerWidth / 100) + itemGap; // 177px (ขน�
 
 const newProducts = computed(() => {
   // กรองสินค้าใหม่ที่ pdGender = "Men_New"
-  return productStore.product.filter((p) => p.pdGender === "Men_New" || p.pdGender === "Wome_New");
+  return productStore.product.filter((p) => p.pdGender === "Men_Sneaker_New" || p.pdGender === "Women_Sneaker_New"
+        || p.pdGender === "Men_FlipFlop_New" || p.pdGender === "Women_FlipFlop_New"
+        || p.pdGender === "Men_Sport_New" || p.pdGender === "Women_Sport_New"
+        || p.pdGender === "Men_HighHeel_New" || p.pdGender === "Women_HighHeel_New"
+        || p.pdGender === "Men_Flat_New" || p.pdGender === "Women_Flat_New"
+        || p.pdGender === "Men_Boot_New" || p.pdGender === "Women_Boot_New"
+        || p.pdGender === "Men_Leather_New" || p.pdGender === "Women_Leather_New"
+        || p.pdGender === "Men_Kid_New" || p.pdGender === "Women_Kid_New");
 });
 
 const displayItems = computed(() => {

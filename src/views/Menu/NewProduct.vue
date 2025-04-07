@@ -140,6 +140,7 @@ const products = computed(() => {
         || p.pdGender === "Men_Flat_New" || p.pdGender === "Women_Flat_New"
         || p.pdGender === "Men_Boot_New" || p.pdGender === "Women_Boot_New"
         || p.pdGender === "Men_Leather_New" || p.pdGender === "Women_Leather_New"
+        || p.pdGender === "Men_Kid_New" || p.pdGender === "Women_Kid_New"
   );
 });
 

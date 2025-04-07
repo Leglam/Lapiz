@@ -112,8 +112,8 @@ watch(
 .compare-count {
   font-size: 20px;
   font-weight: bold;
-  color: #666;
-  margin-left: 10px;
+  color: #000000;
+  margin-left: 8px;
 }
 
 .product-cards {

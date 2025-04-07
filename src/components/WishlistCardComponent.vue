@@ -224,11 +224,19 @@ const addProductToBasket = async () => {
 }
 
 .product-title {
-  font-size: 14px;
-  margin: 0 0 12px 0;
+  font-size: 0.9vw;
+  margin: 0 0 0.83vw 0;
   color: var(--text-title-shoes-color);
   text-decoration: none;
   line-height: 1.4;
+  text-align: left;
+  height: 2.7vw; /* กำหนดความสูงคงที่ประมาณ 2 บรรทัด */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* จำกัดแค่ 2 บรรทัด */
+  line-clamp: 2; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis; /* เพิ่มจุดไข่ปลา ... ถ้าข้อความยาวเกิน */
 }
 
 .product-details {

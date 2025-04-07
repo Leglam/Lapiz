@@ -146,8 +146,14 @@ const selectedTypes = ref([]);
 
 const products = computed(() => {
   return productStore.product.filter(
-    (p) => p.pdGender === "Men" || p.pdGender === "Men_Best" || p.pdGender === "Men_New" || p.pdGender === "Men_Sport_New" || p.pdGender === "Men_Sport_Best"
-  );
+    (p) => p.pdGender === "Men" || p.pdGender === "Men_Sneaker_Best" || p.pdGender === "Men_Sneaker_New"
+        || p.pdGender === "Men_FlipFlop_Best" || p.pdGender === "Men_FlipFlop_New"
+        || p.pdGender === "Men_Sport_Best" || p.pdGender === "Men_Sport_New"
+        || p.pdGender === "Men_HighHeel_Best" || p.pdGender === "Men_HighHeel_New"
+        || p.pdGender === "Men_Flat_Best" || p.pdGender === "Men_Flat_New"
+        || p.pdGender === "Men_Boot_Best" || p.pdGender === "Men_Boot_New"
+        || p.pdGender === "Men_Leather_Best" || p.pdGender === "Men_Leather_New"
+        || p.pdGender === "Men_Kid_Best" || p.pdGender === "Men_Kid_New");
 });
 
 const filteredProduct = computed(() => {
@@ -177,12 +183,26 @@ const filteredProduct = computed(() => {
 
   // กรองเฉพาะสินค้าขายดี
   if (selectedDropdownItem.value === "สินค้าขายดี") {
-    filtered = filtered.filter((p) => p.pdGender === "Men_Best" || p.pdGender === "Men_Sport_Best");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Sneaker_Best"
+        || p.pdGender === "Men_FlipFlop_Best"
+        || p.pdGender === "Men_Sport_Best"
+        || p.pdGender === "Men_HighHeel_Best"
+        || p.pdGender === "Men_Flat_Best"
+        || p.pdGender === "Men_Boot_Best"
+        || p.pdGender === "Men_Leather_Best"
+        || p.pdGender === "Men_Kid_Best");
   }
 
   // กรองเฉพาะสินค้าใหม่
   if (selectedDropdownItem.value === "สินค้าใหม่") {
-    filtered = filtered.filter((p) => p.pdGender === "Men_New" || p.pdGender === "Men_Sport_New");
+    filtered = filtered.filter((p) => p.pdGender === "Men_Sneaker_New"
+        || p.pdGender === "Men_FlipFlop_New"
+        || p.pdGender === "Men_Sport_New"
+        || p.pdGender === "Men_HighHeel_New"
+        || p.pdGender === "Men_Flat_New"
+        || p.pdGender === "Men_Boot_New"
+        || p.pdGender === "Men_Leather_New"
+        || p.pdGender === "Men_Kid_New");
   }
 
   // เรียงลำดับสินค้า
