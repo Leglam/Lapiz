@@ -9,14 +9,14 @@
         v-for="method in paymentMethods" 
         :key="method.value"
         :class="['payment-method', { active: selectedMethod === method.value }]"
-        @click="selectedMethod = method.value"
+        @click="selectPaymentMethod(method.value)"
       >
         {{ method.label }}
       </button>
     </div>
 
     <!-- Card Details Section -->
-    <div v-if="selectedMethod === 'card'" class="card-details">
+    <div v-if="selectedMethod === 'credit'" class="card-details">
       <div class="card-info">
         <p class="card-info-heading">ข้อมูลบัตร</p>
         <div class="card-logos">
@@ -55,7 +55,6 @@
               placeholder="CVV"
               v-model="cardDetails.cvv"
             />
-            <!-- <button class="cvv-info" title="CVV Information">?</button> -->
             <img src="@/assets/images/cvv_info.svg" alt="CVV Information" class="cvv-icon" />
           </div>
         </div>
@@ -65,15 +64,15 @@
     <!-- PromptPay Section -->
     <div v-if="selectedMethod === 'promptpay'" class="promptpay-section">
       <p class="section-subheading">พร้อมเพย์</p>
-      <button class="promptpay-logo" @click="handlePromptPayClick">
+      <button class="promptpay-logo">
         <img src="@/assets/images/payment-promptpay.png" alt="PromptPay" />
       </button>
     </div>
 
     <!-- Cash on Delivery Section -->
-    <div v-if="selectedMethod === 'cod'" class="cod-section">
+    <div v-if="selectedMethod === 'cash'" class="cod-section">
       <p class="section-subheading">เก็บเงินปลายทาง</p>
-      <button class="cod-logo" @click="handleCodClick">
+      <button class="cod-logo">
         <img src="@/assets/images/payment-cod.png" alt="Cash on Delivery" />
       </button>
     </div>
@@ -85,7 +84,7 @@
     name: 'PaymentSection',
     data() {
       return {
-        selectedMethod: 'card',
+        selectedMethod: 'credit', // Default to cash on delivery
         cardDetails: {
           name: '',
           number: '',
@@ -93,11 +92,15 @@
           cvv: ''
         },
         paymentMethods: [
-          { value: 'card', label: 'Credit / Debit Card' },
+          { value: 'credit', label: 'Credit / Debit Card' },
           { value: 'promptpay', label: 'PromptPay' },
-          { value: 'cod', label: 'Cash on Delivery' }
+          { value: 'cash', label: 'Cash on Delivery' }
         ]
       }
+    },
+    mounted() {
+      // Emit the default payment method when component is mounted
+      this.$emit('update-payment-method', this.selectedMethod);
     },
     methods: {
       selectPaymentMethod(method) {
@@ -113,9 +116,8 @@
   border: 1px solid #e0e0e0;
   padding: 20px;
   border-radius: 8px;
-  /* max-width: 700px; กำหนดความกว้างให้เป็น 631px */
   background-color: white;
-  width: 609px; /* ปรับให้กว้างเต็มฟอร์ม */
+  width: 609px;
 }
 
 .section-heading {
@@ -156,8 +158,8 @@
 
 .promptpay-logo,
 .cod-logo {
-  width: 132px;  /* กำหนดความกว้าง */
-  height: 61px;  /* กำหนดความสูง */
+  width: 132px;
+  height: 61px;
   border: 2px solid #e0e0e0;
   background: white;
   border-radius: 8px;
@@ -166,7 +168,7 @@
   align-items: center;
   justify-content: center;
   margin-top: 1rem;
-  transform: scale(1); /* ปรับให้เนื้อหายังคงขนาดสมดุล */
+  transform: scale(1);
 }
 .promptpay-logo:hover,
 .cod-logo:hover {
@@ -176,14 +178,14 @@
 .promptpay-logo img {
   width: 128px;
   height: 58px;
-  object-fit: contain; /* ป้องกันภาพผิดสัดส่วน */
+  object-fit: contain;
   border-radius: 8px;
 }
 
 .cod-logo img {
   width: 128px;
   height: 57px;
-  object-fit: contain; /* ป้องกันภาพผิดสัดส่วน */
+  object-fit: contain;
   border-radius: 8px;
 }
 
@@ -217,17 +219,17 @@
 
 .card-form {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* แบ่งเป็น 2 คอลัมน์ขนาดเท่ากัน */
-  gap: 15px; /* ระยะห่างระหว่างกล่อง */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
 }
 
 .input-row {
-  display: contents; /* ใช้ contents เพื่อให้ child elements คงการจัดวางของ grid */
+  display: contents;
   gap: 15px;
 }
 
 .form-input {
-  width: 244px; /* ปรับให้ input กินพื้นที่เต็มคอลัมน์ */
+  width: 244px;
   height: 40px;
   padding: 0 15px;
   border: 1px solid #e0e0e0;
@@ -236,28 +238,16 @@
 }
 
 .cvv-input {
-  width: 100%; /* ทำให้ CVV input ปรับขนาดตามพื้นที่ที่เหลือ */
+  width: 100%;
   position: relative;
 }
 
-/* .cvv-info {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #666;
-  font-weight: bold;
-} */
-
 .cvv-icon {
-  width: 16px; /* กำหนดขนาดรูป */
+  width: 16px;
   height: auto;
   position: absolute;
   top: 13px;
-  right: 10px; /* จัดตำแหน่งรูปให้อยู่ด้านขวา */
+  right: 10px;
   cursor: pointer;
 }
 

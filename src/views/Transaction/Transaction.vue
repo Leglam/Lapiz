@@ -74,7 +74,7 @@
 
         <!-- Payment Section -->
         <payment-section
-          @update-payment-method="paymentMethod = $event"
+          @update-payment-method="updatePaymentMethod"
         ></payment-section>
 
         <!-- Action Buttons -->
@@ -95,7 +95,6 @@
         <!-- Footer -->
         <div class="footer">
           <div class="footer-line"></div>
-          <!-- เส้นขีดด้านบน -->
           <div class="footer-links">
             <a @click="pushPage('exchange')">นโยบายการคืนสินค้า</a>
             <a @click="pushPage('data-personal')">นโยบายข้อมูลส่วนบุคคล</a>
@@ -112,7 +111,7 @@
           <div v-for="item in cartItems" :key="item.pdId" class="product-item">
             <div class="product-image-wrapper">
               <img :src="item.pdImg" :alt="item.pdName" class="product-image" />
-              <div class="product-quantity">{{ item.quantity }}</div> <!-- จำนวนสินค้า -->
+              <div class="product-quantity">{{ item.quantity }}</div>
             </div>
             <div class="product-details">
               <p class="product-name">{{ item.pdName }}</p>
@@ -216,17 +215,29 @@
     router.push({ name: pageName });
   };
 
-  const paymentMethod = ref("cash");
+  const paymentMethod = ref("cash"); // Default payment method
+
+  const updatePaymentMethod = (method) => {
+    paymentMethod.value = method;
+    console.log("Selected payment method:", method); // For debugging
+  };
 
   const buyProduct = async () => {
     try {
       await buyBasketProducts();
       productStore.setBasketProductCount(0);
-      paymentMethod.value === "credit"
-        ? pushPage("credit")
-        : paymentMethod.value === "cash"
-        ? pushPage("cash")
-        : pushPage("promptpay");
+      
+      // Redirect based on payment method
+      if (paymentMethod.value === "credit") {
+        pushPage("credit");
+      } else if (paymentMethod.value === "cash") {
+        pushPage("cash");
+      } else if (paymentMethod.value === "promptpay") {
+        pushPage("promptpay");
+      } else {
+        // Fallback
+        pushPage("transaction-complete");
+      }
     } catch (error) {
       console.log(error);
     }
