@@ -246,7 +246,7 @@ const addProductToBasket = async () => {
 }
 
 .product-price {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
 }
 
@@ -256,8 +256,6 @@ const addProductToBasket = async () => {
 }
 
 .color-option {
-  width: 16px;
-  height: 16px;
   border-radius: 50%;
   padding: 1.5px;
   border: 1px solid transparent;
@@ -267,15 +265,27 @@ const addProductToBasket = async () => {
   justify-content: center;
 }
 
+.color-option:hover {
+  border-color: #4338ca;
+  outline: 1px solid #4338ca;
+}
+
+.color-option.color-selected {
+  border-color: #4338ca;
+  outline: 1px solid #4338ca;
+  box-shadow: 0 0 4px #4338ca; /* เพิ่มเงาสีม่วงอ่อน */
+  transition: all 0.2s ease-in-out; /* ทำให้เอฟเฟกต์ดูนุ่มนวล */
+}
+
 .color-option.color-selected {
   border-color: #4338ca;
 }
 
 .color-inner {
-  width: 13px;
-  height: 13px;
+  width: 0.9vw;
+  height: 0.9vw;
   border-radius: 50%;
-  border: 1px solid #e5e5e5;
+  border: 0.06vw solid #4338ca;
 }
 
 .add-to-cart-button {
@@ -291,5 +301,14 @@ const addProductToBasket = async () => {
 
 .add-to-cart-button:hover {
   background-color: #0052a3;
+}
+
+.add-to-cart-text {
+  font-size: 16px;
+  font-weight: normal;
+  color: white;
+  text-align: center;
+  display: block;
+  width: 100%;
 }
 </style>

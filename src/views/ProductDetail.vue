@@ -511,6 +511,11 @@
       wishlistProduct.value.map((wishlist) => wishlist.pdCode)
     );
 
+    // ทำให้เวลาเข้าหน้านี้จะเลือกสีแรกโดยอัตโนมัติ
+    if (product.value && product.value.pdColor && product.value.pdColor.length > 0) {
+      selectColor(product.value.pdColor[0].pdCode);
+    }
+
     isFavorite.value = product.value.pdColor.some((color) =>
       wishlistPdCodes.has(color.pdCode)
     );
@@ -631,12 +636,13 @@
     /* width: 40%; */
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
 
   .product-title {
+    margin-top: 45px;
     font-size: 28px;
-    line-height: 1.5;
+    line-height: 1.2;
     letter-spacing: -0.29px;
   }
 
@@ -644,17 +650,17 @@
     font-size: 22px;
     font-weight: 600;
     letter-spacing: -0.22px;
+    margin-top: 0.25rem;
   }
 
   .divider {
     height: 1px;
     background-color: #000;
     width: 100%;
-    margin: 8px 0;
   }
 
   .size-section {
-    margin-top: 16px;
+    margin-top: 0.25rem;
   }
 
   .size-header {
@@ -682,7 +688,7 @@
   }
 
   .size-chart-link {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     letter-spacing: -0.9px;
     color: #002fff;
@@ -713,7 +719,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
     border-color: #9b9b9b;
   }
 
