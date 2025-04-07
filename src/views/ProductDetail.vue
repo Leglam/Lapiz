@@ -172,7 +172,7 @@
                     </div>
                     <div class="detail-row">
                       <div class="detail-label">ประเภทสินค้า</div>
-                      <div class="detail-value">{{ product.pdType }}</div>
+                      <div class="detail-value">{{ getFormattedProductType(product.pdType) }}</div>
                     </div>
                     <div class="detail-row">
                       <div class="detail-label">วัสดุ</div>
@@ -211,659 +211,737 @@
         </div>
       </div>
     </div>
+    <CustomNotification 
+      v-if="showNotification" 
+      :message="notificationMessage"
+      @close="closeNotification"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeMount, watch } from "vue";
-import ThreeJsScene from "@/components/ThreeJsScene.vue";
-import Shoes1 from "@/assets/shoes/shoe1.png";
+  import { ref, computed, onMounted, onBeforeMount, watch } from "vue";
+  import ThreeJsScene from "@/components/ThreeJsScene.vue";
+  import Shoes1 from "@/assets/shoes/shoe1.png";
+  import CustomNotification from "@/components/CustomNotification.vue"; 
 
-import Fav from "@/assets/images/icon-fav-gray.svg";
-import FavBlack from "@/assets/images/icon-fav-black.svg";
-import FavRed from "@/assets/images/icon-fav-red.svg";
+  import Fav from "@/assets/images/icon-fav-gray.svg";
+  import FavBlack from "@/assets/images/icon-fav-black.svg";
+  import FavRed from "@/assets/images/icon-fav-red.svg";
 
-import Facebook from "@/assets/images/icon-facebook2.svg";
-import Messenger from "@/assets/images/icon-messenger2.svg";
-import Instragram from "@/assets/images/icon-ig2.svg";
-import Share from "@/assets/images/icon-share.svg";
-import { useRoute, useRouter } from "vue-router";
-import { useProductStore } from "@/stores/productStore";
-import {
-  getBasketProducts,
-  updateBasketProducts,
-  getWishlistProducts,
-  addWishlistProducts,
-  removeWishlistProduct,
-} from "@/api/productService";
+  import Facebook from "@/assets/images/icon-facebook2.svg";
+  import Messenger from "@/assets/images/icon-messenger2.svg";
+  import Instragram from "@/assets/images/icon-ig2.svg";
+  import Share from "@/assets/images/icon-share.svg";
+  import { useRoute, useRouter } from "vue-router";
+  import { useProductStore } from "@/stores/productStore";
+  import {
+    getBasketProducts,
+    updateBasketProducts,
+    getWishlistProducts,
+    addWishlistProducts,
+    removeWishlistProduct,
+  } from "@/api/productService";
 
-const route = useRoute();
-const router = useRouter();
-const productStore = useProductStore();
+  const route = useRoute();
+  const router = useRouter();
+  const productStore = useProductStore();
 
-const productId = computed(() => route.params.id);
-const product = ref();
-const wishlistProduct = computed(() => productStore.wishlistProduct);
+  const productId = computed(() => route.params.id);
+  const product = ref();
+  const wishlistProduct = computed(() => productStore.wishlistProduct);
 
-const pushPage = (pageName) => {
-  router.push({ name: pageName });
-};
+  const pushPage = (pageName) => {
+    router.push({ name: pageName });
+  };
 
-const goBack = () => {
-  router.go(-1);
-};
+  const goBack = () => {
+    router.go(-1);
+  };
 
-const sizeGroups = ref([
-  ["5", "5.5", "6", "6.5", "7", "7.5"],
-  ["8", "8.5", "9", "9.5", "10", "10.5"],
-]);
+  // เพิ่ม ref สำหรับจัดการการแสดงแจ้งเตือน
+  const showNotification = ref(false);
+  const notificationMessage = ref("");
+  const notificationType = ref("info");
 
-const selectedSize = ref(null);
+  // ฟังก์ชันสำหรับปิดการแจ้งเตือน
+  const closeNotification = () => {
+    showNotification.value = false;
+  };
 
-const isFavorite = ref(false);
-const isHovered = ref(false);
+  // ฟังก์ชั่นใช้ map ประเภทผลิตภัณฑ์ กับ string การแสดงผลแบบกำหนดเอง
+  const getFormattedProductType = (pdType) => {
+  // กำหนดการ map ตามค่า pdType ที่ส่งเข้ามา
+  const typeMapping = {
+    "Sneaker": "รองเท้าผ้าใบ",
+    "FlipFlop": "รองเท้าแตะ",
+    "Sport": "รองเท้ากีฬา",
+    "HighHeel": "รองเท้าส้นสูง",
+    "Flat": "รองเท้าส้นเตี้ย",
+    "Boot": "รองเท้าบูท",
+    "Leather": "รองเท้าหนัง",
+  };
 
-const favoriteIcons = {
-  default: Fav,
-  hover: FavBlack,
-  active: FavRed,
-};
+  // ส่งคืนค่าที่ map ไว้ถ้ามี ถ้าไม่มีก็ส่งคืนค่าเดิม
+  return typeMapping[pdType] || pdType;
+  };
 
-const currentFavoriteIcon = computed(() => {
-  if (isFavorite.value) {
-    return favoriteIcons.active;
-  }
-  if (isHovered.value) {
-    return favoriteIcons.hover;
-  }
-  return favoriteIcons.default;
-});
+  const sizeGroups = ref([
+    ["5", "5.5", "6", "6.5", "7", "7.5"],
+    ["8", "8.5", "9", "9.5", "10", "10.5"],
+  ]);
 
-// Models
-const selectedColor = ref("");
-const isModelError = ref(false);
+  const selectedSize = ref(null);
 
-const getProductImage = computed(() => {
-  if (!product.value?.pdColor) return Shoes1;
+  const isFavorite = ref(false);
+  const isHovered = ref(false);
 
-  const matchedColor = product.value.pdColor.find(
-    (color) => color.pdCode === selectedColor.value
-  );
+  const favoriteIcons = {
+    default: Fav,
+    hover: FavBlack,
+    active: FavRed,
+  };
 
-  return matchedColor?.pdImg || product.value.pdColor[0].pdImg;
-});
-
-const modelPaths = computed(() => {
-  return new URL(
-    `../assets/models/${
-      selectedColor.value && selectedColor.value !== ""
-        ? selectedColor.value
-        : productId.value
-    }/scene.gltf`,
-    import.meta.url
-  ).href;
-});
-
-// Tabs
-const tabs = ref([
-  { id: "description", label: "รายละเอียด" },
-  { id: "features", label: "คุณสมบัติ" },
-  // { id: "reviews", label: "รีวิว" },
-]);
-const activeTab = ref("description");
-
-// Social Icons
-const socialIcons = ref([
-  { name: "Share", icon: Share },
-  { name: "Facebook", icon: Facebook },
-  { name: "Messenger", icon: Messenger },
-  { name: "Instagram", icon: Instragram },
-]);
-
-// Methods
-const handleModelError = () => {
-  isModelError.value = true;
-};
-
-const formatPrice = (value) => {
-  return `${value.toFixed(2)} THB`;
-};
-
-const selectSize = (size) => {
-  selectedSize.value = size;
-};
-
-const selectColor = (colorId) => {
-  product.value.pdColor = product.value.pdColor.map((color) => {
-    color.isSelected = color.pdCode === colorId;
-    return color;
+  const currentFavoriteIcon = computed(() => {
+    if (isFavorite.value) {
+      return favoriteIcons.active;
+    }
+    if (isHovered.value) {
+      return favoriteIcons.hover;
+    }
+    return favoriteIcons.default;
   });
-  selectedColor.value = colorId;
-};
 
-const fetchProductInWishlist = async () => {
-  const response = await getWishlistProducts();
+  // Models
+  const selectedColor = ref("");
+  const isModelError = ref(false);
 
-  if (response !== null) {
-    productStore.setWishlistProduct(response);
-  } else {
-    productStore.setWishlistProduct([]);
-  }
-};
+  const getProductImage = computed(() => {
+    if (!product.value?.pdColor) return Shoes1;
 
-const fetchProductInBasket = async () => {
-  const response = await getBasketProducts();
-
-  if (response !== null) {
-    const totalQuantity = response.reduce(
-      (sum, product) => sum + product.quantity,
-      0
+    const matchedColor = product.value.pdColor.find(
+      (color) => color.pdCode === selectedColor.value
     );
-    productStore.setBasketProductCount(totalQuantity);
-  } else {
-    productStore.setBasketProductCount(0);
-    return null;
-  }
-};
 
-const setActiveTab = (tabId) => {
-  activeTab.value = tabId;
-};
+    return matchedColor?.pdImg || product.value.pdColor[0].pdImg;
+  });
 
-const addToCart = async () => {
-  if (!selectedColor) {
-    console.warn("No color selected!");
-    return;
-  }
+  const modelPaths = computed(() => {
+    return new URL(
+      `../assets/models/${
+        selectedColor.value && selectedColor.value !== ""
+          ? selectedColor.value
+          : productId.value
+      }/scene.gltf`,
+      import.meta.url
+    ).href;
+  });
 
-  const updateResponse = await updateBasketProducts(selectedColor.value, 1);
-  const fetchResponse = await fetchProductInBasket();
+  // Tabs
+  const tabs = ref([
+    { id: "description", label: "รายละเอียด" },
+    { id: "features", label: "คุณสมบัติ" },
+    // { id: "reviews", label: "รีวิว" },
+  ]);
+  const activeTab = ref("description");
 
-  if (updateResponse === null && fetchResponse === null) {
-    return null;
-  }
-};
+  // Social Icons
+  const socialIcons = ref([
+    { name: "Share", icon: Share },
+    { name: "Facebook", icon: Facebook },
+    { name: "Messenger", icon: Messenger },
+    { name: "Instagram", icon: Instragram },
+  ]);
 
-const removeProductFromWishlist = async (pdCode) => {
-  try {
-    await removeWishlistProduct(pdCode);
-    isFavorite.value = false;
-  } catch (error) {
-    console.log("Remove wishlist error");
-  }
-};
+  // Methods
+  const handleModelError = () => {
+    isModelError.value = true;
+  };
 
-const addProductToWishlist = async (pdCode) => {
-  try {
-    await addWishlistProducts(pdCode);
-    isFavorite.value = true;
-  } catch (error) {
-    console.log("Add wishlist error");
-  }
-};
+  const formatPrice = (value) => {
+    return `${value.toFixed(2)} THB`;
+  };
 
-const toggleFavorite = async () => {
-  if (isFavorite.value) {
-    await removeProductFromWishlist(product.value.pdColor[0].pdCode);
-  } else {
-    await addProductToWishlist(product.value.pdColor[0].pdCode);
-  }
+  const selectSize = (size) => {
+    selectedSize.value = size;
+  };
 
-  await fetchProductInWishlist();
+  const selectColor = (colorId) => {
+    product.value.pdColor = product.value.pdColor.map((color) => {
+      color.isSelected = color.pdCode === colorId;
+      return color;
+    });
+    selectedColor.value = colorId;
+  };
 
-  console.log(isFavorite.value);
-};
+  const fetchProductInWishlist = async () => {
+    const response = await getWishlistProducts();
 
-const buyNow = async () => {
-  const responseStatus = await addToCart();
+    if (response !== null) {
+      productStore.setWishlistProduct(response);
+    } else {
+      productStore.setWishlistProduct([]);
+    }
+  };
 
-  if (responseStatus !== null) router.push({ name: "cart" });
-};
+  const fetchProductInBasket = async () => {
+    const response = await getBasketProducts();
 
-watch(selectedColor, (newValue) => {
-  if (newValue) isModelError.value = false;
-});
+    if (response !== null) {
+      const totalQuantity = response.reduce(
+        (sum, product) => sum + product.quantity,
+        0
+      );
+      productStore.setBasketProductCount(totalQuantity);
+    } else {
+      productStore.setBasketProductCount(0);
+      return null;
+    }
+  };
 
-onBeforeMount(() => {
-  product.value = productStore.product.find((p) =>
-    p.pdColor.some((color) => color.pdCode === productId.value)
-  );
+  const setActiveTab = (tabId) => {
+    activeTab.value = tabId;
+  };
 
-  const wishlistPdCodes = new Set(
-    wishlistProduct.value.map((wishlist) => wishlist.pdCode)
-  );
+  const addToCart = async () => {
+    if (!selectedColor.value || !selectedSize.value) {
+      // แจ้งเตือนเมื่อไม่ได้เลือกสีหรือขนาด
+      notificationMessage.value = "กรุณาเลือกสี และขนาดก่อนเพิ่มสินค้าเข้าตะกร้า";
+      notificationType.value = "warning";
+      showNotification.value = true;
+      return;
+    }
 
-  isFavorite.value = product.value.pdColor.some((color) =>
-    wishlistPdCodes.has(color.pdCode)
-  );
+    const updateResponse = await updateBasketProducts(selectedColor.value, 1);
+    await fetchProductInBasket();
 
-  console.log(wishlistPdCodes);
-  console.log(isFavorite.value);
-});
+    if (!updateResponse) {
+      notificationMessage.value = "ไม่สามารถเพิ่มสินค้าได้";
+      notificationType.value = "error";
+      showNotification.value = true;
+    } else {
+      notificationMessage.value = "เพิ่มสินค้าเข้าตะกร้าเรียบร้อยแล้ว";
+      notificationType.value = "success";
+      showNotification.value = true;
+    }
+  };
+
+  const removeProductFromWishlist = async (pdCode) => {
+    try {
+      await removeWishlistProduct(pdCode);
+      isFavorite.value = false;
+    } catch (error) {
+      console.log("Remove wishlist error");
+    }
+  };
+
+  const addProductToWishlist = async (pdCode) => {
+    try {
+      await addWishlistProducts(pdCode);
+      isFavorite.value = true;
+    } catch (error) {
+      console.log("Add wishlist error");
+    }
+  };
+
+  const toggleFavorite = async () => {
+    try {
+      if (isFavorite.value) {
+        await removeProductFromWishlist(product.value.pdColor[0].pdCode);
+        notificationMessage.value = "นำออกจากรายการโปรดเรียบร้อยแล้ว";
+      } else {
+        await addProductToWishlist(product.value.pdColor[0].pdCode);
+        notificationMessage.value = "เพิ่มเข้ารายการโปรดเรียบร้อยแล้ว";
+      }
+      
+      await fetchProductInWishlist();
+      notificationType.value = "favorite";
+      showNotification.value = true;
+    } catch (error) {
+      notificationMessage.value = "เกิดข้อผิดพลาดในการจัดการรายการโปรด";
+      notificationType.value = "error";
+      showNotification.value = true;
+    }
+  };
+
+  const buyNow = async () => {
+    if (!selectedColor.value || !selectedSize.value) {
+      // แจ้งเตือนเมื่อไม่ได้เลือกสีหรือขนาด
+      notificationMessage.value = "กรุณาเลือกสีและขนาดก่อนดำเนินการซื้อ";
+      notificationType.value = "warning";
+      showNotification.value = true;
+      return;
+    }
+
+    try {
+      const updateResponse = await updateBasketProducts(selectedColor.value, 1);
+      await fetchProductInBasket();
+      
+      if (updateResponse) {
+        notificationMessage.value = "กำลังนำไปยังหน้าตะกร้าสินค้า...";
+        notificationType.value = "success";
+        showNotification.value = true;
+        
+        // ใช้ setTimeout เพื่อให้การแจ้งเตือนแสดงก่อนที่จะนำผู้ใช้ไปยังหน้าตะกร้า
+        setTimeout(() => {
+          router.push({ name: "cart" });
+        }, 1500);
+      } else {
+        notificationMessage.value = "ไม่สามารถดำเนินการซื้อได้";
+        notificationType.value = "error";
+        showNotification.value = true;
+      }
+    } catch (error) {
+      notificationMessage.value = "เกิดข้อผิดพลาดในการดำเนินการซื้อ";
+      notificationType.value = "error";
+      showNotification.value = true;
+    }
+  };
+
+  watch(selectedColor, (newValue) => {
+    if (newValue) isModelError.value = false;
+  });
+
+  onBeforeMount(() => {
+    product.value = productStore.product.find((p) =>
+      p.pdColor.some((color) => color.pdCode === productId.value)
+    );
+
+    const wishlistPdCodes = new Set(
+      wishlistProduct.value.map((wishlist) => wishlist.pdCode)
+    );
+
+    isFavorite.value = product.value.pdColor.some((color) =>
+      wishlistPdCodes.has(color.pdCode)
+    );
+
+    console.log(wishlistPdCodes);
+    console.log(isFavorite.value);
+  });
 </script>
 
 <style scoped>
-@import "@/styles/size-button.scss";
-@import "@/styles/back-link.scss";
+  @import "@/styles/size-button.scss";
+  @import "@/styles/back-link.scss";
 
-.product-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  overflow: hidden;
-  padding: 110px 80px 80px 80px;
-}
-
-.product-layout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center; /* ให้บรรจุรูปไปที่ขอบซ้าย */
-  align-items: center; /* จัดกลางในแนวตั้ง (บน-ล่าง) */
-  gap: 49px;
-  width: fit-content;
-}
-
-.product-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* width: 60%; */
-}
-
-.product-header-img {
-  /* ให้แสดงรูปอยู่ที่ซ้ายสุดและกลางในแนวตั้ง */
-  display: flex;
-  justify-content: flex-start; /* ชิดซ้าย */
-  align-items: center; /* จัดกลางในแนวตั้ง */
-}
-
-.product-details {
-  display: flex;
-  justify-content: start;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.product-tab-description {
-  padding: 1rem 20px 150px 2rem;
-  font-size: 16px;
-  line-height: 1.875;
-}
-
-.product-tab-details {
-  width: 100%;
-  /* border: 1px solid #e0e0e0; */
-  padding: 2rem 20px 20px 2rem;
-  border-radius: 8px;
-  gap: 4px;
-  flex-grow: 1; /* ทำให้ขยายเต็มที่และเท่ากัน */
-  display: flex;
-  flex-direction: column;
-}
-
-.tab-panel {
-  display: flex;
-  flex-direction: column;
-}
-
-.detail-row {
-  display: flex;
-  margin-bottom: 15px;
-  gap: 40px;
-}
-
-.detail-label {
-  width: 100px;
-  font-weight: bold;
-}
-
-.detail-value {
-  flex: 1;
-}
-
-.description {
-  white-space: pre-line;
-}
-
-.container {
-  width: 100%;
-}
-
-.back-navigation {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.back-icon {
-  width: 8px;
-  height: 12px;
-}
-
-.product-image {
-  width: 600px;
-  height: 600px;
-  object-fit: contain;
-  border: #b7b7b7 solid 2px;
-}
-
-.product-info {
-  /* width: 40%; */
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 2rem;
-}
-
-.product-title {
-  font-size: 28px;
-  line-height: 1.5;
-  letter-spacing: -0.29px;
-}
-
-.product-price {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.22px;
-}
-
-.divider {
-  height: 1px;
-  background-color: #000;
-  width: 100%;
-  margin: 8px 0;
-}
-
-.size-section {
-  margin-top: 16px;
-}
-
-.size-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.size-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.size-row {
-  display: flex;
-  gap: 12px;
-}
-
-.size-title {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.22px;
-}
-
-.size-chart-link {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.9px;
-  color: #002fff;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.size-chart-link:hover {
-  color: #b72121;
-}
-
-.product-colors {
-  display: flex;
-  gap: 8px;
-}
-
-.color-title {
-  margin: 24px 0 16px 0;
-  font-size: 20px;
-}
-
-.color-option {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-  border-color: #9b9b9b;
-}
-
-.color-option:hover {
-  outline: 1px solid black;
-}
-
-.color-option.color-selected {
-  border-color: #4338ca;
-  outline: 1px solid #4338ca;
-}
-
-.color-inner {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid #e0dedd;
-}
-
-.action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.button-group {
-  display: flex;
-  gap: 12px;
-}
-
-.add-to-cart-button {
-  width: 100%;
-  height: 42px;
-  background-color: #002fff;
-  color: #fff;
-  border: 2px solid #000;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.22px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-sizing: border-box;
-  transform-origin: center;
-}
-
-.add-to-cart-button:hover {
-  background-color: #375bfe;
-}
-
-/*=====================================================*/
-.favorite-button {
-  width: 42px;
-  height: 42px;
-  background-color: #fff;
-  border: 2px solid #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* เพิ่มเข้ามาลองทำ animate*/
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-/* เพิ่มเข้ามาลองทำ animate*/
-.favorite-button--hovered {
-  background-color: #dedede;
-}
-
-/* Active/Selected state styles */
-.favorite-button--active {
-  background-color: #f0f0f0;
-}
-
-/* Combined states animate หลังกด fav แล้ว*/
-.favorite-button--active.favorite-button--hovered {
-  background-color: #f0f0f0;
-}
-
-.favorite-icon {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.2s ease;
-}
-
-.favorite-button:hover .favorite-icon {
-  transform: scale(1.1);
-}
-
-.favorite-button:active .favorite-icon {
-  transform: scale(0.9);
-}
-/*=====================================================*/
-.buy-now-button {
-  width: 100%;
-  height: 42px;
-  background-color: #000;
-  color: #fff;
-  border: 2px solid #000;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.22px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  box-sizing: border-box;
-  transform-origin: center;
-}
-
-.add-to-cart-button:active,
-.buy-now-button:active {
-  transform: scale(0.98); /* หดตัวปุ่มเมื่อคลิก */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* เพิ่มเงาขณะคลิก */
-}
-
-.buy-now-button:hover {
-  background-color: #323232;
-}
-
-.social-share {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  margin-top: 18px;
-}
-
-.social-icons {
-  display: flex;
-  gap: 28px;
-}
-
-.social-icon:hover {
-  transform: scale(1.2); /* ขยายขนาดเล็กน้อย */
-}
-
-.social-icon:active {
-  transform: scale(1.1); /* ขยายเล็กน้อยขณะคลิก */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* เพิ่มเงาลึกเมื่อคลิก */
-}
-
-.social-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  width: 24px;
-  height: 24px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  transform-origin: center;
-}
-
-.tabs-section {
-  margin-top: 34px;
-}
-
-.tabs {
-  display: flex;
-}
-
-.tab-button {
-  padding: 12px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  border: 1px solid rgba(183, 183, 183, 0.6);
-  border-radius: 5px 5px 0px 0px; /* บนซ้าย, บนขวา, ล่างขวา, ล่างซ้าย */
-  cursor: pointer;
-  background-color: #ffffff;
-  transition: 0.2s;
-}
-
-.tab-button--active {
-  background-color: #692F2F;
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  border-radius: 5px 5px 0px 0px; /* บนซ้าย, บนขวา, ล่างขวา, ล่างซ้าย */
-  color: #fff;
-  border-bottom: none;
-  position: relative;
-}
-
-.tab-content {
-  border: 1px solid rgba(183, 183, 183, 0.4);
-  border-radius: 0px 6px 6px 6px;
-}
-
-.edit-info-navigation {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-}
-
-@media (max-width: 1050px) {
-  .product-layout {
+  .product-content {
+    display: flex;
     flex-direction: column;
-    padding: 40px 5%;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 110px 80px 80px 80px;
   }
 
-  .product-info {
+  .product-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* ให้บรรจุรูปไปที่ขอบซ้าย */
+    align-items: center; /* จัดกลางในแนวตั้ง (บน-ล่าง) */
+    gap: 49px;
+    width: fit-content;
+  }
+
+  .product-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* width: 60%; */
+  }
+
+  .product-header-img {
+    /* ให้แสดงรูปอยู่ที่ซ้ายสุดและกลางในแนวตั้ง */
+    display: flex;
+    justify-content: flex-start; /* ชิดซ้าย */
+    align-items: center; /* จัดกลางในแนวตั้ง */
+  }
+
+  .product-details {
+    display: flex;
+    justify-content: start;
     width: 100%;
+    box-sizing: border-box;
+  }
+
+  .product-tab-description {
+    padding: 1rem 20px 150px 2rem;
+    font-size: 16px;
+    line-height: 1.875;
+  }
+
+  .product-tab-details {
+    width: 100%;
+    /* border: 1px solid #e0e0e0; */
+    padding: 2rem 20px 20px 2rem;
+    border-radius: 8px;
+    gap: 4px;
+    flex-grow: 1; /* ทำให้ขยายเต็มที่และเท่ากัน */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tab-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-row {
+    display: flex;
+    margin-bottom: 15px;
+    gap: 40px;
+  }
+
+  .detail-label {
+    width: 100px;
+    font-weight: bold;
+  }
+
+  .detail-value {
+    flex: 1;
+  }
+
+  .description {
+    white-space: pre-line;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .back-navigation {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .back-icon {
+    width: 8px;
+    height: 12px;
   }
 
   .product-image {
-    width: 100%;
-    height: auto;
+    width: 600px;
+    height: 600px;
+    object-fit: contain;
+    border: #b7b7b7 solid 2px;
   }
-}
 
-@media (max-width: 550px) {
-  .product-header {
+  .product-info {
+    /* width: 40%; */
+    display: flex;
     flex-direction: column;
+    margin-bottom: 2rem;
   }
 
-  .add-to-cart-button,
+  .product-title {
+    font-size: 28px;
+    line-height: 1.5;
+    letter-spacing: -0.29px;
+  }
+
+  .product-price {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.22px;
+  }
+
+  .divider {
+    height: 1px;
+    background-color: #000;
+    width: 100%;
+    margin: 8px 0;
+  }
+
+  .size-section {
+    margin-top: 16px;
+  }
+
+  .size-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .size-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .size-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .size-title {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.22px;
+  }
+
+  .size-chart-link {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.9px;
+    color: #002fff;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .size-chart-link:hover {
+    color: #b72121;
+  }
+
+  .product-colors {
+    display: flex;
+    gap: 8px;
+  }
+
+  .color-title {
+    margin: 24px 0 16px 0;
+    font-size: 20px;
+  }
+
+  .color-option {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    border-color: #9b9b9b;
+  }
+
+  .color-option:hover {
+    outline: 1px solid black;
+  }
+
+  .color-option.color-selected {
+    border-color: #4338ca;
+    outline: 1px solid #4338ca;
+  }
+
+  .color-inner {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #e0dedd;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 12px;
+  }
+
+  .add-to-cart-button {
+    width: 100%;
+    height: 42px;
+    background-color: #002fff;
+    color: #fff;
+    border: 2px solid #000;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.22px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    transform-origin: center;
+  }
+
+  .add-to-cart-button:hover {
+    background-color: #375bfe;
+  }
+
+  /*=====================================================*/
+  .favorite-button {
+    width: 42px;
+    height: 42px;
+    background-color: #fff;
+    border: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* เพิ่มเข้ามาลองทำ animate*/
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  /* เพิ่มเข้ามาลองทำ animate*/
+  .favorite-button--hovered {
+    background-color: #dedede;
+  }
+
+  /* Active/Selected state styles */
+  .favorite-button--active {
+    background-color: #f0f0f0;
+  }
+
+  /* Combined states animate หลังกด fav แล้ว*/
+  .favorite-button--active.favorite-button--hovered {
+    background-color: #f0f0f0;
+  }
+
+  .favorite-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s ease;
+  }
+
+  .favorite-button:hover .favorite-icon {
+    transform: scale(1.1);
+  }
+
+  .favorite-button:active .favorite-icon {
+    transform: scale(0.9);
+  }
+  /*=====================================================*/
   .buy-now-button {
-    padding: 0 28px;
+    width: 100%;
+    height: 42px;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #000;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.22px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    transform-origin: center;
   }
-}
 
-@keyframes slideIn {
-  0% {
-    transform: translateY(5%);
-    opacity: 0;
+  .add-to-cart-button:active,
+  .buy-now-button:active {
+    transform: scale(0.98); /* หดตัวปุ่มเมื่อคลิก */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* เพิ่มเงาขณะคลิก */
   }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 
-.product-content {
-  animation: slideIn 0.6s ease;
-}
+  .buy-now-button:hover {
+    background-color: #323232;
+  }
+
+  .social-share {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-top: 18px;
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 28px;
+  }
+
+  .social-icon:hover {
+    transform: scale(1.2); /* ขยายขนาดเล็กน้อย */
+  }
+
+  .social-icon:active {
+    transform: scale(1.1); /* ขยายเล็กน้อยขณะคลิก */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* เพิ่มเงาลึกเมื่อคลิก */
+  }
+
+  .social-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    transform-origin: center;
+  }
+
+  .tabs-section {
+    margin-top: 34px;
+  }
+
+  .tabs {
+    display: flex;
+  }
+
+  .tab-button {
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid rgba(183, 183, 183, 0.6);
+    border-radius: 5px 5px 0px 0px; /* บนซ้าย, บนขวา, ล่างขวา, ล่างซ้าย */
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: 0.2s;
+  }
+
+  .tab-button--active {
+    background-color: #692F2F;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    border-radius: 5px 5px 0px 0px; /* บนซ้าย, บนขวา, ล่างขวา, ล่างซ้าย */
+    color: #fff;
+    border-bottom: none;
+    position: relative;
+  }
+
+  .tab-content {
+    border: 1px solid rgba(183, 183, 183, 0.4);
+    border-radius: 0px 6px 6px 6px;
+  }
+
+  .edit-info-navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  @media (max-width: 1050px) {
+    .product-layout {
+      flex-direction: column;
+      padding: 40px 5%;
+    }
+
+    .product-info {
+      width: 100%;
+    }
+
+    .product-image {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  @media (max-width: 550px) {
+    .product-header {
+      flex-direction: column;
+    }
+
+    .add-to-cart-button,
+    .buy-now-button {
+      padding: 0 28px;
+    }
+  }
+
+  @keyframes slideIn {
+    0% {
+      transform: translateY(5%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .product-content {
+    animation: slideIn 0.6s ease;
+  }
 </style>
