@@ -6,10 +6,10 @@
         <div class="footer-section">
           <h3>สินค้า</h3>
           <ul class="footer-links">
-            <li><a href="#">ผู้ชาย</a></li>
-            <li><a href="#">ผู้หญิง</a></li>
-            <li><a href="#">เด็ก</a></li>
-            <li><a href="#">กีฬา</a></li>
+            <li><a @click="pushPage('men')">ผู้ชาย</a></li>
+            <li><a @click="pushPage('women')">ผู้หญิง</a></li>
+            <li><a @click="pushPage('kid')">เด็ก</a></li>
+            <li><a @click="pushPage('sport')">กีฬา</a></li>
           </ul>
         </div>
 

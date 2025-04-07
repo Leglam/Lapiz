@@ -1,7 +1,14 @@
 <template>
   <div class="exchange-return">
+    <div class="back-navigation">
+      <img
+        src="@/assets/images/icon-back.svg"
+        alt="BackIcon"
+        class="back-link"
+        />
+      <span @click="goBack" class="back-link">ย้อนกลับ</span>
+    </div>
     <h1 class="exchange-title">นโยบายการเปลี่ยน และคืนสินค้า</h1>
-    
     <div class="exchange-content">
       <p class="exchange-description">
         นโยบายการเปลี่ยนและคืนสินค้า
@@ -67,10 +74,17 @@
 </template>
 
 <script setup>
-// No reactive state or methods needed for this static content
+  import { useRouter } from "vue-router";
+
+  const router = useRouter();
+  const goBack = () => {
+    router.go(-1);
+  };
 </script>
 
 <style scoped>
+  @import "@/styles/back-link.scss";
+
   @font-face {
     font-family: 'Mitr';
     src: url('@/assets/fonts/Mitr-Regular.ttf') format('truetype');
@@ -86,6 +100,13 @@
     margin: 0 auto 30px;
     padding: 6rem;
     color: rgb(0, 0, 0);
+  }
+
+  .back-navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
   }
 
   .exchange-title {

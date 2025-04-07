@@ -1,5 +1,13 @@
 <template>
   <div class="cookie-container">
+    <div class="back-navigation">
+      <img
+        src="@/assets/images/icon-back.svg"
+        alt="BackIcon"
+        class="back-link"
+        />
+      <span @click="goBack" class="back-link">ย้อนกลับ</span>
+    </div>
     <h1 class="cookie-title">นโยบายการใช้คุกกี้</h1>
     <p class="cookie-description">
       นโยบายการใช้คุกกี้ (Cookie Policy)
@@ -85,10 +93,17 @@
 </template>
 
 <script setup>
-  // const name: 'CookiePolicy';
+  import { useRouter } from "vue-router";
+
+  const router = useRouter();
+  const goBack = () => {
+    router.go(-1);
+  };  
 </script>
 
 <style scoped>
+  @import "@/styles/back-link.scss";
+
   @font-face {
     font-family: 'Mitr';
     src: url('@/assets/fonts/Mitr-Regular.ttf') format('truetype');
@@ -104,6 +119,13 @@
     margin: 0 auto 30px;
     padding: 6rem;
     color: rgb(0, 0, 0);
+  }
+
+  .back-navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
   }
 
   .cookie-title {

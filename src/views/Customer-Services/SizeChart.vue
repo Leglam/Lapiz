@@ -1,8 +1,17 @@
 <template>
     <div class="size-chart">
-        <h1 class="size-chart_title">ตารางไซส์</h1>
+      <div class="back-navigation">
+        <img
+          src="@/assets/images/icon-back.svg"
+          alt="BackIcon"
+          class="back-link"
+          />
+        <span @click="goBack" class="back-link">ย้อนกลับ</span>
+      </div>
         
-        <!-- Linear Measure Systems -->
+      <h1 class="size-chart_title">ตารางไซส์</h1>
+      
+      <!-- Linear Measure Systems -->
         <div class="size-chart_systems">
           <p class="size_description">ขนาดรองเท้าหลัก ๆ มี 4 แบบ ได้แก่ US, UK, EU และ JPN ซึ่งแตกต่างกันไปตามแต่ละมาตรวัด:</p>
           <ul class="size_list">
@@ -101,10 +110,17 @@
 </template>
 
 <script setup>
-// No reactive data or methods needed for this static component
+  import { useRouter } from "vue-router";
+
+  const router = useRouter();
+  const goBack = () => {
+    router.go(-1);
+  }; 
 </script>
 
 <style scoped>
+  @import "@/styles/back-link.scss";
+
   @font-face {
     font-family: 'Mitr';
     src: url('@/assets/fonts/Mitr-Regular.ttf') format('truetype');
@@ -115,6 +131,13 @@
 
   .image-container {
     text-align: center;
+  }
+
+  .back-navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
   }
 
   .size-image {

@@ -1,6 +1,15 @@
 <!-- Contact.vue -->
 <template>
   <div class="contact">
+    <div class="back-navigation">
+      <img
+        src="@/assets/images/icon-back.svg"
+        alt="BackIcon"
+        class="back-link"
+        />
+      <span @click="goBack" class="back-link">ย้อนกลับ</span>
+    </div>
+
     <h1 class="contact-title">ติดต่อเรา</h1>
     
     <div class="contact-content">
@@ -30,10 +39,17 @@
 </template>
 
 <script setup>
-// Component logic can be added here if needed
+  import { useRouter } from "vue-router";
+
+  const router = useRouter();
+  const goBack = () => {
+    router.go(-1);
+  }; 
 </script>
 
 <style scoped>
+  @import "@/styles/back-link.scss";
+
   @font-face {
     font-family: 'Mitr';
     src: url('@/assets/fonts/Mitr-Regular.ttf') format('truetype');
@@ -49,6 +65,13 @@
     margin: 0 auto;
     padding: 5rem;
     color: rgb(0, 0, 0);
+  }
+
+  .back-navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
   }
 
   .contact-title {

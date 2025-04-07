@@ -3,13 +3,13 @@
     <div class="order-container">
       <!-- Header Section -->
       <div class="order-header">
-        <div class="back-button">
+        <div class="back-navigation">
           <img
             src="@/assets/images/icon-back.svg"
             alt="BackIcon"
-            class="back-icon"
-          />
-          <span class="back-link" @click="pushPage('my-account')">ย้อนกลับ</span>
+            class="back-link"
+            />
+          <span @click="goBack" class="back-link">ย้อนกลับ</span>
         </div>
         <h1 class="order-title">คำสั่งซื้อ #KE1600008502</h1>
         <p class="order-date">Order placed on 28 สิงหาคม 2024</p>
@@ -117,6 +117,9 @@ const router = useRouter();
 const pushPage = (pageName) => {
   router.push({ name: pageName });
 };
+const goBack = () => {
+  router.go(-1);
+};
 
 const orderItems = ref([
   {
@@ -194,20 +197,15 @@ th.total-header {
   padding: 10px;
 }
 
-/* Header Styles */
 .order-header {
   margin-bottom: 40px;
 }
 
-.back-button {
+.back-navigation {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
   align-items: center;
-  color: #333;
-  cursor: pointer;
-  margin-bottom: 16px;
-
+  gap: 1rem;
 }
 
 .back-arrow {
@@ -216,7 +214,7 @@ th.total-header {
 
 .order-title {
   font-size: 24px;
-  margin: 0;
+  margin-top: 2rem;
   font-weight: 600;
 }
 

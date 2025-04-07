@@ -97,10 +97,10 @@
           <div class="footer-line"></div>
           <!-- เส้นขีดด้านบน -->
           <div class="footer-links">
-            <a href="#">นโยบายการคืนสินค้า</a>
-            <a href="#">นโยบายข้อมูลส่วนบุคคล</a>
-            <a href="#">ข้อตกลง และเงื่อนไข</a>
-            <a href="#">ข้อมูลติดต่อ</a>
+            <a @click="pushPage('exchange')">นโยบายการคืนสินค้า</a>
+            <a @click="pushPage('data-personal')">นโยบายข้อมูลส่วนบุคคล</a>
+            <a @click="pushPage('terms')">ข้อตกลง และเงื่อนไข</a>
+            <a @click="pushPage('contact')">ข้อมูลติดต่อ</a>
           </div>
         </div>
       </div>
@@ -403,6 +403,13 @@ const buyProduct = async () => {
   width: 100%;
   max-width: 600px;
 }
+
+/* .product-list {
+  position: fixed;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+} */
 
 /* ให้ order-details อยู่ทางซ้าย */
 .form-section {

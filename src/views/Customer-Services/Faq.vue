@@ -1,5 +1,13 @@
 <template>
   <div class="faq-container">
+    <div class="back-navigation">
+      <img
+        src="@/assets/images/icon-back.svg"
+        alt="BackIcon"
+        class="back-link"
+        />
+      <span @click="goBack" class="back-link">ย้อนกลับ</span>
+    </div>
     <h1 class="faq-title">คำถามที่พบบ่อย</h1>
     <div class="faq-list">
       <div v-for="(faq, index) in faqs" :key="index" class="faq-item">
@@ -22,8 +30,13 @@
 
 
 <script setup>
-import { ref } from 'vue'
+  import { ref } from 'vue'
+  import { useRouter } from "vue-router";
 
+  const router = useRouter();
+  const goBack = () => {
+    router.go(-1);
+  }; 
 const faqs = ref([
   {
     question: 'ฉันสามารถสั่งซื้อสินค้าออนไลน์ผ่านเว็บไซต์ Lapiz ได้อย่างไร?',
@@ -83,6 +96,8 @@ const toggleAnswer = (index) => {
 </script>
 
 <style scoped>
+  @import "@/styles/back-link.scss";
+
   @font-face {
     font-family: 'Mitr';
     src: url('@/assets/fonts/Mitr-Regular.ttf') format('truetype');
@@ -97,6 +112,13 @@ const toggleAnswer = (index) => {
     margin: 0 auto 30px;
     padding: 5rem;
     color: rgb(0, 0, 0);
+  }
+
+  .back-navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
   }
 
   .faq-title {

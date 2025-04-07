@@ -83,7 +83,7 @@
         <div class="help-section">
           <div class="help-text">
             <p>ต้องการความช่วยเหลือ?</p>
-            <a href="#" class="contact-link">ติดต่อเรา</a>
+            <a @click="pushPage('contact')" class="contact-link">ติดต่อเรา</a>
           </div>
           <button @click="backToHome" class="continue-shopping">
             เลือกซื้อสินค้าต่อ
@@ -94,7 +94,7 @@
       <!-- Right Column -->
       <div class="order-summary">
         <div class="product-list">
-          <div v-for="item in receiptItems" class="product-item">
+          <div v-for="(item, index) in receiptItems" :key="index" class="product-item">
             <img
               :src="item.pdImg"
               alt="Navy shoe"
@@ -164,6 +164,10 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const productStore = useProductStore();
+
+const pushPage = (pageName) => {
+  router.push({ name: pageName });
+};
 
 const receiptItems = computed(() => {
   return productStore.basketProduct;
@@ -236,6 +240,13 @@ const backToHome = () => {
   margin-right: auto;
   left: -3.1rem;
 }
+
+/* .product-list {
+  position: fixed;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+} */
 
 .confirmation-header {
   display: flex;
