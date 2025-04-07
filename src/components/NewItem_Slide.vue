@@ -12,9 +12,18 @@
             v-for="(product, index) in displayItems"
             :key="index"
             class="category-item"
-            @click="selectCategory(product)"
           >
-            <CardComponent :product="product" />
+            <CardComponent
+              :key="product.pdModel"
+              :product="product"
+              :is-disable="compareProductList.length >= 2"
+              :checkbox-value="isProductInCompareList(product)"
+              :pd-img-number="selectedProduct"
+              @select-color="selectColor"
+              @select-compare-product="handleCompareProduct"
+              @remove-compare-product="handleRemoveCompareProduct"
+            />
+
           </div>
         </div>
       </div>
@@ -24,19 +33,58 @@
       </button>
     </div>
   </div>
+
+  <CompareBar
+    v-if="compareProductList.length > 0"
+    :compare-product-list="compareProductList"
+  />
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import CardComponent from "./CardComponent.vue";
-import { useProductStore } from "@/stores/productStore";
+  import { ref, computed } from "vue";
+  import CardComponent from "./CardComponent.vue";
+  import { useProductStore } from "@/stores/productStore";
+  import CompareBar from "@/components/CompareBar.vue";
 
-const productStore = useProductStore();
+  const productStore = useProductStore();
 
-const currentSlide = ref(0);
-const displayCount = 5;
-const itemGap = 150; // เพิ่มระยะห่างเป็น 40px
-const itemWidth = 16.46 * (window.innerWidth / 100) + itemGap; // 177px (ขนาดของ item) + 40px (gap)
+  const currentSlide = ref(0);
+  const displayCount = 5;
+  const itemGap = 150; // เพิ่มระยะห่างเป็น 40px
+  const itemWidth = 16.46 * (window.innerWidth / 100) + itemGap; // 177px (ขนาดของ item) + 40px (gap)
+
+  const compareProductList = ref([]);
+  const selectedProduct = ref("");
+
+  const handleCompareProduct = (value) => {
+    compareProductList.value.push(value);
+  };
+
+  const selectColor = (colorId) => {
+    newProducts.value.map((product) => {
+      product.pdColor = product.pdColor.map((color) => {
+        color.isSelected = color.pdCode === colorId;
+        return color;
+      });
+      return product;
+    });
+
+    selectedProduct.value = colorId;
+  };
+
+  const isProductInCompareList = (product) => {
+    return compareProductList.value.some((p) => p.pdModel === product.pdModel);
+  };
+
+  const handleRemoveCompareProduct = (product) => {
+    const index = compareProductList.value.findIndex(
+      (p) => p.pdModel === product.pdModel
+    );
+
+    if (index !== -1) {
+      compareProductList.value.splice(index, 1);
+    }
+  };
 
 const newProducts = computed(() => {
   // กรองสินค้าใหม่ที่ pdGender = "Men_New"
@@ -51,37 +99,33 @@ const newProducts = computed(() => {
 });
 
 const displayItems = computed(() => {
-  const items = [...newProducts.value];
-  const duplicateCount = displayCount - 1;
-  return [...items, ...items.slice(0, duplicateCount)];
-});
+    const items = [...newProducts.value];
+    const duplicateCount = displayCount - 1;
+    return [...items, ...items.slice(0, duplicateCount)];
+  });
 
-const sliderStyle = computed(() => ({
-  transform: `translateX(-${currentSlide.value * itemWidth}px)`,
-  transition: "transform 0.3s ease-in-out",
-}));
+  const sliderStyle = computed(() => ({
+    transform: `translateX(-${currentSlide.value * itemWidth}px)`,
+    transition: "transform 0.3s ease-in-out",
+  }));
 
-const slidePrev = () => {
-  if (currentSlide.value <= 0) {
-    // หยุดเลื่อนเมื่อถึงจุดเริ่มต้น
-    currentSlide.value = newProducts.value.length - displayCount;
-  } else {
-    currentSlide.value--;
-  }
-};
+  const slidePrev = () => {
+    if (currentSlide.value <= 0) {
+      // หยุดเลื่อนเมื่อถึงจุดเริ่มต้น
+      currentSlide.value = newProducts.value.length - displayCount;
+    } else {
+      currentSlide.value--;
+    }
+  };
 
-const slideNext = () => {
-  if (currentSlide.value >= newProducts.value.length - displayCount) {
-    // หยุดเลื่อนเมื่อถึงจุดสิ้นสุด
-    currentSlide.value = 0;
-  } else {
-    currentSlide.value++;
-  }
-};
-
-const selectCategory = (product) => {
-  console.log("Selected product:", product.pdName);
-};
+  const slideNext = () => {
+    if (currentSlide.value >= newProducts.value.length - displayCount) {
+      // หยุดเลื่อนเมื่อถึงจุดสิ้นสุด
+      currentSlide.value = 0;
+    } else {
+      currentSlide.value++;
+    }
+  };
 </script>
 
 <style scoped>
@@ -125,55 +169,7 @@ const selectCategory = (product) => {
 
 .category-item:hover {
   transform: translateY(-5px);
-}
-
-/* ขนาดรูป */
-.category-image {
-  width: 177px;
-  height: 176px;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: #f5f5f5;
-}
-
-.category-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.category-item:hover .category-image img {
-  transform: scale(1.05);
-}
-
-.category-name-wrapper {
-  position: relative;
-  height: 35px;
-  margin-top: -17px; /* Move the white box up to overlap with the image */
-}
-
-.category-name {
-  position: absolute;
-  left: 0;
-  right: 0;
-  background: white;
-  height: 33px;
-  width: 177px;
-  margin: 0 auto;
-  font-size: 16px;
-  color: rgb(0, 0, 0);
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 0 0 8px 8px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  /* transform: scale(1.05); */
 }
 
 .slider-button {
