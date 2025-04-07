@@ -202,8 +202,178 @@
                     </div>
                   </div>
                 </div>
-                <div v-else-if="activeTab === 'reviews'" class="tab-panel">
-                  <span>รีวิว content</span>
+
+                <!-- รีวิวแท็บคอนเทนท์ -->
+                <div v-else-if="activeTab === 'reviews'" class="tab-panel reviews-panel">
+                  <!-- ส่วนสรุปคะแนนรีวิว -->
+                  <div class="reviews-summary">
+                    <div class="rating-summary">
+                      <div class="average-rating">
+                        <h3 class="rating-number">4.7</h3>
+                        <div class="rating-stars">
+                          <div class="stars-container">
+                            <img v-for="n in 5" :key="n" 
+                                :src="n <= 4 ? StarFilled : StarEmpty" 
+                                alt="star" 
+                                class="star-icon" />
+                          </div>
+                          <p class="total-reviews">จาก 82 รีวิว</p>
+                        </div>
+                      </div>
+                      <div class="rating-bars">
+                        <div v-for="rating in ratingDistribution" :key="rating.stars" class="rating-bar-container">
+                          <div class="stars-label">{{ rating.stars }} ดาว</div>
+                          <div class="rating-bar-wrapper">
+                            <div class="rating-bar" :style="{ width: `${rating.percentage}%` }"></div>
+                          </div>
+                          <div class="rating-percentage">{{ rating.percentage }}%</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="review-actions">
+                      <button class="review-button" @click="showReviewForm = true">
+                        เขียนรีวิว
+                      </button>
+                      <div class="review-filter">
+                        <select v-model="selectedFilter" class="filter-select">
+                          <option value="latest">ล่าสุด</option>
+                          <option value="highest">คะแนนสูงสุด</option>
+                          <option value="lowest">คะแนนต่ำสุด</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ฟอร์มเขียนรีวิว (แสดงเมื่อคลิกปุ่มเขียนรีวิว) -->
+                  <div v-if="showReviewForm" class="review-form-container">
+                    <div class="review-form">
+                      <div class="form-header">
+                        <h3 class="form-title">เขียนรีวิวสินค้า</h3>
+                        <button class="close-button" @click="showReviewForm = false">×</button>
+                      </div>
+                      <div class="rating-selection">
+                        <p>ให้คะแนน:</p>
+                        <div class="star-selection">
+                          <img v-for="n in 5" :key="n" 
+                              :src="n <= userRating ? StarFilled : StarEmpty" 
+                              alt="star" 
+                              class="star-icon selectable"
+                              @click="userRating = n" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="reviewTitle">หัวข้อรีวิว:</label>
+                        <input type="text" id="reviewTitle" v-model="reviewTitle" placeholder="เช่น: รองเท้าสวมใส่สบายมาก" />
+                      </div>
+                      <div class="form-group">
+                        <label for="reviewContent">รายละเอียด:</label>
+                        <textarea id="reviewContent" v-model="reviewContent" rows="4" placeholder="บอกความรู้สึกเกี่ยวกับสินค้า..."></textarea>
+                      </div>
+                      <div class="photo-upload">
+                        <p>เพิ่มรูปภาพ (เพิ่มได้สูงสุด 3 รูป):</p>
+                        <div class="upload-area">
+                          <div class="upload-button" @click="startUpload" v-if="imagePreviewUrls.length < 3">
+                            <img src="@/assets/images/icon-camera.svg" alt="Upload" />
+                            <span>อัพโหลดรูป</span>
+                          </div>
+                          <div class="preview-images">
+                            <div v-for="(image, index) in imagePreviewUrls" :key="index" class="preview-image-container">
+                              <img :src="image" alt="Preview" class="preview-image" />
+                              <button class="remove-image" @click="removeImage(index)">×</button>
+                            </div>
+                          </div>
+                        </div>
+                        <p class="upload-info" v-if="imagePreviewUrls.length > 0">
+                          {{ imagePreviewUrls.length }}/{{ maxFiles }} รูปภาพ
+                        </p>
+                      </div>
+                      <div class="form-actions">
+                        <button class="cancel-button" @click="showReviewForm = false">ยกเลิก</button>
+                        <button class="submit-button" @click="submitReview">ส่งรีวิว</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- รายการรีวิวจากลูกค้า -->
+                  <div class="reviews-list">
+                    <div v-for="(review, index) in filteredReviews" :key="index" class="review-item">
+                      <div class="review-header">
+                        <div class="reviewer-info">
+                          <div class="avatar">{{ review.user.charAt(0) }}</div>
+                          <div class="user-details">
+                            <h4 class="username">{{ review.user }}</h4>
+                            <div class="review-date">{{ review.date }}</div>
+                          </div>
+                        </div>
+                        <div class="review-rating">
+                          <div class="stars-container">
+                            <img v-for="n in 5" :key="n" 
+                                :src="n <= review.rating ? StarFilled : StarEmpty " 
+                                alt="star" 
+                                class="star-icon small" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="review-content">
+                        <h5 class="review-title">{{ review.title }}</h5>
+                        <p class="review-text">{{ review.content }}</p>
+                        <div v-if="review.images && review.images.length > 0" class="review-images">
+                          <img v-for="(image, imgIndex) in review.images" :key="imgIndex" :src="image" alt="รูปภาพรีวิว" class="review-image" @click="openImagePreview(review.images, imgIndex)" />
+                        </div>
+                      </div>
+                      <div class="review-footer">
+                        <div class="review-stats">
+                          <div 
+                            class="helpful-button" 
+                            :class="{ 'helpful-active': review.userLiked }" 
+                            @click="toggleHelpful(index)"
+                            @mouseenter="setHoveredHelpful(index)"
+                            @mouseleave="clearHoveredHelpful()"
+                          >
+                            <img 
+                              :src="getHelpfulIcon(index)" 
+                              alt="Helpful" 
+                              class="helpful-icon" 
+                            />
+                            <span>เป็นประโยชน์ ({{ review.likes }})</span>
+                          </div>
+                        </div>
+                        <div class="verified-purchase" v-if="review.verified">
+                          <img src="@/assets/images/icon-verified.svg" alt="Verified" class="verified-icon" />
+                          <span>ซื้อจริง</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- แสดงเมื่อไม่มีรีวิว -->
+                    <div v-if="filteredReviews.length === 0" class="no-reviews">
+                      <img src="@/assets/images/icon-review-empty.svg" alt="No reviews" class="no-reviews-icon" />
+                      <p>ยังไม่มีรีวิวสำหรับสินค้านี้</p>
+                      <button class="review-button" @click="showReviewForm = true">
+                        เป็นคนแรกที่รีวิว
+                      </button>
+                    </div>
+                    
+                    <!-- ปุ่มโหลดรีวิวเพิ่มเติม -->
+                    <div v-if="filteredReviews.length > 0 && hasMoreReviews" class="load-more">
+                      <button class="load-more-button" @click="loadMoreReviews">
+                        โหลดรีวิวเพิ่มเติม
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <!-- Image preview modal -->
+                  <div v-if="showImageModal" class="image-preview-modal" @click="closeImagePreview">
+                    <div class="modal-content" @click.stop>
+                      <button class="close-modal" @click="closeImagePreview">×</button>
+                      <div class="image-navigation">
+                        <button class="nav-button prev" @click.stop="prevImage" v-if="previewImages.length > 1">❮</button>
+                        <img :src="previewImages[currentImageIndex]" alt="Preview" class="preview-image" />
+                        <button class="nav-button next" @click.stop="nextImage" v-if="previewImages.length > 1">❯</button>
+                      </div>
+                      <div class="image-count">{{ currentImageIndex + 1 }} / {{ previewImages.length }}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -222,8 +392,18 @@
 <script setup>
   import { ref, computed, onMounted, onBeforeMount, watch } from "vue";
   import ThreeJsScene from "@/components/ThreeJsScene.vue";
-  import Shoes1 from "@/assets/shoes/shoe1.png";
   import CustomNotification from "@/components/CustomNotification.vue"; 
+
+  import StarFilled from "@/assets/images/icon-star-filled.svg";
+  import StarEmpty from "@/assets/images/icon-star-empty.svg";
+
+  import Shoes1 from "@/assets/shoes-image/100001.svg";
+  import Shoes2 from "@/assets/shoes-image/100002.svg";
+
+  // เพิ่มการนำเข้าไอคอน thumbs up สำหรับ hover และ active state
+  import ThumbsUpNormal from "@/assets/images/icon-thumbs-up.svg"; // ไอคอนปกติที่มีอยู่แล้ว
+  import ThumbsUpHover from "@/assets/images/icon-thumbs-up-hover.svg"; // ไอคอนสำหรับ hover (ต้องมีไฟล์นี้)
+  import ThumbsUpActive from "@/assets/images/icon-thumbs-up-active.svg"; // ไอคอนสำหรับ active (ต้องมีไฟล์นี้)
 
   import Fav from "@/assets/images/icon-fav-gray.svg";
   import FavBlack from "@/assets/images/icon-fav-black.svg";
@@ -341,7 +521,7 @@
   const tabs = ref([
     { id: "description", label: "รายละเอียด" },
     { id: "features", label: "คุณสมบัติ" },
-    // { id: "reviews", label: "รีวิว" },
+    { id: "reviews", label: "รีวิว" },
   ]);
   const activeTab = ref("description");
 
@@ -523,6 +703,288 @@
     console.log(wishlistPdCodes);
     console.log(isFavorite.value);
   });
+
+  //Review
+  // ข้อมูลสำหรับส่วนรีวิว
+  const ratingDistribution = ref([
+    { stars: 5, percentage: 78 },
+    { stars: 4, percentage: 15 },
+    { stars: 3, percentage: 5 },
+    { stars: 2, percentage: 1 },
+    { stars: 1, percentage: 1 }
+  ]);
+
+  // สถานะของฟอร์มรีวิว
+  const showReviewForm = ref(false);
+  const userRating = ref(0);
+  const reviewTitle = ref('');
+  const reviewContent = ref('');
+  const uploadedImages = ref([]);
+
+  // กรองรีวิว
+  const selectedFilter = ref('latest');
+
+  // รีวิวตัวอย่าง (จำลอง)
+  const reviews = ref([
+    {
+      user: 'คุณแอนนา',
+      date: '12 มีนาคม 2025',
+      rating: 5,
+      title: 'รองเท้าคุณภาพดีเกินราคา',
+      content: 'รองเท้าคู่นี้สวมใส่สบายมาก ใส่เดินทั้งวันเท้าไม่เจ็บ วัสดุคุณภาพดี ราคาคุ้มค่ามาก แนะนำเลยค่ะ',
+      images: [Shoes1, Shoes2],
+      likes: 12,
+      userLiked: false,
+      verified: true
+    },
+    {
+      user: 'คุณสมชาย',
+      date: '8 มีนาคม 2025',
+      rating: 4,
+      title: 'สวมใส่สบาย แต่สีไม่ตรงรูป',
+      content: 'รองเท้าใส่สบายดี งานเรียบร้อย แต่สีจริงออกโทนเข้มกว่าในรูปเล็กน้อย อาจจะเป็นเพราะแสงตอนถ่ายรูป โดยรวมพอใจครับ',
+      images: [],
+      likes: 3,
+      userLiked: false,
+      verified: true
+    }
+  ]);
+
+  // คำนวณรีวิวที่จะแสดงตามการกรอง
+  const filteredReviews = computed(() => {
+    let result = [...reviews.value];
+    
+    if (selectedFilter.value === 'highest') {
+      result.sort((a, b) => b.rating - a.rating);
+    } else if (selectedFilter.value === 'lowest') {
+      result.sort((a, b) => a.rating - b.rating);
+    } else {
+      // เรียงตามวันที่ล่าสุด (default)
+      result.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+    
+    return result;
+  });
+
+  const hasMoreReviews = ref(true);
+
+  // แสดงรูปภาพตัวอย่างขนาดใหญ่
+  const showImageModal = ref(false);
+  const previewImages = ref([]);
+  const currentImageIndex = ref(0);
+
+  const openImagePreview = (images, index) => {
+    previewImages.value = images;
+    currentImageIndex.value = index;
+    showImageModal.value = true;
+  };
+
+  const closeImagePreview = () => {
+    showImageModal.value = false;
+  };
+
+  const nextImage = () => {
+    if (currentImageIndex.value < previewImages.value.length - 1) {
+      currentImageIndex.value++;
+    } else {
+      currentImageIndex.value = 0;
+    }
+  };
+
+  const prevImage = () => {
+    if (currentImageIndex.value > 0) {
+      currentImageIndex.value--;
+    } else {
+      currentImageIndex.value = previewImages.value.length - 1;
+    }
+  };
+
+  // สลับสถานะชอบ/ไม่ชอบรีวิว
+  const toggleHelpful = (index) => {
+    const review = reviews.value[index];
+    
+    // สร้างเอฟเฟกต์การกระเด้งเมื่อกด
+    const helpfulButton = document.querySelector(`.review-item:nth-child(${index + 1}) .helpful-button`);
+    if (helpfulButton) {
+      helpfulButton.classList.add('button-clicked');
+      setTimeout(() => {
+        helpfulButton.classList.remove('button-clicked');
+      }, 300);
+    }
+    
+    if (!review.userLiked) {
+      review.likes++;
+      review.userLiked = true;
+    } else {
+      review.likes--;
+      review.userLiked = false;
+    }
+  };
+
+  // โหลดรีวิวเพิ่มเติม
+  const loadMoreReviews = () => {
+    // สมมติว่ามีการโหลดรีวิวเพิ่มเติมจาก API
+    // ในตัวอย่างนี้จะจำลองว่าไม่มีรีวิวเพิ่มเติมแล้ว
+    hasMoreReviews.value = false;
+    
+    // แสดงการแจ้งเตือน
+    notificationMessage.value = "โหลดรีวิวทั้งหมดแล้ว";
+    notificationType.value = "info";
+    showNotification.value = true;
+  };
+
+  // อัพโหลดรูปภาพ
+  // ส่วนจัดการรูปภาพ
+  const fileInput = ref(null);
+  const imagePreviewUrls = ref([]);
+  const maxFiles = 3;
+  const supportedFormats = ['image/jpeg', 'image/png', 'image/jpg'];
+
+  // สร้าง ref ถึง input file element
+  const createFileInput = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.multiple = true;
+    input.onchange = handleFileChange;
+    return input;
+  };
+
+  // เริ่มกระบวนการอัพโหลด
+  const startUpload = () => {
+    if (!fileInput.value) {
+      fileInput.value = createFileInput();
+    }
+    fileInput.value.click();
+  };
+
+  // จัดการไฟล์ที่เลือก
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    
+    if (imagePreviewUrls.value.length + files.length > maxFiles) {
+      notificationMessage.value = `อัพโหลดได้สูงสุด ${maxFiles} รูป`;
+      notificationType.value = "warning";
+      showNotification.value = true;
+      return;
+    }
+    
+    files.forEach(file => {
+      if (!supportedFormats.includes(file.type)) {
+        notificationMessage.value = "รองรับเฉพาะไฟล์ .jpg และ .png เท่านั้น";
+        notificationType.value = "warning";
+        showNotification.value = true;
+        return;
+      }
+      
+      if (file.size > 5 * 1024 * 1024) { // 5MB
+        notificationMessage.value = "ขนาดไฟล์ต้องไม่เกิน 5MB";
+        notificationType.value = "warning";
+        showNotification.value = true;
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imagePreviewUrls.value.push(e.target.result);
+        uploadedImages.value.push(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // ลบรูปภาพที่อัพโหลด
+  const removeImage = (index) => {
+    imagePreviewUrls.value.splice(index, 1);
+    uploadedImages.value.splice(index, 1);
+  };
+
+  // รีเซ็ตรูปภาพ
+  const resetImages = () => {
+    imagePreviewUrls.value = [];
+    uploadedImages.value = [];
+  };
+
+  // เพิ่มฟังก์ชันรีเซ็ตฟอร์มทั้งหมด
+  const resetForm = () => {
+    userRating.value = 0;
+    reviewTitle.value = '';
+    reviewContent.value = '';
+    resetImages();
+    showReviewForm.value = false;
+  };
+
+  // ส่งรีวิว
+  const submitReview = () => {
+    if (userRating.value === 0) {
+      notificationMessage.value = "กรุณาให้คะแนนดาว";
+      notificationType.value = "warning";
+      showNotification.value = true;
+      return;
+    }
+    
+    if (!reviewTitle.value.trim()) {
+      notificationMessage.value = "กรุณากรอกหัวข้อรีวิว";
+      notificationType.value = "warning";
+      showNotification.value = true;
+      return;
+    }
+    
+    // เพิ่มรีวิวใหม่ลงในรายการ
+    const newReview = {
+      user: "คุณลูกค้า", // ในระบบจริง ควรดึงชื่อผู้ใช้จากระบบ authentication
+      date: new Date().toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' }),
+      rating: userRating.value,
+      title: reviewTitle.value,
+      content: reviewContent.value,
+      images: [...uploadedImages.value], // ใช้ spread operator เพื่อคัดลอกอาร์เรย์
+      likes: 0,
+      userLiked: false,
+      verified: true
+    };
+    
+    reviews.value.unshift(newReview);
+    
+    // รีเซ็ตฟอร์ม
+    resetForm();
+    
+    // แสดงการแจ้งเตือน
+    notificationMessage.value = "ขอบคุณสำหรับรีวิวของคุณ";
+    notificationType.value = "success";
+    showNotification.value = true;
+  };
+
+  // การทำงานปุ่มถูกใจ
+  // ตัวแปรสำหรับการติดตามสถานะ hover ของแต่ละรีวิว
+  const hoveredHelpfulIndex = ref(null);
+
+  // ออบเจกต์สำหรับจัดการไอคอนต่างๆ
+  const helpfulIcons = {
+    default: ThumbsUpNormal,
+    hover: ThumbsUpHover,
+    active: ThumbsUpActive,
+  };
+
+  // ฟังก์ชันสำหรับกำหนดไอคอนที่เหมาะสม
+  const getHelpfulIcon = (index) => {
+    const review = reviews.value[index];
+    if (review.userLiked) {
+      return helpfulIcons.active;
+    }
+    if (hoveredHelpfulIndex.value === index) {
+      return helpfulIcons.hover;
+    }
+    return helpfulIcons.default;
+  };
+
+  // จัดการสถานะ hover
+  const setHoveredHelpful = (index) => {
+    hoveredHelpfulIndex.value = index;
+  };
+
+  const clearHoveredHelpful = () => {
+    hoveredHelpfulIndex.value = null;
+  };
 </script>
 
 <style scoped>
@@ -570,7 +1032,7 @@
   }
 
   .product-tab-description {
-    padding: 1rem 20px 150px 2rem;
+    padding: 1rem 2rem 1rem 2rem;
     font-size: 16px;
     line-height: 1.875;
   }
@@ -593,7 +1055,8 @@
 
   .detail-row {
     display: flex;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
+    margin-right: 3rem;
     gap: 40px;
   }
 
@@ -949,5 +1412,680 @@
 
   .product-content {
     animation: slideIn 0.6s ease;
+  }
+
+  /* Review */
+  /* ส่วนของรีวิว */
+  .reviews-panel {
+    padding: 32px 20px;
+  }
+
+  .reviews-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(183, 183, 183, 0.4);
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+  }
+
+  .rating-summary {
+    display: flex;
+    gap: 48px;
+  }
+
+  .average-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+  }
+
+  .rating-number {
+    font-size: 48px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .rating-stars {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stars-container {
+    display: flex;
+    gap: 4px;
+  }
+
+  .star-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .star-icon.small {
+    width: 16px;
+    height: 16px;
+  }
+
+  .star-icon.selectable {
+    cursor: pointer;
+  }
+
+  .total-reviews {
+    margin-top: 8px;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .rating-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .rating-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .stars-label {
+    min-width: 45px;
+    text-align: right;
+    font-size: 14px;
+  }
+
+  .rating-bar-wrapper {
+    flex-grow: 1;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .rating-bar {
+    height: 100%;
+    background-color: #002fff;
+    border-radius: 4px;
+  }
+
+  .rating-percentage {
+    min-width: 40px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .review-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-end;
+  }
+
+  .review-button {
+    padding: 8px 16px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .review-button:hover {
+    background-color: #323232;
+  }
+
+  .review-filter {
+    position: relative;
+  }
+
+  .filter-select {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-size: 14px;
+    appearance: none;
+    cursor: pointer;
+    padding-right: 32px;
+    outline: none;
+  }
+
+  .filter-select::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000;
+    pointer-events: none;
+  }
+
+  /* รายการรีวิว */
+  .reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .review-item {
+    padding: 16px;
+    border: 1px solid rgba(183, 183, 183, 0.4);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .review-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #002fff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+
+  .user-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .username {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .review-date {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .review-content {
+    margin-bottom: 16px;
+  }
+
+  .review-title {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  .review-text {
+    margin-top: 0;
+    line-height: 1.5;
+  }
+
+  .review-images {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .review-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .review-image:hover {
+    transform: scale(1.05);
+  }
+
+  .review-footer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .review-stats {
+    display: flex;
+    gap: 16px;
+  }
+
+  .helpful-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .helpful-button:hover {
+    background-color: #f5f5f5;
+  }
+
+  .helpful-active {
+    background-color: #e3f0ff;
+    color: #002fff;
+    border-color: #002fff;
+  }
+
+  .helpful-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .verified-purchase {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: #00a87e;
+  }
+
+  .verified-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .load-more {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+  }
+
+  .load-more-button {
+    padding: 8px 24px;
+    background-color: white;
+    color: #002fff;
+    border: 1px solid #002fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .load-more-button:hover {
+    background-color: #f0f5ff;
+  }
+
+  .no-reviews {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 0;
+    text-align: center;
+    color: #666;
+  }
+
+  .no-reviews-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  /* ฟอร์มเขียนรีวิว */
+  .review-form-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .review-form {
+    background-color: white;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .form-title {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+
+  .rating-selection {
+    margin-bottom: 20px;
+  }
+
+  .star-selection {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .form-group input, 
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  .photo-upload {
+    margin-bottom: 20px;
+  }
+
+  .upload-area {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .upload-button {
+    width: 80px;
+    height: 80px;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .upload-button:hover {
+    background-color: #f5f5f5;
+  }
+
+  .upload-button img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+  }
+
+  .upload-button span {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .preview-images {
+    display: flex;
+    gap: 8px;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .cancel-button {
+    padding: 10px 20px;
+    background-color: white;
+    color: #000;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .cancel-button:hover {
+    background-color: #f5f5f5;
+  }
+
+  .submit-button {
+    padding: 10px 20px;
+    background-color: #002fff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .submit-button:hover {
+    background-color: #375bfe;
+  }
+
+  /* Image preview modal */
+  .image-preview-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+  }
+
+  .modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .image-navigation {
+    display: flex;
+    align-items: center;
+  }
+
+  .preview-image {
+    max-width: 100%;
+    max-height: 80vh;
+  }
+
+  .nav-button {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    font-size: 24px;
+    padding: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  /* สไตล์สำหรับการอัพโหลดรูปภาพ */
+  .preview-image-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-right: 8px;
+  }
+
+  .preview-images .preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .remove-image {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .remove-image:hover {
+    background-color: #000;
+  }
+
+  .upload-info {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+  }
+
+  /* ส่วนแสดงการแจ้งเตือน */
+  .notification-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1200;
+  }
+
+  .notification {
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+    animation: slideIn 0.3s ease forwards;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+  }
+
+  /* เพิ่มเติม: ปรับปรุง Animation เมื่อเปลี่ยนแปลงคะแนน */
+  .star-icon.selectable {
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+
+  .star-icon.selectable:hover {
+    transform: scale(1.2);
+    filter: brightness(1.2);
+  }
+
+  /* ปรับปรุง Animation เมื่อคลิกที่ถูกใจ */
+  .helpful-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+  }
+
+  .helpful-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .helpful-button.helpful-active {
+    color: #2563eb; /* หรือสีที่คุณต้องการเมื่อปุ่มถูกกด */
+  }
+
+  .helpful-icon {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+  }
+
+  /* อนิเมชันเมื่อ hover */
+  .helpful-button:hover .helpful-icon {
+    transform: scale(1.2);
+  }
+
+  /* อนิเมชันเมื่อกด */
+  @keyframes thumbs-up-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1.2); }
+  }
+
+  .helpful-button.helpful-active .helpful-icon {
+    animation: thumbs-up-animation 0.3s ease forwards;
+  }
+
+  /* อนิเมชันเมื่อคลิก (จะเกิดขึ้นทันที) */
+  .helpful-button:active .helpful-icon {
+    transform: scale(0.9);
+    transition: transform 0.1s ease;
   }
 </style>
