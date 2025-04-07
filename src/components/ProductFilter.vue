@@ -89,7 +89,14 @@
               class="price-slider max-price-slider"
               @input="updateMaxPriceInput"
             />
-            <div class="range-slider-track"></div>
+            <div class="range-slider-track-border"></div>
+            <div
+              class="range-slider-track"
+              :style="{
+                left: `${(minPrice / maxPriceLimit) * 100}%`,
+                width: `${((maxPrice - minPrice) / maxPriceLimit) * 100}%`
+              }"
+            ></div>
           </div>
         </div>
       </div>
@@ -477,15 +484,14 @@ const emit = defineEmits([
   pointer-events: auto;
 }
 
-// .price-slider::-moz-range-thumb {
-//   width: 20px;
-//   height: 20px;
-//   border-radius: 50%;
-//   background: white;
-//   border: 2px solid #333;
-//   cursor: pointer;
-//   pointer-events: auto;
-// }
+.price-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2); /* ขยายขณะ hover */
+  transition: transform 0.2s ease; /* เพิ่มการเปลี่ยนแปลง */
+}
+
+.price-slider::-webkit-slider-thumb:active {
+  transform: scale(1.1); /* ขยายเล็กน้อยขณะคลิก */
+}
 
 .price-input-group {
   display: flex;
@@ -542,7 +548,18 @@ const emit = defineEmits([
   width: 100%;
   height: 8px;
   border-radius: 20px;
-  background-color: #d9d9d9;
+  background-color: #646363;
+  z-index: 1;
+}
+
+.range-slider-track-border {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  border-radius: 20px;
+  background-color: #c4c4c4;
   z-index: 1;
 }
 
