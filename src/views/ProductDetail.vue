@@ -209,19 +209,30 @@
                   <div class="reviews-summary">
                     <div class="rating-summary">
                       <div class="average-rating">
-                        <h3 class="rating-number">4.7</h3>
+                        <h3 class="rating-number">{{ averageRating }}</h3>
                         <div class="rating-stars">
                           <div class="stars-container">
-                            <img v-for="n in 5" :key="n" 
-                                :src="n <= 4 ? StarFilled : StarEmpty" 
-                                alt="star" 
-                                class="star-icon" />
+                            <img
+                              v-for="n in 5"
+                              :key="n"
+                              :src="getStarIcon(n)"
+                              alt="star"
+                              class="star-icon"
+                            />
                           </div>
-                          <p class="total-reviews">จาก 82 รีวิว</p>
+                          <p class="total-reviews" v-if="totalReviewsCount > 0">
+                            จาก {{ totalReviewsCount }} รีวิว
+                          </p>
+                          <p v-else>ยังไม่มีรีวิว</p>
+                          
                         </div>
                       </div>
                       <div class="rating-bars">
-                        <div v-for="rating in ratingDistribution" :key="rating.stars" class="rating-bar-container">
+                        <div
+                          v-for="rating in ratingDistribution"
+                          :key="rating.stars"
+                          class="rating-bar-container"
+                        >
                           <div class="stars-label">{{ rating.stars }} ดาว</div>
                           <div class="rating-bar-wrapper">
                             <div class="rating-bar" :style="{ width: `${rating.percentage}%` }"></div>
@@ -318,7 +329,10 @@
                         <h5 class="review-title">{{ review.title }}</h5>
                         <p class="review-text">{{ review.content }}</p>
                         <div v-if="review.images && review.images.length > 0" class="review-images">
-                          <img v-for="(image, imgIndex) in review.images" :key="imgIndex" :src="image" alt="รูปภาพรีวิว" class="review-image" @click="openImagePreview(review.images, imgIndex)" />
+                          <img v-for="(image, imgIndex) in review.images" 
+                          :key="imgIndex" :src="image" 
+                          alt="รูปภาพรีวิว" class="review-image" 
+                          @click="openImagePreview(review.images, imgIndex)" />
                         </div>
                       </div>
                       <div class="review-footer">
@@ -396,6 +410,7 @@
 
   import StarFilled from "@/assets/images/icon-star-filled.svg";
   import StarEmpty from "@/assets/images/icon-star-empty.svg";
+  import StarHalf from "@/assets/images/icon-star-half.svg";
 
   import Shoes1 from "@/assets/shoes-image/100001.svg";
   import Shoes2 from "@/assets/shoes-image/100002.svg";
@@ -704,15 +719,26 @@
     console.log(isFavorite.value);
   });
 
+  // คำนวณคะแนนเฉลี่ย
+  const averageRating = computed(() => {
+    if (!reviews.value || reviews.value.length === 0) return 0; // ตรวจสอบว่ามีค่าและไม่ว่าง
+    const totalRating = reviews.value.reduce((sum, review) => sum + review.rating, 0);
+    return (totalRating / reviews.value.length).toFixed(1);
+  });
+
   //Review
-  // ข้อมูลสำหรับส่วนรีวิว
-  const ratingDistribution = ref([
-    { stars: 5, percentage: 78 },
-    { stars: 4, percentage: 15 },
-    { stars: 3, percentage: 5 },
-    { stars: 2, percentage: 1 },
-    { stars: 1, percentage: 1 }
-  ]);
+  // คำนวณการกระจายของคะแนน (เปอร์เซ็นต์ของแต่ละระดับดาว)
+  const ratingDistribution = computed(() => {
+    if (!reviews.value || reviews.value.length === 0) return []; // ตรวจสอบว่ามีค่าและไม่ว่าง
+    const distribution = [0, 0, 0, 0, 0]; // สำหรับ 5 ดาว, 4 ดาว, ..., 1 ดาว
+    reviews.value.forEach((review) => {
+      distribution[5 - review.rating]++;
+    });
+    return distribution.map((count, index) => ({
+      stars: 5 - index,
+      percentage: ((count / reviews.value.length) * 100).toFixed(1),
+    }));
+  });
 
   // สถานะของฟอร์มรีวิว
   const showReviewForm = ref(false);
@@ -727,7 +753,7 @@
   // รีวิวตัวอย่าง (จำลอง)
   const reviews = ref([
     {
-      user: 'คุณแอนนา',
+      user: 'คุณพรี่โอ๊ต',
       date: '12 มีนาคม 2025',
       rating: 5,
       title: 'รองเท้าคุณภาพดีเกินราคา',
@@ -738,7 +764,18 @@
       verified: true
     },
     {
-      user: 'คุณสมชาย',
+      user: 'ยายสมหมาย',
+      date: '8 มีนาคม 2025',
+      rating: 5,
+      title: 'สวมใส่สบาย แต่สีไม่ตรงรูป',
+      content: 'รองเท้าใส่สบายดี งานเรียบร้อย โดยรวมพอใจจร้า',
+      images: [],
+      likes: 3,
+      userLiked: false,
+      verified: true
+    },
+    {
+      user: 'คุณสมหมี',
       date: '8 มีนาคม 2025',
       rating: 4,
       title: 'สวมใส่สบาย แต่สีไม่ตรงรูป',
@@ -914,6 +951,19 @@
     showReviewForm.value = false;
   };
 
+  const getStarIcon = (n) => {
+    const roundedRating = Math.floor(averageRating.value); // จำนวนเต็มของคะแนน
+    const hasHalfStar = averageRating.value - roundedRating >= 0.5; // ตรวจสอบว่ามีเศษ >= 0.5 หรือไม่
+
+    if (n <= roundedRating) {
+      return StarFilled; // ดาวเต็มดวง
+    } else if (n === roundedRating + 1 && hasHalfStar) {
+      return StarHalf; // ดาวครึ่งดวง
+    } else {
+      return StarEmpty; // ดาวว่างเปล่า
+    }
+  };
+
   // ส่งรีวิว
   const submitReview = () => {
     if (userRating.value === 0) {
@@ -954,6 +1004,9 @@
     showNotification.value = true;
   };
 
+  // คำนวณจำนวนรีวิวทั้งหมด
+  const totalReviewsCount = computed(() => reviews.value.length);
+
   // การทำงานปุ่มถูกใจ
   // ตัวแปรสำหรับการติดตามสถานะ hover ของแต่ละรีวิว
   const hoveredHelpfulIndex = ref(null);
@@ -985,6 +1038,7 @@
   const clearHoveredHelpful = () => {
     hoveredHelpfulIndex.value = null;
   };
+  
 </script>
 
 <style scoped>

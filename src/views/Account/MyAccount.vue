@@ -42,7 +42,6 @@
               <div class="contact-group">
                 <div class="form-field">
                   <label>ชื่อผู้ใช้</label>
-                  <!-- <input v-model="username" type="text" disabled /> -->
                   <div class="box-display">
                     {{ userName }}
                   </div>
@@ -64,7 +63,6 @@
                 </div>
                 <div class="form-field">
                   <label>วันเกิด</label>
-                  <!-- <input v-model="userProfile.birthDate" type="date" /> -->
                   <date />
                 </div>
               </div>
@@ -79,13 +77,10 @@
               </div>
             </div>
 
-            <!-- Add Edit and Change Password links in the same line -->
             <div class="edit-links">
               <a @click="pushPage('edit-info')" class="edit-link">แก้ไข</a>
               <span>|</span>
-              <a @click="pushPage('edit-info')" class="change-password-link"
-                >เปลี่ยนรหัสผ่าน</a
-              >
+              <a @click="pushPage('edit-info')" class="change-password-link">เปลี่ยนรหัสผ่าน</a>
             </div>
           </div>
 
@@ -94,25 +89,26 @@
             <div class="address-section">
               <div class="form-field">
                 <label>ที่อยู่จัดส่ง</label>
-                <textarea
-                  v-model="userProfile.shippingAddress"
-                  placeholder="15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400"
-                ></textarea>
+                <div class="box-display">
+                  {{ shippingAddress.detail }}
+                  {{ shippingAddress.district }}
+                  {{ shippingAddress.province }}
+                  {{ shippingAddress.postalCode }}
+                </div>
               </div>
               <div class="form-field">
                 <label>ที่อยู่สำหรับเรียกเก็บเงิน</label>
-                <textarea
-                  v-model="userProfile.billingAddress"
-                  placeholder="15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400"
-                ></textarea>
+                <div class="box-display">
+                  {{ billingAddress.detail }}
+                  {{ billingAddress.district }}
+                  {{ billingAddress.province }}
+                  {{ billingAddress.postalCode }}
+                </div>
               </div>
             </div>
 
-            <!-- Add Edit link at the bottom right of the right column -->
             <div class="edit-address-links">
-              <a @click="pushPage('edit-address')" class="edit-address-link"
-                >แก้ไข</a
-              >
+              <a @click="pushPage('edit-address')" class="edit-address-link">แก้ไข</a>
             </div>
           </div>
         </div>
@@ -145,12 +141,7 @@
                 <td>{{ order.fulfillmentStatus }}</td>
                 <td>{{ order.total }}</td>
                 <td>
-                  <button
-                    class="view-order-btn"
-                    @click="pushPage('purchaseOrder')"
-                  >
-                    ดูคำสั่งซื้อ
-                  </button>
+                  <button class="view-order-btn" @click="pushPage('purchaseOrder')">ดูคำสั่งซื้อ</button>
                 </td>
               </tr>
             </tbody>
@@ -192,6 +183,16 @@ const pushPage = (pageName) => {
     return;
   }
 
+  if (pageName === "edit-address") {
+    router.push({
+      name: pageName,
+      query: {
+        shippingAddress: JSON.stringify(billingAddress),
+        billingAddress: JSON.stringify(billingAddress),
+      },
+    });
+    return;
+  }
   router.push({ name: pageName });
 };
 
@@ -204,10 +205,22 @@ const userProfile = reactive({
   lastName: "เกริกกวิน",
   username: "Thanathorn",
   email: "naithanathorn46@gmail.com",
+  phoneNumber: "081-234-5678",
   password: "**************************",
-  shippingAddress:
-    "15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400",
-  billingAddress: "15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท กรุงเทพมหานคร 10400",
+});
+
+const shippingAddress = reactive({
+  detail: "15 อาคารเซ็นจูรี่ ถนนพญาไท",
+  district: "แขวงถนนพญาไท",
+  province: "กรุงเทพมหานคร",
+  postalCode: "10400",
+});
+
+const billingAddress = reactive({
+  detail: "15 อาคารเซ็นจูรี่ ถนนพญาไท",
+  district: "แขวงถนนพญาไท",
+  province: "กรุงเทพมหานคร",
+  postalCode: "10400",
 });
 
 const orders = reactive([
@@ -248,6 +261,23 @@ onMounted(() => {
     userProfile.lastName = queryUserProfile.lastName;
     userProfile.username = queryUserProfile.username;
     userProfile.email = queryUserProfile.email;
+    userProfile.phoneNumber = queryUserProfile.phoneNumber;
+  }
+
+  if (route.query.shippingAddress) {
+    const queryShippingAddress = JSON.parse(route.query.shippingAddress);
+    shippingAddress.detail = queryShippingAddress.detail;
+    shippingAddress.district = queryShippingAddress.district;
+    shippingAddress.province = queryShippingAddress.province;
+    shippingAddress.postalCode = queryShippingAddress.postalCode;
+  }
+
+  if (route.query.billingAddress) {
+    const queryBillingAddress = JSON.parse(route.query.billingAddress);
+    billingAddress.detail = queryBillingAddress.detail;
+    billingAddress.district = queryBillingAddress.district;
+    billingAddress.province = queryBillingAddress.province;
+    billingAddress.postalCode = queryBillingAddress.postalCode;
   }
 });
 </script>
@@ -361,6 +391,12 @@ onMounted(() => {
       gap: 10px;
     }
 
+    .address-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     // Profile Content
     .profile-content {
       .profile-columns {
@@ -378,46 +414,21 @@ onMounted(() => {
             border-radius: 4px;
             font-size: 16px;
           }
-
-          // .form-field {
-          //   margin-bottom: 15px;
-
-          //   label {
-          //     display: block;
-          //     margin-bottom: 5px;
-          //     font-weight: 600;
-          //     color: #000;
-          //     font-size: 18px;
-          //   }
-
-          //   input,
-          //   textarea {
-          //     width: 100%;
-          //     padding: 10px;
-          //     border: 1px solid #000;
-          //     border-radius: 4px;
-          //     background-color: #ffffff;
-          //     transition: border-color 0.3s ease;
-          //     box-sizing: border-box;
-          //     font-size: 16px;
-
-          //     &:focus {
-          //       outline: none;
-          //       border-color: #000;
-          //     }
-          //   }
-
-          //   textarea {
-          //     height: 120px;
-          //     resize: vertical;
-          //     overflow: hidden; // Prevent textarea content from overflowing
-          //   }
-          // }
+          
         }
 
         .right-column {
           border-left: 1px solid #000; // Add this line to create a divider
           padding-left: 40px; // Add padding to make space from the border
+          
+          .box-display {
+            flex: 1;
+            min-height:90px;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: 4px;
+            font-size: 16px;
+          }
         }
       }
 

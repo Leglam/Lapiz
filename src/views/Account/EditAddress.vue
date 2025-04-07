@@ -13,34 +13,34 @@
       <div class="shipping-address">
         <h2 class="address-subtitle">ที่อยู่จัดส่ง</h2>
         <textarea 
+          id="detail"
           v-model="shippingAddress.detail"
           class="address-textarea" 
-          placeholder="15 อาคารเซ็นจูรี่ ถนนพญาไท"
         ></textarea>
         
         <div class="address-details">
           <div class="address-field">
             <label>เขต/แขวง</label>
             <input 
+              id="district"
               v-model="shippingAddress.district"
               type="text" 
-              placeholder="แขวงถนนพญาไท"
             />
           </div>
           <div class="address-field">
             <label>จังหวัด</label>
-            <input 
+            <input
+              id="province"
               v-model="shippingAddress.province"
               type="text" 
-              placeholder="กรุงเทพมหานคร"
             />
           </div>
           <div class="address-field">
             <label>รหัสไปรษณีย์</label>
             <input 
+              id="postalCode"
               v-model="shippingAddress.postalCode"
               type="text" 
-              placeholder="10400"
             />
           </div>
         </div>
@@ -51,34 +51,34 @@
       <div class="billing-address">
         <h2 class="address-subtitle">ที่อยู่สำหรับเรียกเก็บเงิน</h2>
         <textarea 
+          id="detail"
           v-model="billingAddress.detail"
           class="address-textarea" 
-          placeholder="15 อาคารเซ็นจูรี่ ถนนพญาไท"
         ></textarea>
         
         <div class="address-details">
           <div class="address-field">
             <label>เขต/แขวง</label>
             <input 
-              v-model="billingAddress.district"
-              type="text" 
-              placeholder="แขวงถนนพญาไท"
+              id="district" 
+              v-model="billingAddress.district" 
+              type="text"
             />
           </div>
           <div class="address-field">
             <label>จังหวัด</label>
             <input 
+              id="province"
               v-model="billingAddress.province"
               type="text" 
-              placeholder="กรุงเทพมหานคร"
             />
           </div>
           <div class="address-field">
             <label>รหัสไปรษณีย์</label>
             <input 
+              id="postalCode"
               v-model="billingAddress.postalCode"
               type="text" 
-              placeholder="10400"
             />
           </div>
         </div>
@@ -87,7 +87,7 @@
 
     <button 
       class="save-button"
-      @click="saveAddresses"
+      @click="saveChanges"
     >
       บันทึก
     </button>
@@ -95,33 +95,56 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { useRoute, useRouter } from "vue-router";
+import { reactive, onMounted } from "vue";
 
+const route = useRoute();
 const router = useRouter();
 
 const pushPage = (pageName) => {
   router.push({ name: pageName });
 };
 
-const shippingAddress = ref({
-  detail: '',
-  district: '',
-  province: '',
-  postalCode: ''
-})
+const shippingAddress = reactive({
+  detail: "15 อาคารเซ็นจูรี่ ถนนพญาไท",
+  district: "แขวงถนนพญาไท",
+  province: "กรุงเทพมหานคร",
+  postalCode: "10400",
+});
 
-const billingAddress = ref({
-  detail: '',
-  district: '',
-  province: '',
-  postalCode: ''
-})
+const billingAddress = reactive({
+  detail: "15 อาคารเซ็นจูรี่ ถนนพญาไท",
+  district: "แขวงถนนพญาไท",
+  province: "กรุงเทพมหานคร",
+  postalCode: "10400",
+});
 
-const saveAddresses = () => {
-  console.log('Shipping Address:', shippingAddress.value)
-  console.log('Billing Address:', billingAddress.value)
-}
+const saveChanges = () => {
+  router.push({
+    name: "my-account",
+    query: { billingAddress: JSON.stringify(billingAddress) },
+    query: { shippingAddress: JSON.stringify(shippingAddress) },
+  });
+  // Potential API call to save changes
+};
+
+onMounted(() => {
+  if (route.query.shippingAddress) {
+    const queryShippingAddress = JSON.parse(route.query.shippingAddress);
+    shippingAddress.detail = queryShippingAddress.detail;
+    shippingAddress.district = queryShippingAddress.district;
+    shippingAddress.province = queryShippingAddress.province;
+    shippingAddress.postalCode = queryShippingAddress.postalCode;
+  }
+
+  if (route.query.billingAddress) {
+    const queryBillingAddress = JSON.parse(route.query.billingAddress);
+    billingAddress.detail = queryBillingAddress.detail;
+    billingAddress.district = queryBillingAddress.district;
+    billingAddress.province = queryBillingAddress.province;
+    billingAddress.postalCode = queryBillingAddress.postalCode;
+  }
+});
 </script>
 
 <style scoped>

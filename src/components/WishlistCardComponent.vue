@@ -259,6 +259,7 @@ const addProductToBasket = async () => {
   border-radius: 50%;
   padding: 1.5px;
   border: 1px solid transparent;
+  border-color: #9B9B9B;
   cursor: pointer;
   display: flex;
   align-items: center;

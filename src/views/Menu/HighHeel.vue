@@ -366,13 +366,16 @@ onBeforeUnmount(() => {
 
     .dropdown-content {
       position: absolute;
-      top: 100%;
+      top: calc(100% + 10px);
       left: 0;
       right: 0;
       background-color: #fff;
       border: 1px solid #ccc;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
       z-index: 10;
+      transform: translateY(15%); /* เริ่มต้นเลื่อนลงเล็กน้อย */
+      opacity: 0;
+      animation: slideUp 0.4s ease-in-out forwards;
     }
 
     .dropdown-style {
@@ -413,6 +416,21 @@ onBeforeUnmount(() => {
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.dropdown-content {
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 .card-container {

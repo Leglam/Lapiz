@@ -36,7 +36,6 @@
               id="username"
               v-model="userProfile.username"
               type="text"
-              placeholder="Thanathorn"
             />
           </div>
           <div class="input-group">
@@ -44,8 +43,7 @@
             <input
               id="email"
               v-model="userProfile.email"
-              type="email"
-              placeholder="naithanathorn46@gmail.com"
+              type="email"            
             />
           </div>
         </div>
@@ -55,9 +53,8 @@
             <label for="phone">หมายเลขโทรศัพท์</label>
             <input
               id="phone"
-              v-model="userProfile.phone"
+              v-model="userProfile.phoneNumber"
               type="tel"
-              placeholder="063-481-6644"
             />
           </div>
           <div class="input-group">
@@ -138,7 +135,7 @@ const userProfile = reactive({
   lastName: "เกริกกวิน",
   username: "Thanathorn",
   email: "naithanathorn46@gmail.com",
-  phone: "063-481-6644",
+  phoneNumber: "063-481-6644",
   birthday: "2005-06-24",
 });
 
@@ -169,6 +166,7 @@ onMounted(() => {
     userProfile.lastName = queryUserProfile.lastName;
     userProfile.username = queryUserProfile.username;
     userProfile.email = queryUserProfile.email;
+    userProfile.phoneNumber = queryUserProfile.phoneNumber;
   }
 });
 </script>

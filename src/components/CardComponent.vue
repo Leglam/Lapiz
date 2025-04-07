@@ -231,6 +231,12 @@ onBeforeMount(() => {
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
+.product-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02); /* ขยายขนาดเมื่อ hover */
+  cursor: pointer;
+}
+
 .product-card.fade-leave-active {
   opacity: 0;
   transform: scale(0.9); /* ลดขนาดเมื่อหายไป */
