@@ -265,11 +265,16 @@
                       <div class="rating-selection">
                         <p>ให้คะแนน:</p>
                         <div class="star-selection">
-                          <img v-for="n in 5" :key="n" 
-                              :src="n <= userRating ? StarFilled : StarEmpty" 
-                              alt="star" 
-                              class="star-icon selectable"
-                              @click="userRating = n" />
+                          <img
+                            v-for="n in 5"
+                            :key="n"
+                            :src="n <= hoverRating ? StarFilled : StarEmpty"
+                            alt="star"
+                            class="star-icon selectable"
+                            @click="userRating = n"
+                            @mouseover="hoverRating = n"
+                            @mouseleave="hoverRating = 0"
+                          />
                         </div>
                       </div>
                       <div class="form-group">
@@ -441,6 +446,7 @@
   const route = useRoute();
   const router = useRouter();
   const productStore = useProductStore();
+  const hoverRating = ref(0);
 
   const productId = computed(() => route.params.id);
   const product = ref();
@@ -1853,6 +1859,18 @@
     display: flex;
     gap: 8px;
     margin-top: 8px;
+  }
+
+    .star-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .star-icon.selectable:hover {
+    transform: scale(1.2);
+    filter: brightness(1.2);
   }
 
   .form-group {
