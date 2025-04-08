@@ -132,10 +132,12 @@
           <div class="discount-section">
             <input
               type="text"
+              v-model="discountCode"
               class="form-input full-width"
               placeholder="โค้ดส่วนลด"
+              @input="discountCode = discountCode.toUpperCase()"
             />
-            <button class="apply-button">นำไปใช้</button>
+            <button class="apply-button" @click="applyDiscount">นำไปใช้</button>
           </div>
 
           <!-- Summary -->
@@ -152,6 +154,10 @@
                 THB
               </p>
             </div>
+            <div class="subtotal-row" v-if="discountAmount > 0">
+              <p>ส่วนลด</p>
+              <p>-{{ discountAmount.toLocaleString("en-US", { minimumFractionDigits: 2 }) }} THB</p>
+            </div>
             <div class="subtotal-row">
               <p>การจัดส่ง</p>
               <p>FREE</p>
@@ -166,7 +172,7 @@
             </div>
             <p class="total-amount">
               {{
-                totalPrice.toLocaleString("en-US", {
+                finalPrice.toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })
@@ -185,7 +191,7 @@
   import PaymentSection from "@/components/PaymentSection.vue";
   import { buyBasketProducts } from "@/api/productService";
   import { useProductStore } from "@/stores/productStore";
-  import { useRouter } from "vue-router";
+  import { useRouter} from "vue-router";
 
   const router = useRouter();
   const productStore = useProductStore();
@@ -226,22 +232,52 @@
     try {
       await buyBasketProducts();
       productStore.setBasketProductCount(0);
+
+      // ส่งค่าผ่าน query
+      const routeData = {
+        name: "",
+        query: {
+          finalPrice: finalPrice.value, // ยอดรวมหลังหักส่วนลด
+          discountAmount: discountAmount.value, // จำนวนเงินส่วนลด
+          discountCode: discountCode.value, // โค้ดส่วนลด
+        },
+      };
       
       // Redirect based on payment method
       if (paymentMethod.value === "credit") {
-        pushPage("credit");
+        routeData.name = "credit";
       } else if (paymentMethod.value === "cash") {
-        pushPage("cash");
+        routeData.name = "cash";
       } else if (paymentMethod.value === "promptpay") {
-        pushPage("promptpay");
-      } else {
-        // Fallback
-        pushPage("transaction-complete");
-      }
+        routeData.name = "promptpay";
+      } 
+
+      router.push(routeData);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const discountCode = ref(""); // เก็บโค้ดส่วนลดที่ผู้ใช้กรอก
+  const discountAmount = ref(0); // เก็บจำนวนเงินส่วนลด
+  const validDiscountCodes = ref({
+    "DISCOUNT100": 100,
+    "DISCOUNT200": 200, 
+    "DISCOUNT500": 500, 
+  }); // รายการโค้ดส่วนลดที่ใช้ได้
+
+  const applyDiscount = () => {
+    if (validDiscountCodes.value[discountCode.value]) {
+      discountAmount.value = validDiscountCodes.value[discountCode.value];
+    } else {
+      discountAmount.value = 0; // หากโค้ดไม่ถูกต้อง ให้ส่วนลดเป็น 0
+      alert("โค้ดส่วนลดไม่ถูกต้อง");
+    }
+  };
+
+  const finalPrice = computed(() => {
+    return Math.max(totalPrice.value - discountAmount.value, 0); // หักส่วนลดจากยอดรวม และไม่ให้ติดลบ
+  });
 </script>
 
 <style scoped>

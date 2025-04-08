@@ -115,16 +115,12 @@
 
           <div class="summary-subtotal">
             <div class="subtotal-row">
-              <p>ยอดรวม ({{ totalQuantity }} รายการ)</p>
-              <p>
-                {{
-                  totalPrice.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                }}
-                THB
-              </p>
+              <p>ยอดรวมก่อนส่วนลด</p>
+              <p>{{ (finalPrice + discountAmount).toLocaleString("en-US", { minimumFractionDigits: 2 }) }} THB</p>
+            </div>
+            <div class="subtotal-row" v-if="discountAmount > 0">
+              <p>ส่วนลด ({{ discountCode }})</p>
+              <p>-{{ discountAmount.toLocaleString("en-US", { minimumFractionDigits: 2 }) }} THB</p>
             </div>
             <div class="subtotal-row">
               <p>การจัดส่ง</p>
@@ -138,13 +134,7 @@
               <p class="tax-note">Including 0.00 THB in taxes</p>
             </div>
             <p class="total-amount">
-              {{
-                totalPrice.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
-              }}
-              THB
+              {{ finalPrice.toLocaleString("en-US", { minimumFractionDigits: 2 }) }} THB
             </p>
           </div>
         </div>
@@ -156,10 +146,14 @@
 <script setup>
 import { useProductStore } from "@/stores/productStore";
 import { computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter , useRoute} from "vue-router";
 
 const router = useRouter();
 const productStore = useProductStore();
+const route = useRoute();
+const finalPrice = parseFloat(route.query.finalPrice) || 0; // แปลงเป็นตัวเลข
+const discountAmount = parseFloat(route.query.discountAmount) || 0; // แปลงเป็นตัวเลข
+const discountCode = route.query.discountCode || ""; // รับโค้ดส่วนลด
 
 const pushPage = (pageName) => {
   router.push({ name: pageName });
@@ -167,23 +161,6 @@ const pushPage = (pageName) => {
 
 const receiptItems = computed(() => {
   return productStore.basketProduct;
-});
-
-const totalPrice = computed(() => {
-  if (receiptItems.value !== null) {
-    return receiptItems.value.reduce(
-      (sum, item) => sum + item.pdPrice * item.quantity,
-      0
-    );
-  } else {
-    return 0;
-  }
-});
-
-const totalQuantity = computed(() => {
-  if (receiptItems.value !== null) {
-    return receiptItems.value.reduce((count, item) => count + item.quantity, 0);
-  }
 });
 
 const backToHome = () => {
