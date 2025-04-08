@@ -291,7 +291,7 @@ const emit = defineEmits([
 <style scoped lang="scss">
 .filter-detail-container {
   width: 20.4vw;
-  height: 96vw; /* ให้ความสูงปรับตามเนื้อหา */
+  height: 104vw; /* ให้ความสูงปรับตามเนื้อหา */
   align-self: flex-start; /* เพิ่ม align-self เพื่อให้ยึดติดกับด้านบน */
   // height: calc(100vh - 69px);
   //min-height: 100vh; ให้ container มีความสูงขั้นต่ำเท่ากับความสูงหน้าจอ

@@ -94,7 +94,7 @@
       </div>
       <div class="card-container">
         <CardComponent
-          v-for="product in filteredProduct"
+          v-for="product in displayedProducts"
           :key="product.pdModel"
           :product="product"
           :is-disable="compareProductList.length >= 2"
@@ -104,6 +104,12 @@
           @select-compare-product="handleCompareProduct"
           @remove-compare-product="handleRemoveCompareProduct"
         />
+      </div>
+
+      <div v-if="hasMoreProducts" class="load-more-container">
+        <button class="load-more-button" @click="loadMoreProducts">
+          โหลดเพิ่มเติม ({{ displayedProducts.length }} / {{ filteredProduct.length }})
+        </button>
       </div>
 
       <CompareBar
@@ -143,6 +149,11 @@ const priceRange = ref({ min: 0, max: 10000 });
 
 const selectedBrands = ref([]);
 const selectedTypes = ref([]);
+
+
+// กำหนดค่าเริ่มต้นสำหรับการแสดงสินค้า
+const itemsPerPage = ref(16); // จำนวนสินค้าที่แสดงต่อหน้า
+const currentPage = ref(1); // หน้าปัจจุบัน
 
 const products = computed(() => {
   return productStore.product.filter(
@@ -219,6 +230,23 @@ const filteredProduct = computed(() => {
   return filtered;
 });
 
+// สินค้าที่จะแสดงตามจำนวนหน้าปัจจุบัน
+const displayedProducts = computed(() => {
+const startIndex = 0;
+const endIndex = currentPage.value * itemsPerPage.value;
+return filteredProduct.value.slice(startIndex, endIndex);
+});
+
+// ตรวจสอบว่ายังมีสินค้าให้แสดงเพิ่มเติมหรือไม่
+const hasMoreProducts = computed(() => {
+return displayedProducts.value.length < filteredProduct.value.length;
+});
+
+// ฟังก์ชันสำหรับโหลดสินค้าเพิ่มเติม
+const loadMoreProducts = () => {
+currentPage.value += 1;
+};
+
 const selectedProduct = ref("");
 
 const compareProductList = ref([]);
@@ -247,6 +275,9 @@ const selectDropdownItem = (item) => {
   if (item !== selectedDropdownItem.value) {
     selectedDropdownItem.value = item;
     // isDropdownOpen.value = false;
+
+    // รีเซ็ตการแสดงผลเมื่อมีการเปลี่ยนตัวกรอง
+    currentPage.value = 1;
   }
 };
 
@@ -271,10 +302,18 @@ const handleRemoveCompareProduct = (product) => {
   }
 };
 
+// รีเซ็ตหน้าเมื่อมีการเปลี่ยนแปลงตัวกรอง
+watch([colorToFilter, selectedBrands, selectedTypes, priceRange], () => {
+currentPage.value = 1;
+});
+
 watch(
   () => productStore.searchValue,
   async (newValue) => {
     if (newValue !== "") {
+      // รีเซ็ตหน้าเมื่อมีการค้นหาใหม่
+      currentPage.value = 1;
+
       // ใช้ nextTick เพื่อให้มั่นใจว่า DOM ถูกอัปเดตก่อนที่จะเลื่อน
       await nextTick(() => {
         if (menTextRef.value) {
@@ -455,6 +494,27 @@ onBeforeUnmount(() => {
 }
 .card-container {
   animation: slideIn 0.6s;
+}
+
+.load-more-container {
+display: flex;
+justify-content: center;
+margin: 20px 0;
+width: 100%;
+}
+
+.load-more-button {
+background-color: #f5f5f5;
+border: 1px solid #ddd;
+border-radius: 4px;
+padding: 10px 20px;
+cursor: pointer;
+font-size: 14px;
+transition: all 0.3s ease;
+}
+
+.load-more-button:hover {
+background-color: #e5e5e5;
 }
 
 </style>
