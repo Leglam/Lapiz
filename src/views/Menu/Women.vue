@@ -156,8 +156,14 @@
 
   const products = computed(() => {
     return productStore.product.filter(
-      (p) => p.pdGender === "Women" || p.pdGender === "Women_Best" || p.pdGender === "Women_New" || p.pdGender === "Women_Flat_New" || p.pdGender === "Women_Flat_Best"
-    );
+      (p) => p.pdGender === "Women" || p.pdGender === "Men_Sneaker_Best" || p.pdGender === "Women_Sneaker_New"
+          || p.pdGender === "Women_FlipFlop_Best" || p.pdGender === "Women_FlipFlop_New"
+          || p.pdGender === "Women_Sport_Best" || p.pdGender === "Women_Sport_New"
+          || p.pdGender === "Women_HighHeel_Best" || p.pdGender === "Women_HighHeel_New"
+          || p.pdGender === "Women_Flat_Best" || p.pdGender === "Women_Flat_New"
+          || p.pdGender === "Women_Boot_Best" || p.pdGender === "Women_Boot_New"
+          || p.pdGender === "Women_Leather_Best" || p.pdGender === "Women_Leather_New"
+          || p.pdGender === "Women_Kid_Best" || p.pdGender === "Women_Kid_New");
   });
 
   const filteredProduct = computed(() => {

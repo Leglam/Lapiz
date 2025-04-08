@@ -1095,6 +1095,7 @@
     padding: 1rem 2rem 1rem 2rem;
     font-size: 16px;
     line-height: 1.875;
+    white-space: pre-line;
   }
 
   .product-tab-details {

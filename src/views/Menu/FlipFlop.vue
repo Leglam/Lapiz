@@ -2,7 +2,7 @@
   <div class="topic-wrapper">
     <div class="line"></div>
     <div class="flip-flop-text" ref="menTextRef">
-      รองเท้ากีฬา
+      รองเท้าแตะ
     </div>
     <div class="line"></div>
   </div>
