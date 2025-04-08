@@ -46,7 +46,7 @@
     },
     autoClose: {
       type: Boolean,
-      default: true
+      default: false
     },
     title: {
       type: String,
