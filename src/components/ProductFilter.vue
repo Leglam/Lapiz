@@ -52,6 +52,7 @@
                 type="text"
                 v-model="minPriceInput"
                 @blur="handleMinPriceInput"
+                @keyup.enter="handleMinPriceInput"
                 class="price-text-input"
                 placeholder="0"
               />
@@ -63,6 +64,7 @@
                 type="text"
                 v-model="maxPriceInput"
                 @blur="handleMaxPriceInput"
+                @keyup.enter="handleMaxPriceInput"
                 class="price-text-input"
                 :placeholder="maxPriceLimit"
               />
