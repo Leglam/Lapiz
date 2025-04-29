@@ -13,6 +13,7 @@
               type="text"
               class="form-input full-width"
               placeholder="อีเมล"
+              value="naithanathorn46@gmail.com"
             />
             <label class="checkbox-wrapper">
               <input type="checkbox" />
@@ -26,27 +27,29 @@
           <h2 class="section-heading">ที่อยู่จัดส่ง</h2>
           <div class="address-form">
             <div class="name-row">
-              <input type="text" class="form-input" placeholder="ชื่อจริง" />
-              <input type="text" class="form-input" placeholder="นามสกุล" />
+              <input type="text" class="form-input" placeholder="ชื่อจริง" value="ธนาทร" />
+              <input type="text" class="form-input" placeholder="นามสกุล" value="เกริกกวิน" />
             </div>
             <input
               type="text"
               class="form-input full-width"
-              placeholder="ที่อยู่"
+              placeholder="ที่อยู่" value="15 อาคารเซ็นจูรี่ ถนนพญาไท แขวงถนนพญาไท เขตพญาไทย"
             />
             <div class="address-details">
-              <input type="text" class="form-input" placeholder="เขต/แขวง" />
-              <input type="text" class="form-input" placeholder="จังหวัด" />
+              <input type="text" class="form-input" placeholder="เขต/แขวง" value="พญาไทย" />
+              <input type="text" class="form-input" placeholder="จังหวัด" value="กรุงเทพมหานคร" />
               <input
                 type="text"
                 class="form-input"
                 placeholder="รหัสไปรษณีย์"
+                value="10400"
               />
             </div>
             <input
               type="text"
               class="form-input full-width"
               placeholder="โทรศัพท์"
+              value="063-481-6644"
             />
             <div class="checkbox-group">
               <label class="checkbox-wrapper">

@@ -32,12 +32,14 @@
             type="text" 
             class="form-input" 
             placeholder="ชื่อเจ้าของบัตร"
+            value="Thanathorn Krirkkawin"
             v-model="cardDetails.name"
           />
           <input 
             type="text" 
             class="form-input" 
             placeholder="หมายเลขบัตร"
+            value="0668 1234 5678 9012"
             v-model="cardDetails.number"
           />
         </div>
@@ -46,6 +48,7 @@
             type="text" 
             class="form-input" 
             placeholder="วันหมดอายุ (ดด/ปป)"
+            value="06/24"
             v-model="cardDetails.expiry"
           />
           <div class="cvv-input">
@@ -53,6 +56,7 @@
               type="text" 
               class="form-input" 
               placeholder="CVV"
+              value="481"
               v-model="cardDetails.cvv"
             />
             <img src="@/assets/images/cvv_info.svg" alt="CVV Information" class="cvv-icon" />
