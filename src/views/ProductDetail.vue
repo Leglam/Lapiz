@@ -268,7 +268,7 @@
                           <img
                             v-for="n in 5"
                             :key="n"
-                            :src="n <= hoverRating ? StarFilled : StarEmpty"
+                            :src="(hoverRating > 0 ? n <= hoverRating : n <= userRating) ? StarFilled : StarEmpty"
                             alt="star"
                             class="star-icon selectable"
                             @click="userRating = n"
